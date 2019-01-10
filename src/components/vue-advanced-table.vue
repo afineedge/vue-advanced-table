@@ -3,21 +3,40 @@
     <div style="margin-bottom: 8px;">
       <input v-model="search" />
     </div>
-    <table style="text-align: left;" cellpadding="8" cellspacing="0" border="1">
-      <thead>
-        <tr>
-          <vue-advanced-table-column-header v-for="column in columnOrder" v-bind:key="column" v-bind:primaryKey="column" v-bind:column="column" v-bind:rows="rows" v-bind:columns="columns"/>
-        </tr>
-      </thead>
-      <tbody>
-        <vue-advanced-table-row v-for="row in reorderedRows" v-bind:row="row" v-bind:rows="rows" v-bind:columns="columns" v-bind:key="row[primaryKey]" v-bind:primaryKey="row[primaryKey]" v-bind:columnOrder="columnOrder">
-          <vue-advanced-table-cell v-for="column in columnOrder" v-bind:key="column" v-bind:column="getColumnByName(column)" v-bind:row="row" v-bind:rows="rows" v-bind:columns="columns" v-bind:primaryKey="primaryKey">
-            <slot v-bind:name="column" v-bind:row="row">
-            </slot>
-          </vue-advanced-table-cell>
-        </vue-advanced-table-row>
-      </tbody>
-    </table>
+    <div class="flex-shrink-0">
+      <table style="text-align: left;" cellpadding="8" cellspacing="0" border="1">
+        <thead>
+          <tr>
+            <vue-advanced-table-column-header v-for="column in columnOrder" v-bind:key="column" v-bind:primaryKey="column" v-bind:column="column" v-bind:rows="rows" v-bind:columns="columns"/>
+          </tr>
+        </thead>
+        <tbody style="visibility: collapse;">
+          <vue-advanced-table-row v-for="row in reorderedRows" v-bind:row="row" v-bind:rows="rows" v-bind:columns="columns" v-bind:key="row[primaryKey]" v-bind:primaryKey="row[primaryKey]" v-bind:columnOrder="columnOrder">
+            <vue-advanced-table-cell v-for="column in columnOrder" v-bind:key="column" v-bind:column="getColumnByName(column)" v-bind:row="row" v-bind:rows="rows" v-bind:columns="columns" v-bind:primaryKey="primaryKey">
+              <slot v-bind:name="column" v-bind:row="row">
+              </slot>
+            </vue-advanced-table-cell>
+          </vue-advanced-table-row>
+        </tbody>
+      </table>
+    </div>
+    <div class="flex-shrink-0">
+      <table style="text-align: left;" cellpadding="8" cellspacing="0" border="1">
+        <thead style="visibility: collapse;">
+          <tr>
+            <vue-advanced-table-column-header v-for="column in columnOrder" v-bind:key="column" v-bind:primaryKey="column" v-bind:column="column" v-bind:rows="rows" v-bind:columns="columns"/>
+          </tr>
+        </thead>
+        <tbody>
+          <vue-advanced-table-row v-for="row in reorderedRows" v-bind:row="row" v-bind:rows="rows" v-bind:columns="columns" v-bind:key="row[primaryKey]" v-bind:primaryKey="row[primaryKey]" v-bind:columnOrder="columnOrder">
+            <vue-advanced-table-cell v-for="column in columnOrder" v-bind:key="column" v-bind:column="getColumnByName(column)" v-bind:row="row" v-bind:rows="rows" v-bind:columns="columns" v-bind:primaryKey="primaryKey">
+              <slot v-bind:name="column" v-bind:row="row">
+              </slot>
+            </vue-advanced-table-cell>
+          </vue-advanced-table-row>
+        </tbody>
+      </table>
+    </div>
   </div>
 </template>
 

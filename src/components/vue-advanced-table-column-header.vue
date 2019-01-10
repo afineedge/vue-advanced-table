@@ -2,7 +2,7 @@
     <th v-on:click="handleClick">
       <div>
         {{ getColumnByName(column).label }}
-        <template v-if="$parent.order.column === column">
+        <template v-if="$parent.order.column === column && (getColumnByName(column).orderable !== false)">
           <span v-if="$parent.order.direction === 'desc'">
             &#x25B2;
           </span>
@@ -29,9 +29,6 @@ export default {
     column: {
       type: String,
       required: true
-    },
-    orderable: {
-      type: String
     }
   },
   mounted: function() {
@@ -46,14 +43,17 @@ export default {
     handleClick: function() {
       const self = this;
       const order = self.$parent.order;
-      if (order.column === self.column){
-        if (order.direction === 'desc') {
-          order.direction = 'asc'
+      const column = self.getColumnByName(self.column);
+      if (typeof column.orderable === 'undefined' || column.orderable == true){
+        if (order.column === self.column){
+          if (order.direction === 'desc') {
+            order.direction = 'asc'
+          } else {
+            order.direction = 'desc'
+          }
         } else {
-          order.direction = 'desc'
+          order.column = self.column;
         }
-      } else {
-        order.column = self.column;
       }
     }
   },

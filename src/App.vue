@@ -60,7 +60,8 @@ export default {
         }],
         columns: [{
           label: 'ID',
-          name: 'employeeID'
+          name: 'employeeID',
+          orderable: false
         }, {
           label: 'First Name',
           name: 'firstName'

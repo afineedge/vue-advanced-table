@@ -3,7 +3,7 @@
     <div style="margin-bottom: 8px;">
       <input v-model="search" />
     </div>
-    <div class="flex-shrink-0">
+    <div>
       <table style="text-align: left;" cellpadding="8" cellspacing="0" border="1">
         <thead>
           <tr>
@@ -20,7 +20,7 @@
         </tbody>
       </table>
     </div>
-    <div class="flex-shrink-0">
+    <div>
       <table style="text-align: left;" cellpadding="8" cellspacing="0" border="1">
         <thead style="visibility: collapse;">
           <tr>

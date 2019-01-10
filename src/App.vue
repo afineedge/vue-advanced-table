@@ -1,20 +1,21 @@
 <template>
   <div id="app">
-    <vue-advanced-table border="1" cellspacing="0" cellpadding="8" v-bind:rows="employeeTable.employees" v-bind:columns="employeeTable.columns" v-bind:options="employeeTable.options" v-bind:primaryKey="'employeeID'">
+    <vue-advanced-table border="1" cellspacing="0" cellpadding="8" v-bind:rows="employeeTable.employees" v-bind:columns="employeeTable.columns" v-bind:order="employeeTable.order" v-bind:primaryKey="'employeeID'">
+      <template slot="employeeID" slot-scope="data">
+        <input type="text" v-model.lazy="data.row.employeeID" style="width: 100px;" />
+      </template>
       <template slot="location" slot-scope="data">
-        <div>
-          <select v-model="data.row.location">
-            <option v-for="location in locations" v-bind:key="location.id" v-bind:value="location.id">
-              {{ location.name }}
-            </option>
-          </select>
-        </div>
+        <select v-model="data.row.location">
+          <option v-for="location in locations" v-bind:key="location.id" v-bind:value="location.id">
+            {{ location.name }}
+          </option>
+        </select>
       </template>
     </vue-advanced-table>
     <br />
     <ul>
       <li v-for="employee in employeeTable.employees">
-        {{ employee.firstName }} {{ employee.lastName }} - {{ employee.department }} - {{ employee.location }} 
+        {{ employee.employeeID }} - {{ employee.firstName }} {{ employee.lastName }} - {{ employee.department }} - {{ employee.location }} 
       </li>
     </ul>
   </div>
@@ -76,11 +77,9 @@ export default {
           label: 'Location',
           name: 'location'
         }],
-        options: {
-          order: {
-            column: 'firstName',
-            direction: 'asc'
-          }
+        order: {
+          column: 'firstName',
+          direction: 'asc'
         }
       },
       departments: [{

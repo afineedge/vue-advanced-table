@@ -2,8 +2,8 @@
     <th v-on:click="handleClick">
       <div>
         {{ getColumnByName(column).label }}
-        <template v-if="$parent.options.order.column === column">
-          <span v-if="$parent.options.order.direction === 'desc'">
+        <template v-if="$parent.order.column === column">
+          <span v-if="$parent.order.direction === 'desc'">
             &#x25B2;
           </span>
           <span v-else>
@@ -45,7 +45,7 @@ export default {
     },
     handleClick: function() {
       const self = this;
-      const order = self.$parent.options.order;
+      const order = self.$parent.order;
       if (order.column === self.column){
         if (order.direction === 'desc') {
           order.direction = 'asc'

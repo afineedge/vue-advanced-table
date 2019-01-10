@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div style="margin-bottom: 8px;">
+    <div style="margin-bottom: 8px;" v-if="searchable !== 'false'">
       <input v-model="search" />
     </div>
     <div>
@@ -58,6 +58,9 @@ export default {
     },
     order: {
       type: Object
+    },
+    searchable: {
+      type: String
     },
     primaryKey: {
       type: String,

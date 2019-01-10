@@ -44,7 +44,7 @@ export default {
       const self = this;
       const order = self.$parent.order;
       const column = self.getColumnByName(self.column);
-      if (typeof column.orderable === 'undefined' || column.orderable == true){
+      if (typeof column.orderable !== false){
         if (order.column === self.column){
           if (order.direction === 'desc') {
             order.direction = 'asc'

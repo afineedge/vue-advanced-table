@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <vue-advanced-table v-bind:rows="employeeTable.employees" v-bind:columns="employeeTable.columns" v-bind:order="employeeTable.order" v-bind:orderable="true" v-bind:primaryKey="'employeeID'">
+    <vue-advanced-table v-bind:rows="employeeTable.employees" v-bind:columns="employeeTable.columns" v-bind:primaryKey="'employeeID'">
       <template slot="employeeID" slot-scope="data">
         <input type="text" v-model.lazy="data.row.employeeID" style="width: 100px;" />
       </template>

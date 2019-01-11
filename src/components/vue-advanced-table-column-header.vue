@@ -15,6 +15,8 @@
 </template>
 
 <script>
+import Vue from 'vue';
+
 export default {
   name: 'vue-advanced-table-column-header',
   props: {
@@ -31,7 +33,8 @@ export default {
       required: true
     },
     orderable: {
-      type: Boolean
+      type: Boolean,
+      default: true
     }
   },
   mounted: function() {
@@ -53,12 +56,13 @@ export default {
       if (self.canColumnBeOrdered(self.column)){
         if (order.column === self.column){
           if (order.direction === 'desc') {
-            order.direction = 'asc'
+            order.direction = 'asc';
           } else {
-            order.direction = 'desc'
+            order.direction = 'desc';
           }
         } else {
           order.column = self.column;
+            order.direction = 'asc';
         }
       }
     }
@@ -71,6 +75,8 @@ export default {
     ordered: function() {
       const self = this;
       return self.$parent.order.column === self.column;
+
+      return false;
     }
   }
 }

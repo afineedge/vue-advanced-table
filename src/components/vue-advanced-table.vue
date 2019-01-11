@@ -57,10 +57,17 @@ export default {
       required: true
     },
     order: {
-      type: Object
+      type: Object,
+      default: function() {
+        return {
+          column: '',
+          direction: ''
+        }
+      }
     },
     orderable: {
-      type: Boolean
+      type: Boolean,
+      default: true
     },
     searchable: {
       type: String
@@ -104,15 +111,18 @@ export default {
   computed: {
     reorderedRows: function() {
       const self = this;
-      var rows = self.filteredRows.sort(function(a, b) {
-        if (a[self.order.column] < b[self.order.column])
-          return -1;
-        if (a[self.order.column] > b[self.order.column])
-          return 1;
-        return 0;
-      });
-      if (self.order.direction == 'desc') {
-        rows.reverse();
+      var rows = self.filteredRows;
+      if (typeof self.order !== 'undefined'){
+        rows = self.filteredRows.sort(function(a, b) {
+          if (a[self.order.column] < b[self.order.column])
+            return -1;
+          if (a[self.order.column] > b[self.order.column])
+            return 1;
+          return 0;
+        });
+        if (self.order.direction == 'desc') {
+          rows.reverse();
+        }
       }
 
       return rows;

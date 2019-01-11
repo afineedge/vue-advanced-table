@@ -2,11 +2,11 @@
     <th v-on:click="handleClick">
       <div>
         {{ getColumnByName(column).label }}
-        <template v-if="$parent.order.column === column && (getColumnByName(column).orderable !== false)">
-          <span v-if="$parent.order.direction === 'desc'">
+        <template v-if="canColumnBeOrdered(column)">
+          <span v-bind:style="{ color: ordered && direction === 'desc' ? 'initial' : '#ccc' }">
             &#x25B2;
           </span>
-          <span v-else>
+          <span v-bind:style="{ color: ordered && direction === 'asc' ? 'initial' : '#ccc' }">
             &#x25BC;
           </span>
         </template>
@@ -29,6 +29,9 @@ export default {
     column: {
       type: String,
       required: true
+    },
+    orderable: {
+      type: Boolean
     }
   },
   mounted: function() {
@@ -40,11 +43,14 @@ export default {
         return column.name === name;
       });
     },
+    canColumnBeOrdered: function(name) {
+      const self = this;
+      return self.getColumnByName(self.column).orderable !== false && self.orderable !== false;
+    },
     handleClick: function() {
       const self = this;
       const order = self.$parent.order;
-      const column = self.getColumnByName(self.column);
-      if (typeof column.orderable !== false){
+      if (self.canColumnBeOrdered(self.column)){
         if (order.column === self.column){
           if (order.direction === 'desc') {
             order.direction = 'asc'
@@ -58,6 +64,14 @@ export default {
     }
   },
   computed: {
+    direction: function() {
+      const self = this;
+      return self.$parent.order.direction;
+    },
+    ordered: function() {
+      const self = this;
+      return self.$parent.order.column === self.column;
+    }
   }
 }
 </script>

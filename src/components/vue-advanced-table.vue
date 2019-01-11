@@ -7,7 +7,7 @@
       <table style="text-align: left;" cellpadding="8" cellspacing="0" border="1">
         <thead>
           <tr>
-            <vue-advanced-table-column-header v-for="column in columnOrder" v-bind:key="column" v-bind:primaryKey="column" v-bind:column="column" v-bind:rows="rows" v-bind:columns="columns"/>
+            <vue-advanced-table-column-header v-for="column in columnOrder" v-bind:key="column" v-bind:primaryKey="column" v-bind:column="column" v-bind:rows="rows" v-bind:columns="columns" v-bind:orderable="orderable"/>
           </tr>
         </thead>
         <tbody style="visibility: collapse;">
@@ -24,7 +24,7 @@
       <table style="text-align: left;" cellpadding="8" cellspacing="0" border="1">
         <thead style="visibility: collapse;">
           <tr>
-            <vue-advanced-table-column-header v-for="column in columnOrder" v-bind:key="column" v-bind:primaryKey="column" v-bind:column="column" v-bind:rows="rows" v-bind:columns="columns"/>
+            <vue-advanced-table-column-header v-for="column in columnOrder" v-bind:key="column" v-bind:primaryKey="column" v-bind:column="column" v-bind:rows="rows" v-bind:columns="columns" v-bind:orderable="orderable"/>
           </tr>
         </thead>
         <tbody>
@@ -58,6 +58,9 @@ export default {
     },
     order: {
       type: Object
+    },
+    orderable: {
+      type: Boolean
     },
     searchable: {
       type: String

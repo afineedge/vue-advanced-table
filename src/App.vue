@@ -1,10 +1,10 @@
 <template>
   <div id="app">
-    <vue-advanced-table v-bind:rows="employeeTable.employees" v-bind:columns="employeeTable.columns" v-bind:primaryKey="'employeeID'">
-      <template slot="employeeID" slot-scope="data">
+    <vue-advanced-table v-bind:rows="employeeTable.employees" v-bind:columns="employeeTable.columns" v-bind:primaryKey="'employeeID'" v-bind:buttons="employeeTable.buttons" v-bind:order="employeeTable.order" v-bind:orderable="employeeTable.orderable">
+      <template slot="column-employeeID" slot-scope="data">
         <input type="text" v-model.lazy="data.row.employeeID" style="width: 100px;" />
       </template>
-      <template slot="location" slot-scope="data">
+      <template slot="column-location" slot-scope="data">
         <select v-model="data.row.location">
           <option v-for="location in locations" v-bind:key="location.id" v-bind:value="location.id">
             {{ location.name }}
@@ -14,10 +14,42 @@
     </vue-advanced-table>
     <br />
     <ul>
-      <li v-for="employee in employeeTable.employees">
+      <li v-for="employee in employeeTable.employees" v-bind:key="employee.employeeID">
         {{ employee.employeeID }} - {{ employee.firstName }} {{ employee.lastName }} - {{ employee.department }} - {{ employee.location }} 
       </li>
     </ul>
+    <br />
+    <h4 style="margin-bottom: 4px;">Settings</h4>
+    <table cellpadding="8">
+      <tr>
+        <td>
+          <label>
+            Orderable<br />
+            <select v-model="employeeTable.orderable" style="margin-top: 2px;">
+              <option v-bind:value="true">Yes</option>
+              <option v-bind:value="false">No</option>
+            </select>
+          </label>
+        </td>
+        <td>
+          <label>
+            Order By<br />
+            <select v-model="employeeTable.order.column" style="margin-top: 2px;">
+              <option v-for="column in employeeTable.columns" v-bind:value="column.name">{{ column.label }}</option>
+            </select>
+          </label>
+        </td>
+        <td>
+          <label>
+            Direction<br />
+            <select v-model="employeeTable.order.direction" style="margin-top: 2px;">
+              <option value="asc">Ascending</option>
+              <option value="desc">Descending</option>
+            </select>
+          </label>
+        </td>
+      </tr>
+    </table>
   </div>
 </template>
 
@@ -60,8 +92,7 @@ export default {
         }],
         columns: [{
           label: 'ID',
-          name: 'employeeID',
-          orderable: false
+          name: 'employeeID'
         }, {
           label: 'First Name',
           name: 'firstName'
@@ -81,7 +112,11 @@ export default {
         order: {
           column: 'firstName',
           direction: 'asc'
-        }
+        },
+        buttons: [
+          'columnVisibility'
+        ],
+        orderable: true
       },
       departments: [{
         id: '0',

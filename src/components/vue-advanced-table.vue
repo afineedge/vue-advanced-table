@@ -1,10 +1,19 @@
 <template>
   <div>
-    <div style="margin-bottom: 8px;" v-if="searchable !== 'false'">
-      <input v-model="search" />
-    </div>
+    <table cellspacing="0" cellpadding="0" v-if="buttons || searchable" style="margin-bottom: 8px;" width="100%">
+      <tr>
+        <td v-if="buttons" width="100%">
+          <vue-advanced-table-buttons v-bind:buttons="buttons"></vue-advanced-table-buttons>
+        </td>
+        <td v-if="searchable !== false" style="text-align: right;">
+          <slot name="table-search">
+            <input v-model="search" placeholder="Search" />
+          </slot>
+        </td>
+      </tr>
+    </table>
     <div>
-      <table style="text-align: left;" cellpadding="8" cellspacing="0" border="1">
+      <table style="text-align: left;" cellpadding="8" cellspacing="0" border="1" width="100%">
         <thead>
           <tr>
             <vue-advanced-table-column-header v-for="column in columnOrder" v-bind:key="column" v-bind:primaryKey="column" v-bind:column="column" v-bind:rows="rows" v-bind:columns="columns" v-bind:orderable="orderable"/>
@@ -13,7 +22,7 @@
         <tbody style="visibility: collapse;">
           <vue-advanced-table-row v-for="row in reorderedRows" v-bind:row="row" v-bind:rows="rows" v-bind:columns="columns" v-bind:key="row[primaryKey]" v-bind:primaryKey="row[primaryKey]" v-bind:columnOrder="columnOrder">
             <vue-advanced-table-cell v-for="column in columnOrder" v-bind:key="column" v-bind:column="getColumnByName(column)" v-bind:row="row" v-bind:rows="rows" v-bind:columns="columns" v-bind:primaryKey="primaryKey">
-              <slot v-bind:name="column" v-bind:row="row">
+              <slot v-bind:name="'column-' + column" v-bind:row="row">
               </slot>
             </vue-advanced-table-cell>
           </vue-advanced-table-row>
@@ -21,7 +30,7 @@
       </table>
     </div>
     <div>
-      <table style="text-align: left;" cellpadding="8" cellspacing="0" border="1">
+      <table style="text-align: left;" cellpadding="8" cellspacing="0" border="1" width="100%">
         <thead style="visibility: collapse;">
           <tr>
             <vue-advanced-table-column-header v-for="column in columnOrder" v-bind:key="column" v-bind:primaryKey="column" v-bind:column="column" v-bind:rows="rows" v-bind:columns="columns" v-bind:orderable="orderable"/>
@@ -30,7 +39,7 @@
         <tbody>
           <vue-advanced-table-row v-for="row in reorderedRows" v-bind:row="row" v-bind:rows="rows" v-bind:columns="columns" v-bind:key="row[primaryKey]" v-bind:primaryKey="row[primaryKey]" v-bind:columnOrder="columnOrder">
             <vue-advanced-table-cell v-for="column in columnOrder" v-bind:key="column" v-bind:column="getColumnByName(column)" v-bind:row="row" v-bind:rows="rows" v-bind:columns="columns" v-bind:primaryKey="primaryKey">
-              <slot v-bind:name="column" v-bind:row="row">
+              <slot v-bind:name="'column-' + column" v-bind:row="row">
               </slot>
             </vue-advanced-table-cell>
           </vue-advanced-table-row>
@@ -44,6 +53,7 @@
 import vueAdvancedTableColumnHeader from './vue-advanced-table-column-header.vue'
 import vueAdvancedTableRow from './vue-advanced-table-row.vue'
 import vueAdvancedTableCell from './vue-advanced-table-cell.vue'
+import vueAdvancedTableButtons from './vue-advanced-table-buttons.vue'
 
 export default {
   name: 'vue-advanced-table',
@@ -55,6 +65,9 @@ export default {
     columns: {
       type: Array,
       required: true
+    },
+    buttons: {
+      type: Array
     },
     order: {
       type: Object,
@@ -70,7 +83,8 @@ export default {
       default: true
     },
     searchable: {
-      type: String
+      type: Boolean,
+      default: true
     },
     primaryKey: {
       type: String,
@@ -88,7 +102,8 @@ export default {
   components: {
     vueAdvancedTableColumnHeader,
     vueAdvancedTableRow,
-    vueAdvancedTableCell
+    vueAdvancedTableCell,
+    vueAdvancedTableButtons
   },
   mounted: function() {
     const self = this;
@@ -133,7 +148,14 @@ export default {
         var response = false;
         for (let i = 0; i < Object.keys(row).length; i++){
           var data = row[Object.keys(row)[i]];
-          if(data.toString().toLowerCase().indexOf(self.search.toLowerCase()) > -1) {
+          var renderColumn = self.columns.find(function(column) {
+            return column.name === Object.keys(row)[i] && typeof column.render == 'function';
+          });
+          if (typeof renderColumn === 'object') {
+            if(renderColumn.render(data).toLowerCase().indexOf(self.search.toLowerCase()) > -1) {
+              response = true;
+            }
+          } else if (data.toString().toLowerCase().indexOf(self.search.toLowerCase()) > -1) {
             response = true;
           }
         }

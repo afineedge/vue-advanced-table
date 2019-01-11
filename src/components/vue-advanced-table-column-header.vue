@@ -62,7 +62,6 @@ export default {
           }
         } else {
           order.column = self.column;
-            order.direction = 'asc';
         }
       }
     }

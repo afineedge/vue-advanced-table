@@ -61,7 +61,7 @@ export default {
       default: function() {
         return {
           column: '',
-          direction: ''
+          direction: 'asc'
         }
       }
     },

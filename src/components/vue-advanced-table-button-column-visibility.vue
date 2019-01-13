@@ -1,13 +1,26 @@
 <template>
   <div>
     <button v-on:click="toggleOverlay" class="trigger">
-      Column Visibility
+      Column Settings
     </button>
     <vue-advanced-table-overlay v-if="overlay.active === true">
       <div class="button-collection">
-        <button v-for="column in columnOrder" v-bind:key="column" v-on:click="toggleColumnVisibility(column)" v-bind:class="{'inactive': !isColumnVisible(column)}">
-          {{ getColumnByName(column).label }}
-        </button>
+        <draggable v-model="localColumnOrder">
+          <div class="drag-handle" v-for="column in localColumnOrder" v-bind:key="column">
+            <div>
+              &#8691;
+            </div>
+            <div class="column">
+              <button v-on:click="toggleColumnVisibility(column)" v-bind:class="{'inactive': !isColumnVisible(column)}">
+                {{ getColumnByName(column).label }}
+              </button>
+            </div>
+          </div>
+        </draggable>
+      </div>
+      <div class="instructions">
+        <div>To toggle a column's visibility, click its button above.</div>
+        <div>Drag and drop the buttons to reorder the columns.</div>
       </div>
     </vue-advanced-table-overlay>
   </div>
@@ -15,6 +28,7 @@
 
 <script>
 import vueAdvancedTableOverlay from './vue-advanced-table-overlay.vue';
+import draggable from 'vuedraggable'
 
 export default {
   name: 'vue-advanced-table-button-column-visibility',
@@ -33,16 +47,19 @@ export default {
     }
   },
   components: {
+    draggable,
     vueAdvancedTableOverlay
   },
   data: function() {
     return {
       overlay: {
         active: false
-      }
+      },
+      localColumnOrder: []
     }
   },
   mounted: function() {
+    const self = this;
   },
   methods: {
     toggleOverlay: function() {
@@ -66,9 +83,25 @@ export default {
     isColumnVisible: function(column) {
       const self = this;
       return self.hiddenColumns.indexOf(column) === -1
+    },
+    updateColumnOrder: function(column) {
+      const self = this;
+      self.$parent.columnOrder = self.localColumnOrder;
     }
   },
-  computed: {
+  watch: {
+    columnOrder: function() {
+      const self = this;
+      if (self.localColumnOrder !== self.columnOrder){
+        self.localColumnOrder = self.columnOrder;
+      }
+    },
+    localColumnOrder: function() {
+      const self = this;
+      if (self.localColumnOrder !== self.columnOrder){
+        self.$emit('update:columnOrder', self.localColumnOrder);
+      }
+    }
   }
 }
 </script>
@@ -76,21 +109,43 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
   .button-collection {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translateX(-50%) translateY(-50%);
     background-color: #fff;
-    padding: 4px 4px 0;
+    padding: 4px;
     display: flex;
     flex-direction: column;
+    width: 200px;
+    margin: 0 auto;
   }
 
   .button-collection button {
-    margin-bottom: 4px;
+    width: 100%;
   }
 
   .button-collection button.inactive {
     opacity: .4;
+  }
+
+  .drag-handle {
+    padding: 4px;
+    border: 1px solid #ccc;
+    border-bottom: 0px;
+    display: flex;
+  }
+
+  .drag-handle:last-of-type {
+    border-bottom: 1px solid #ccc;
+  }
+
+  .drag-handle .column {
+    flex-grow: 1;
+    padding-left: 4px;
+  }
+
+  .instructions {
+    color: #fff;
+    text-align: center;
+    margin: 20px auto 0;
+    width: 200px;
+    font-size: 14px;
   }
 </style>

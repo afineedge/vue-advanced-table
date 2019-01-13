@@ -1,7 +1,9 @@
 <template>
     <div class="overlay" v-on:click.self="$parent.toggleOverlay" v-bind="$props">
-      <slot>
-      </slot>
+      <div class="overlay-content">
+        <slot>
+        </slot>
+      </div>
     </div>
 </template>
 
@@ -35,5 +37,12 @@ export default {
     right: 0;
     bottom: 0;
     background-color: rgba(0, 0, 0, .6);
+  }
+
+  .overlay-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-50%);
   }
 </style>

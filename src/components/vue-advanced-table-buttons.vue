@@ -1,7 +1,7 @@
 <template>
   <div>
     <template v-for="button in buttons">
-      <vue-advanced-table-button-column-visibility v-if="button === 'columnVisibility'" v-bind="$props"></vue-advanced-table-button-column-visibility>
+      <vue-advanced-table-button-column-visibility v-if="button === 'columnVisibility'" v-bind="$props" v-on:update:columnOrder="$emit('update:columnOrder', $event)"></vue-advanced-table-button-column-visibility>
       <button type="button" v-on:click="button.action" v-else>
         {{ button.label }}
       </button>

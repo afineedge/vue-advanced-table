@@ -3,7 +3,7 @@
     <table cellspacing="0" cellpadding="0" v-if="buttons || searchable" style="margin-bottom: 8px;" width="100%">
       <tr>
         <td v-if="buttons" width="100%">
-          <vue-advanced-table-buttons v-bind="$props" v-bind:columnOrder="columnOrder" v-bind:hiddenColumns="hiddenColumns"></vue-advanced-table-buttons>
+          <vue-advanced-table-buttons v-bind="$props" v-bind:columnOrder="columnOrder" v-bind:hiddenColumns="hiddenColumns" v-on:update:columnOrder="columnOrder = $event"></vue-advanced-table-buttons>
         </td>
         <td v-if="searchable !== false" style="text-align: right;">
           <slot name="table-search">
@@ -15,23 +15,6 @@
     <div>
       <table style="text-align: left;" cellpadding="8" cellspacing="0" border="1" width="100%">
         <thead>
-          <tr>
-            <vue-advanced-table-column-header v-for="column in columnOrder" v-bind:key="column" v-bind:column="column" v-bind="$props" v-bind:hiddenColumns="hiddenColumns"/>
-          </tr>
-        </thead>
-        <tbody style="visibility: collapse;">
-          <vue-advanced-table-row v-for="row in reorderedRows" v-bind:key="row[primaryKey]">
-            <vue-advanced-table-cell v-for="column in columnOrder" v-bind:key="column" v-bind:column="getColumnByName(column)" v-bind:row="row" v-bind="$props" v-bind:hiddenColumns="hiddenColumns">
-              <slot v-bind:name="'column-' + column" v-bind:row="row">
-              </slot>
-            </vue-advanced-table-cell>
-          </vue-advanced-table-row>
-        </tbody>
-      </table>
-    </div>
-    <div>
-      <table style="text-align: left;" cellpadding="8" cellspacing="0" border="1" width="100%">
-        <thead style="visibility: collapse;">
           <tr>
             <vue-advanced-table-column-header v-for="column in columnOrder" v-bind:key="column" v-bind:column="column" v-bind="$props" v-bind:hiddenColumns="hiddenColumns"/>
           </tr>

@@ -31,7 +31,7 @@ import vueAdvancedTableOverlay from './vue-advanced-table-overlay.vue';
 import draggable from 'vuedraggable'
 
 export default {
-  name: 'vue-advanced-table-button-column-visibility',
+  name: 'vue-advanced-table-button-column-settings',
   props: {
     columns: {
       type: Array,

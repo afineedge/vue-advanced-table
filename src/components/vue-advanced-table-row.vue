@@ -10,26 +10,6 @@
 export default {
   name: 'vue-advanced-table-row',
   props: {
-    rows: {
-      type: Array,
-      required: true
-    },
-    columns: {
-      type: Array,
-      required: true
-    },
-    columnOrder: {
-      type: Array,
-      required: true
-    },
-    row: {
-      type: [String, Object],
-      required: true
-    },
-    primaryKey: {
-      type: String,
-      required: true
-    }
   },
   components: {
   },

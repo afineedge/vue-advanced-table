@@ -1,7 +1,7 @@
 <template>
   <div>
     <button v-on:click="toggleOverlay" class="trigger">
-      Column Visibility
+      Column Order
     </button>
     <vue-advanced-table-overlay v-if="overlay.active === true">
       <div class="button-collection">

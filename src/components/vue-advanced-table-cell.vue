@@ -1,5 +1,5 @@
 <template>
-    <td>
+    <td v-if="isColumnVisible(column.name)">
       <slot>{{ content }}</slot>
     </td>
 </template>
@@ -16,16 +16,16 @@ export default {
       type: Array,
       required: true
     },
+    hiddenColumns: {
+      type: Array,
+      required: true
+    },
     row: {
       type: Object,
       required: true
     },
     column: {
       type: Object,
-      required: true
-    },
-    primaryKey: {
-      type: String,
       required: true
     }
   },
@@ -37,6 +37,10 @@ export default {
       return self.columns.find(function(column) {
         return column.name === name;
       });
+    },
+    isColumnVisible: function(column) {
+      const self = this;
+      return self.hiddenColumns.indexOf(column) === -1
     }
   },
   computed: {

@@ -1,9 +1,11 @@
 <template>
   <div>
-    <vue-advanced-table-button-column-visibility v-if="isColumnVisiblityButtonSelected"></vue-advanced-table-button-column-visibility>
-    <button type="button" v-for="button in buttons" v-if="typeof button === 'object'" v-on:click="button.action">
-      {{ button.label }}
-    </button>
+    <template v-for="button in buttons">
+      <vue-advanced-table-button-column-visibility v-if="button === 'columnVisibility'" v-bind="$props"></vue-advanced-table-button-column-visibility>
+      <button type="button" v-on:click="button.action" v-else>
+        {{ button.label }}
+      </button>
+    </template>
   </div>
 </template>
 
@@ -16,6 +18,25 @@ export default {
     buttons: {
       type: Array,
       required: true
+    },
+    columns: {
+      type: Array,
+      required: true
+    },
+    columnOrder: {
+      type: Array,
+      required: true
+    },
+    hiddenColumns: {
+      type: Array,
+      required: true
+    }
+  },
+  data: function() {
+    return {
+      columnVisibility: {
+        active: false
+      }
     }
   },
   components: {
@@ -26,12 +47,6 @@ export default {
   methods: {
   },
   computed: {
-    isColumnVisiblityButtonSelected: function() {
-      const self = this;
-      return self.buttons.find(function(button) {
-        return button === 'columnVisibility'
-      });
-    }
   }
 }
 </script>

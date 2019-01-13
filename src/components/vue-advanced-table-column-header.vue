@@ -1,5 +1,5 @@
 <template>
-    <th v-on:click="handleClick">
+    <th v-on:click="handleClick" v-if="isColumnVisible(column)">
       <div>
         {{ getColumnByName(column).label }}
         <template v-if="canColumnBeOrdered">
@@ -26,9 +26,16 @@ export default {
       type: Array,
       required: true
     },
+    hiddenColumns: {
+      type: Array,
+      required: true
+    },
     column: {
       type: String,
       required: true
+    },
+    order: {
+      type: Object
     },
     orderable: {
       type: Boolean,
@@ -46,7 +53,7 @@ export default {
     },
     handleClick: function() {
       const self = this;
-      const order = self.$parent.order;
+      const order = self.order;
       if (self.canColumnBeOrdered){
         if (order.column === self.column){
           if (order.direction === 'desc') {
@@ -58,6 +65,10 @@ export default {
           order.column = self.column;
         }
       }
+    },
+    isColumnVisible: function(column) {
+      const self = this;
+      return self.hiddenColumns.indexOf(column) === -1
     }
   },
   computed: {

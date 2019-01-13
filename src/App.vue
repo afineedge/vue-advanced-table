@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <vue-advanced-table v-bind:rows="employeeTable.employees" v-bind:columns="employeeTable.columns" v-bind:primaryKey="'employeeID'" v-bind:buttons="employeeTable.buttons" v-bind:order="employeeTable.order" v-bind:orderable="employeeTable.orderable">
+    <vue-advanced-table v-bind:rows="employeeTable.employees" v-bind:columns="employeeTable.columns" v-bind:primaryKey="'employeeID'" v-bind:buttons="employeeTable.buttons" v-bind:order="employeeTable.order" v-bind:orderable="employeeTable.orderable" v-bind:searchable="employeeTable.searchable">
       <template slot="column-employeeID" slot-scope="data">
         <input type="text" v-model.lazy="data.row.employeeID" style="width: 100px;" />
       </template>
@@ -22,6 +22,15 @@
     <h4 style="margin-bottom: 4px;">Settings</h4>
     <table cellpadding="8">
       <tr>
+        <td>
+          <label>
+            Searchable<br />
+            <select v-model="employeeTable.searchable" style="margin-top: 2px;">
+              <option v-bind:value="true">Yes</option>
+              <option v-bind:value="false">No</option>
+            </select>
+          </label>
+        </td>
         <td>
           <label>
             Orderable<br />
@@ -116,7 +125,8 @@ export default {
         buttons: [
           'columnVisibility'
         ],
-        orderable: true
+        orderable: true,
+        searchable: true
       },
       departments: [{
         id: '0',

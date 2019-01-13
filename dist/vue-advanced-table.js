@@ -4487,12 +4487,12 @@ var vue_advanced_table_cell_component = normalizeComponent(
 
 vue_advanced_table_cell_component.options.__file = "vue-advanced-table-cell.vue"
 /* harmony default export */ var vue_advanced_table_cell = (vue_advanced_table_cell_component.exports);
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules//.cache//vue-loader","cacheIdentifier":"1f9db21e-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/vue-advanced-table-buttons.vue?vue&type=template&id=99d14af0&scoped=true&
-var vue_advanced_table_buttonsvue_type_template_id_99d14af0_scoped_true_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_vm._l((_vm.buttons),function(button){return [(button === 'columnVisibility')?_c('vue-advanced-table-button-column-buttons',_vm._b({on:{"update:columnOrder":function($event){_vm.$emit('update:columnOrder', $event)}}},'vue-advanced-table-button-column-buttons',_vm.$props,false)):_c('button',{attrs:{"type":"button"},on:{"click":button.action}},[_vm._v("\n      "+_vm._s(button.label)+"\n    ")])]})],2)}
-var vue_advanced_table_buttonsvue_type_template_id_99d14af0_scoped_true_staticRenderFns = []
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules//.cache//vue-loader","cacheIdentifier":"1f9db21e-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/vue-advanced-table-buttons.vue?vue&type=template&id=59a4c59a&scoped=true&
+var vue_advanced_table_buttonsvue_type_template_id_59a4c59a_scoped_true_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_vm._l((_vm.buttons),function(button){return [(button === 'columnVisibility')?_c('vue-advanced-table-button-column-settings',_vm._b({on:{"update:columnOrder":function($event){_vm.$emit('update:columnOrder', $event)}}},'vue-advanced-table-button-column-settings',_vm.$props,false)):_c('button',{attrs:{"type":"button"},on:{"click":button.action}},[_vm._v("\n      "+_vm._s(button.label)+"\n    ")])]})],2)}
+var vue_advanced_table_buttonsvue_type_template_id_59a4c59a_scoped_true_staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/vue-advanced-table-buttons.vue?vue&type=template&id=99d14af0&scoped=true&
+// CONCATENATED MODULE: ./src/components/vue-advanced-table-buttons.vue?vue&type=template&id=59a4c59a&scoped=true&
 
 // CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules//.cache//vue-loader","cacheIdentifier":"1f9db21e-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/vue-advanced-table-button-column-settings.vue?vue&type=template&id=731a2700&scoped=true&
 var vue_advanced_table_button_column_settingsvue_type_template_id_731a2700_scoped_true_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('button',{staticClass:"trigger",on:{"click":_vm.toggleOverlay}},[_vm._v("\n    Column Settings\n  ")]),(_vm.overlay.active === true)?_c('vue-advanced-table-overlay',[_c('div',{staticClass:"button-collection"},[_c('draggable',{model:{value:(_vm.localColumnOrder),callback:function ($$v) {_vm.localColumnOrder=$$v},expression:"localColumnOrder"}},_vm._l((_vm.localColumnOrder),function(column){return _c('div',{key:column,staticClass:"drag-handle"},[_c('div',[_vm._v("\n            ⇳\n          ")]),_c('div',{staticClass:"column"},[_c('button',{class:{'inactive': !_vm.isColumnVisible(column)},on:{"click":function($event){_vm.toggleColumnVisibility(column)}}},[_vm._v("\n              "+_vm._s(_vm.getColumnByName(column).label)+"\n            ")])])])}),0)],1),_c('div',{staticClass:"instructions"},[_c('div',[_vm._v("To toggle a column's visibility, click its button above.")]),_c('div',[_vm._v("Drag and drop the buttons to reorder the columns.")])])]):_vm._e()],1)}
@@ -4767,11 +4767,11 @@ function vue_advanced_table_buttons_injectStyles (context) {
 
 var vue_advanced_table_buttons_component = normalizeComponent(
   components_vue_advanced_table_buttonsvue_type_script_lang_js_,
-  vue_advanced_table_buttonsvue_type_template_id_99d14af0_scoped_true_render,
-  vue_advanced_table_buttonsvue_type_template_id_99d14af0_scoped_true_staticRenderFns,
+  vue_advanced_table_buttonsvue_type_template_id_59a4c59a_scoped_true_render,
+  vue_advanced_table_buttonsvue_type_template_id_59a4c59a_scoped_true_staticRenderFns,
   false,
   vue_advanced_table_buttons_injectStyles,
-  "99d14af0",
+  "59a4c59a",
   null
   ,true
 )

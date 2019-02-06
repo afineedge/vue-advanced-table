@@ -1,5 +1,5 @@
 <template>
-    <td v-if="isColumnVisible(column.name)">
+    <td class="vue-advanced-table-cell" v-if="isColumnVisible(column.name)">
       <slot>{{ content }}</slot>
     </td>
 </template>
@@ -59,4 +59,7 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+  .vue-advanced-table-cell {
+    padding: 4px;
+  }
 </style>

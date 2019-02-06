@@ -1,6 +1,7 @@
 <template>
-    <th v-on:click="handleClick" v-if="isColumnVisible(column)">
-      <div>
+    <td class="vue-advanced-table-column-header" v-on:click="handleClick" v-if="isColumnVisible(column)" v-bind:style="{ width: width + 'px' }">
+      <span class="vue-advanced-table-column-header-content-placeholder">{{ getColumnByName(column).label }}</span>
+      <div class="vue-advanced-table-column-header-content">
         {{ getColumnByName(column).label }}
         <template v-if="canColumnBeOrdered">
           <span v-bind:style="{ color: ordered && direction === 'desc' ? 'initial' : '#ccc' }">
@@ -11,7 +12,7 @@
           </span>
         </template>
       </div>
-    </th>
+    </td>
 </template>
 
 <script>
@@ -26,10 +27,6 @@ export default {
       type: Array,
       required: true
     },
-    hiddenColumns: {
-      type: Array,
-      required: true
-    },
     column: {
       type: String,
       required: true
@@ -40,9 +37,22 @@ export default {
     orderable: {
       type: Boolean,
       default: true
+    },
+    hiddenColumns: {
+      type: Array,
+      required: true
+    }
+  },
+  data: function() {
+    return {
+      width: 200
     }
   },
   mounted: function() {
+    const self = this;
+    setInterval(function(){
+      self.getColumnWidth();
+    }, 1)
   },
   methods: {
     getColumnByName: function(name) {
@@ -50,6 +60,17 @@ export default {
       return self.columns.find(function(column) {
         return column.name === name;
       });
+    },
+    getColumnWidth: function(){
+      const self = this;
+      var el = self.$parent.$el.querySelector('[columnName="' + self.column + '"]');
+      if (el !== null){
+        if (el.nextElementSibling === null){
+          self.width = el.offsetWidth;
+        } else {
+          self.width = el.offsetWidth;
+        }
+      }
     },
     handleClick: function() {
       const self = this;
@@ -90,4 +111,18 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+  .vue-advanced-table-column-header {
+    padding: 4px;
+    box-sizing: border-box;
+    border-bottom: 1px solid #ccc;
+  }
+
+  .vue-advanced-table-column-header-content {
+    position: absolute;
+    top: 0;
+  }
+
+  .vue-advanced-table-column-header-content-placeholder {
+    opacity: 0;
+  }
 </style>

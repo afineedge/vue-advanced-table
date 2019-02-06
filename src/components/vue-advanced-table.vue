@@ -1,33 +1,31 @@
 <template>
-  <div>
-    <table cellspacing="0" cellpadding="0" v-if="buttons || searchable" style="margin-bottom: 8px;" width="100%">
-      <tr>
-        <td v-if="buttons" width="100%">
-          <vue-advanced-table-buttons v-bind="$props" v-bind:columnOrder="columnOrder" v-bind:hiddenColumns="hiddenColumns" v-on:update:columnOrder="columnOrder = $event"></vue-advanced-table-buttons>
-        </td>
-        <td v-if="searchable !== false" style="text-align: right;">
-          <slot name="table-search">
-            <input v-model="search" placeholder="Search" />
-          </slot>
-        </td>
-      </tr>
-    </table>
-    <div>
-      <table style="text-align: left;" cellpadding="8" cellspacing="0" border="1" width="100%">
-        <thead>
-          <tr>
-            <vue-advanced-table-column-header v-for="column in columnOrder" v-bind:key="column" v-bind:column="column" v-bind="$props" v-bind:hiddenColumns="hiddenColumns"/>
-          </tr>
-        </thead>
-        <tbody>
-          <vue-advanced-table-row v-for="row in reorderedRows" v-bind:row="row">
-            <vue-advanced-table-cell v-for="column in columnOrder" v-bind:key="column" v-bind:column="getColumnByName(column)" v-bind:row="row" v-bind="$props" v-bind:hiddenColumns="hiddenColumns">
-              <slot v-bind:name="'column-' + column" v-bind:row="row">
-              </slot>
-            </vue-advanced-table-cell>
-          </vue-advanced-table-row>
-        </tbody>
-      </table>
+  <div class="vue-advanced-table" ref="table">
+    <div class="vue-advanced-table-controls" v-if="buttons || searchable">
+      <div class="vue-advanced-table-buttons" v-if="buttons">
+        <vue-advanced-table-buttons v-bind="$props" v-bind:columnOrder="columnOrder" v-bind:hiddenColumns="hiddenColumns" v-on:update:columnOrder="columnOrder = $event"></vue-advanced-table-buttons>
+      </div>
+      <div class="vue-advanced-table-search" v-if="searchable !== false">
+        <slot name="table-search">
+          <input v-model="search" placeholder="Search" />
+        </slot>
+      </div>
+    </div>
+    <div class="vue-advanced-table-wrapper">
+      <div class="vue-advanced-table-header">
+        <vue-advanced-table-column-header v-for="column in columnOrder" v-bind:key="column" v-bind:column="column" v-bind="$props" v-bind:hiddenColumns="hiddenColumns"/>
+      </div>
+      <div class="vue-advanced-table-scroll">
+        <table cellpadding="0" cellspacing="0" border="0" width="100%">
+          <tbody>
+            <vue-advanced-table-row v-for="row in reorderedRows" v-bind:row="row">
+              <vue-advanced-table-cell v-for="column in columnOrder" v-bind:key="column" v-bind:column="getColumnByName(column)" v-bind:row="row" v-bind="$props" v-bind:hiddenColumns="hiddenColumns" v-bind:columnName="column">
+                <slot v-bind:name="'column-' + column" v-bind:row="row">
+                </slot>
+              </vue-advanced-table-cell>
+            </vue-advanced-table-row>
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
 </template>
@@ -41,6 +39,10 @@ import vueAdvancedTableButtons from './vue-advanced-table-buttons.vue'
 export default {
   name: 'vue-advanced-table',
   props: {
+    primaryKey: {
+      type: String,
+      required: true
+    },
     rows: {
       type: Array,
       required: true
@@ -68,10 +70,6 @@ export default {
     searchable: {
       type: Boolean,
       default: true
-    },
-    primaryKey: {
-      type: String,
-      required: true
     }
   },
   data: function() {
@@ -151,4 +149,39 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+  .vue-advanced-table {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+  }
+
+  .vue-advanced-table-controls {
+    flex-shrink: 0;
+    margin-bottom: 8px;
+    display: flex;
+  }
+
+  .vue-advanced-table-buttons {
+    flex-shrink: 0;
+  }
+
+  .vue-advanced-table-search {
+    flex-shrink: 0;
+    margin-left: auto;
+    text-align: right;
+  }
+
+  .vue-advanced-table-wrapper {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .vue-advanced-table-header {
+    padding-right: 17px;
+  }
+
+  .vue-advanced-table-scroll {
+    overflow-y: scroll;
+  }
 </style>

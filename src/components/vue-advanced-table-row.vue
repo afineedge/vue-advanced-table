@@ -1,5 +1,5 @@
 <template>
-    <tr>
+    <tr class="vue-advanced-table-row">
       <slot>
       </slot>
     </tr>

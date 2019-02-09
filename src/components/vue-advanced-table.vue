@@ -17,7 +17,7 @@
       <div class="vue-advanced-table-scroll">
         <table cellpadding="0" cellspacing="0" border="0" width="100%">
           <tbody>
-            <vue-advanced-table-row v-for="row in reorderedRows" v-bind:row="row">
+            <vue-advanced-table-row v-for="(row, index) in reorderedRows" v-bind:row="row" v-bind:key="index">
               <vue-advanced-table-cell v-for="column in columnOrder" v-bind:key="column" v-bind:column="getColumnByName(column)" v-bind:row="row" v-bind="$props" v-bind:hiddenColumns="hiddenColumns" v-bind:columnName="column">
                 <slot v-bind:name="'column-' + column" v-bind:row="row">
                 </slot>

@@ -58,9 +58,6 @@ export default {
       localColumnOrder: []
     }
   },
-  mounted: function() {
-    const self = this;
-  },
   methods: {
     toggleOverlay: function() {
       const self = this;
@@ -84,7 +81,7 @@ export default {
       const self = this;
       return self.hiddenColumns.indexOf(column) === -1
     },
-    updateColumnOrder: function(column) {
+    updateColumnOrder: function() {
       const self = this;
       self.$parent.columnOrder = self.localColumnOrder;
     }

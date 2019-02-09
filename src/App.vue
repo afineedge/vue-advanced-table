@@ -44,7 +44,7 @@
               <label>
                 Order By<br />
                 <select v-model="employeeTable.order.column" style="margin-top: 2px;">
-                  <option v-for="column in employeeTable.columns" v-bind:value="column.name">{{ column.label }}</option>
+                  <option v-for="column in employeeTable.columns" v-bind:key="column.name" v-bind:value="column.name">{{ column.label }}</option>
                 </select>
               </label>
             </td>

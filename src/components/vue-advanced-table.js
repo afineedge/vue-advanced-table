@@ -1,0 +1,143 @@
+import vueAdvancedTableColumnHeader from './vue-advanced-table-column-header.js';
+import vueAdvancedTableRow from './vue-advanced-table-row.js';
+import vueAdvancedTableCell from './vue-advanced-table-cell.js';
+import vueAdvancedTableButtons from './vue-advanced-table-buttons.js';
+
+export default {
+  name: 'vue-advanced-table',
+  template: `
+    <div class="vue-advanced-table" ref="table">
+      <div class="vue-advanced-table-controls" v-if="buttons || searchable">
+        <div class="vue-advanced-table-buttons" v-if="buttons">
+          <vue-advanced-table-buttons v-bind="$props" v-bind:columnOrder="columnOrder" v-bind:hiddenColumns="hiddenColumns" v-on:update:columnOrder="columnOrder = $event"></vue-advanced-table-buttons>
+        </div>
+        <div class="vue-advanced-table-search" v-if="searchable !== false">
+          <slot name="table-search">
+            <input v-model="search" placeholder="Search" />
+          </slot>
+        </div>
+      </div>
+      <div class="vue-advanced-table-wrapper">
+        <div class="vue-advanced-table-header">
+          <vue-advanced-table-column-header v-for="column in columnOrder" v-bind:key="column" v-bind:column="column" v-bind="$props" v-bind:hiddenColumns="hiddenColumns"/>
+        </div>
+        <div class="vue-advanced-table-scroll">
+          <table cellpadding="0" cellspacing="0" border="0" width="100%">
+            <tbody>
+              <vue-advanced-table-row v-for="(row, index) in reorderedRows" v-bind:row="row" v-bind:key="index">
+                <vue-advanced-table-cell v-for="column in columnOrder" v-bind:key="column" v-bind:column="getColumnByName(column)" v-bind:row="row" v-bind="$props" v-bind:hiddenColumns="hiddenColumns" v-bind:columnName="column">
+                  <slot v-bind:name="'column-' + column" v-bind:row="row">
+                  </slot>
+                </vue-advanced-table-cell>
+              </vue-advanced-table-row>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  `,
+  props: {
+    primaryKey: {
+      type: String,
+      required: true
+    },
+    rows: {
+      required: true
+    },
+    columns: {
+      required: true
+    },
+    buttons: {
+      type: Array
+    },
+    order: {
+      type: Object,
+      default: function() {
+        return {
+          column: '',
+          direction: 'asc'
+        }
+      }
+    },
+    orderable: {
+      type: Boolean,
+      default: true
+    },
+    searchable: {
+      type: Boolean,
+      default: true
+    }
+  },
+  data: function() {
+    return {
+      columnOrder: [],
+      hiddenColumns: [],
+      selectedRows: {},
+      search: ''
+    }
+  },
+  components: {
+    vueAdvancedTableColumnHeader,
+    vueAdvancedTableRow,
+    vueAdvancedTableCell,
+    vueAdvancedTableButtons
+  },
+  mounted: function() {
+    const self = this;
+    self.setColumnOrder();
+  },
+  methods: {
+    getColumnByName: function(name) {
+      const self = this;
+      return self.columns.find(function(column) {
+        return column.name === name;
+      });
+    },
+    setColumnOrder: function() {
+      const self = this;
+      self.columnOrder = self.columns.map(function(column) {
+        return column.name;
+      });
+    }
+  },
+  computed: {
+    reorderedRows: function() {
+      const self = this;
+      var rows = self.filteredRows;
+      if (typeof self.order !== 'undefined'){
+        rows = self.filteredRows.sort(function(a, b) {
+          if (a[self.order.column] < b[self.order.column])
+            return -1;
+          if (a[self.order.column] > b[self.order.column])
+            return 1;
+          return 0;
+        });
+        if (self.order.direction == 'desc') {
+          rows.reverse();
+        }
+      }
+
+      return rows;
+    },
+    filteredRows: function() {
+      const self = this;
+      return self.rows.filter(function(row) {
+        var response = false;
+        for (let i = 0; i < Object.keys(row).length; i++){
+          var data = row[Object.keys(row)[i]];
+          var renderColumn = self.columns.find(function(column) {
+            return column.name === Object.keys(row)[i] && typeof column.render == 'function';
+          });
+          if (typeof renderColumn === 'object') {
+            if(renderColumn.render(data).toLowerCase().indexOf(self.search.toLowerCase()) > -1) {
+              response = true;
+            }
+          } else if (data.toString().toLowerCase().indexOf(self.search.toLowerCase()) > -1) {
+            response = true;
+          }
+        }
+        return response;
+      })
+    },
+  }
+}

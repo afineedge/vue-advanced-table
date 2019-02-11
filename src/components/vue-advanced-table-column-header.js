@@ -1,23 +1,21 @@
-<template>
-    <td class="vue-advanced-table-column-header" v-on:click="handleClick" v-if="isColumnVisible(column)" v-bind:style="{ width: width + 'px' }">
-      <span class="vue-advanced-table-column-header-content-placeholder">{{ getColumnByName(column).label }}</span>
-      <div class="vue-advanced-table-column-header-content">
-        {{ getColumnByName(column).label }}
-        <template v-if="canColumnBeOrdered">
-          <span v-bind:style="{ color: ordered && direction === 'desc' ? 'initial' : '#ccc' }">
-            &#x25B2;
-          </span>
-          <span v-bind:style="{ color: ordered && direction === 'asc' ? 'initial' : '#ccc' }">
-            &#x25BC;
-          </span>
-        </template>
-      </div>
-    </td>
-</template>
-
-<script>
 export default {
   name: 'vue-advanced-table-column-header',
+  template: `
+    <td class="vue-advanced-table-column-header" v-on:click="handleClick" v-if="isColumnVisible(column)" v-bind:style="{ width: width + 'px' }">
+        <span class="vue-advanced-table-column-header-content-placeholder">{{ getColumnByName(column).label }}</span>
+        <div class="vue-advanced-table-column-header-content">
+          {{ getColumnByName(column).label }}
+          <template v-if="canColumnBeOrdered">
+            <span v-bind:style="{ color: ordered && direction === 'desc' ? 'initial' : '#ccc' }">
+              &#x25B2;
+            </span>
+            <span v-bind:style="{ color: ordered && direction === 'asc' ? 'initial' : '#ccc' }">
+              &#x25BC;
+            </span>
+          </template>
+        </div>
+      </td>
+  `,
   props: {
     rows: {
       type: Array,
@@ -107,22 +105,3 @@ export default {
     }
   }
 }
-</script>
-
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-  .vue-advanced-table-column-header {
-    padding: 4px;
-    box-sizing: border-box;
-    border-bottom: 1px solid #ccc;
-  }
-
-  .vue-advanced-table-column-header-content {
-    position: absolute;
-    top: 0;
-  }
-
-  .vue-advanced-table-column-header-content-placeholder {
-    opacity: 0;
-  }
-</style>

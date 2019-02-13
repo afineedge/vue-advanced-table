@@ -11,19 +11,21 @@
       </div>
     </div>
     <div class="vue-advanced-table-wrapper">
+      <div class="vue-advanced-table-header-scroll">
+        <div class="vue-advanced-table-header" v-bind:class="classObject.header" v-bind:style="{ left: left + 'px'}">
+          <vue-advanced-table-column-header v-for="column in columnOrder" v-bind:key="column" v-bind:column="column" v-bind="$props" v-bind:hiddenColumns="hiddenColumns"/>
+        </div>
+      </div>
       <div class="vue-advanced-table-scroll" v-on:scroll="setScrollPosition($event)">
         <table cellpadding="0" cellspacing="0" border="0" width="100%" v-bind:class="classObject.table">
-          <thead class="vue-advanced-table-header-placeholder" v-bind:class="classObject.header">
+          <!-- <thead class="vue-advanced-table-header-placeholder" v-bind:class="classObject.header">
             <tr>
               <vue-advanced-table-column-header v-for="column in columnOrder" v-bind:key="column" v-bind:column="column" v-bind="$props" v-bind:hiddenColumns="hiddenColumns" v-bind:columnName="column"/>
             </tr>
-          </thead>
-          <thead class="vue-advanced-table-header" v-bind:class="classObject.header" v-bind:style="{ left: left + 'px'}">
-            <vue-advanced-table-column-header v-for="column in columnOrder" v-bind:key="column" v-bind:column="column" v-bind="$props" v-bind:hiddenColumns="hiddenColumns"/>
-          </thead>
+          </thead> -->
           <tbody v-bind:class="classObject.body">
             <vue-advanced-table-row v-for="(row, index) in reorderedRows" v-bind:row="row" v-bind:key="index">
-              <vue-advanced-table-cell v-for="column in columnOrder" v-bind:key="column" v-bind:column="getColumnByName(column)" v-bind:row="row" v-bind="$props" v-bind:hiddenColumns="hiddenColumns" v-bind:class="classObject.cell">
+              <vue-advanced-table-cell v-for="column in columnOrder" v-bind:key="column" v-bind:column="getColumnByName(column)" v-bind:row="row" v-bind="$props" v-bind:hiddenColumns="hiddenColumns" v-bind:class="classObject.cell" v-bind:columnName="column">
                 <slot v-bind:name="'column-' + column" v-bind:row="row">
                 </slot>
               </vue-advanced-table-cell>
@@ -301,6 +303,11 @@ export default {
     flex-direction: column;
   }
 
+  .vue-advanced-table-header-scroll {
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+
   .vue-advanced-table-scroll {
     overflow-y: scroll;
   }
@@ -310,9 +317,6 @@ export default {
   }
 
   .vue-advanced-table-header {
-    position: absolute;
-    top: 0;
-    background-color: #fff;
     display: flex;
     align-items: stretch;
     overflow: hidden;

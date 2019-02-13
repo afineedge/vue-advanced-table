@@ -12,7 +12,7 @@
     </div>
     <div class="vue-advanced-table-wrapper">
       <div class="vue-advanced-table-header-scroll">
-        <div class="vue-advanced-table-header" v-bind:class="classObject.header" v-bind:style="{ left: left + 'px'}">
+        <div class="vue-advanced-table-header" v-bind:class="classObject.header" v-bind:style="{ marginLeft: left + 'px'}">
           <vue-advanced-table-column-header v-for="column in columnOrder" v-bind:key="column" v-bind:column="column" v-bind="$props" v-bind:hiddenColumns="hiddenColumns"/>
         </div>
       </div>
@@ -306,6 +306,7 @@ export default {
   .vue-advanced-table-header-scroll {
     overflow: hidden;
     flex-shrink: 0;
+    width: 120%;
   }
 
   .vue-advanced-table-scroll {

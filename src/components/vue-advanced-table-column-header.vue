@@ -128,6 +128,7 @@ export default {
     display: flex;
     align-items: flex-end;
     justify-content: space-between;
+    width: 100%;
   }
 
   .vue-advanced-table-column-header-label {

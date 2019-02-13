@@ -1,10 +1,12 @@
-export default {
-  name: 'vue-advanced-table-cell',
-  template: `
+<template>
     <td class="vue-advanced-table-cell" v-if="isColumnVisible(column.name)">
       <slot>{{ content }}</slot>
     </td>
-  `,
+</template>
+
+<script>
+export default {
+  name: 'vue-advanced-table-cell',
   props: {
     rows: {
       type: Array,
@@ -53,3 +55,11 @@ export default {
     }
   }
 }
+</script>
+
+<!-- Add "scoped" attribute to limit CSS to this component only -->
+<style scoped>
+  .vue-advanced-table-cell {
+    padding: 4px;
+  }
+</style>

@@ -65,7 +65,7 @@
 </template>
 
 <script>
-import vueAdvancedTable from './components/vue-advanced-table.js'
+import vueAdvancedTable from './components/vue-advanced-table.vue'
 
 export default {
   name: 'app',
@@ -308,10 +308,7 @@ export default {
 }
 </script>
 
-<style src="./css/styles.css"></style>
-
 <style>
-
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;

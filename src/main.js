@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import App from './App.vue'
-import './components/vue-advanced-table.js'
+import './components/vue-advanced-table.vue'
 
 Vue.config.productionTip = false
 

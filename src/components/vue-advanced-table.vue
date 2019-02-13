@@ -79,6 +79,10 @@ export default {
       type: Boolean,
       default: true
     },
+    storage: {
+      type: String,
+      default: ''
+    },
     classes: {
       type: [String, Object],
       default: ''
@@ -101,7 +105,22 @@ export default {
   },
   mounted: function() {
     const self = this;
-    self.setColumnOrder();
+    var storedData;
+    var columnOrder;
+    if (self.storage.length > 0){
+      storedData = self.getStoredTableInfo();
+    }
+
+    if (storedData !== null && typeof storedData === 'object'){
+      if (Array.isArray(storedData.columnOrder)){
+        self.columnOrder = storedData.columnOrder;
+      }
+      if (Array.isArray(storedData.hiddenColumns)){
+        self.hiddenColumns = storedData.hiddenColumns;
+      }
+    } else {
+      self.setColumnOrder();
+    }
   },
   methods: {
     getColumnByName: function(name) {
@@ -110,7 +129,7 @@ export default {
         return column.name === name;
       });
     },
-    setColumnOrder: function() {
+    setColumnOrder: function(order) {
       const self = this;
       self.columnOrder = self.columns.map(function(column) {
         return column.name;
@@ -119,6 +138,40 @@ export default {
     setScrollPosition: function(event) {
       const self = this;
       self.scrollX = event.target.scrollLeft;
+    },
+    storeTableInfo: function(param) {
+      const self = this;
+      var payload = {
+        columnOrder: self.columnOrder,
+        hiddenColumns: self.hiddenColumns
+      };
+
+      if (param === 'columnOrder'){
+        payload.columnOrder = self.columnOrder;
+      }
+      if (param === 'hiddenColumns'){
+        payload.hiddenColumns = self.hiddenColumns;
+      }
+
+      localStorage.setItem('vue-advanced-table-' + self.storage, JSON.stringify(payload));
+    },
+    getStoredTableInfo: function() {
+      const self = this;
+      return JSON.parse(localStorage.getItem('vue-advanced-table-' + self.storage));
+    }
+  },
+  watch: {
+    columnOrder: function() {
+      const self = this;
+      if (self.storage.length > 0){
+        self.storeTableInfo('columnOrder');
+      }
+    },
+    hiddenColumns: function() {
+      const self = this;
+      if (self.storage.length > 0){
+        self.storeTableInfo('hiddenColumns');
+      }
     }
   },
   computed: {

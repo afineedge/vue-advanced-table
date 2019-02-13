@@ -273,7 +273,8 @@ export default {
           'columnVisibility'
         ],
         orderable: true,
-        searchable: true
+        searchable: true,
+        storage: 'employeeSearch'
       },
       departments: [{
         id: '0',

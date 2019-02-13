@@ -7,13 +7,14 @@
       <div class="button-collection">
         <draggable v-model="localColumnOrder">
           <div class="drag-handle" v-for="column in localColumnOrder" v-bind:key="column">
-            <div>
-              &#8691;
+            <div class="column" v-bind:class="{'inactive': !isColumnVisible(column)}">
+              &#8691;&nbsp;
+              {{ getColumnByName(column).label }}
             </div>
-            <div class="column">
-              <button v-on:click="toggleColumnVisibility(column)" v-bind:class="{'inactive': !isColumnVisible(column)}">
-                {{ getColumnByName(column).label }}
-              </button>
+            <div>
+               <button v-on:click="toggleColumnVisibility(column)">
+                Toggle
+               </button>
             </div>
           </div>
         </draggable>
@@ -118,7 +119,7 @@ export default {
     width: 100%;
   }
 
-  .button-collection button.inactive {
+  .button-collection .inactive {
     opacity: .4;
   }
 

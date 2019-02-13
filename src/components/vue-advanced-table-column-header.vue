@@ -53,7 +53,7 @@ export default {
   },
   mounted: function() {
     const self = this;
-    const interval = 10;
+    const interval = 5;
     setInterval(function(){
       self.setColumnWidth();
     }, interval);

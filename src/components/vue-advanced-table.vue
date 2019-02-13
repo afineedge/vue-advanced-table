@@ -11,17 +11,15 @@
       </div>
     </div>
     <div class="vue-advanced-table-wrapper">
-      <div class="vue-advanced-table-scroll">
+      <div class="vue-advanced-table-scroll" v-on:scroll="setScrollPosition($event)">
         <table cellpadding="0" cellspacing="0" border="0" width="100%" v-bind:class="classObject.table">
           <thead class="vue-advanced-table-header-placeholder" v-bind:class="classObject.header">
             <tr>
               <vue-advanced-table-column-header v-for="column in columnOrder" v-bind:key="column" v-bind:column="column" v-bind="$props" v-bind:hiddenColumns="hiddenColumns" v-bind:columnName="column"/>
             </tr>
           </thead>
-          <thead class="vue-advanced-table-header" v-bind:class="classObject.header">
-            <tr>
-              <vue-advanced-table-column-header v-for="column in columnOrder" v-bind:key="column" v-bind:column="column" v-bind="$props" v-bind:hiddenColumns="hiddenColumns"/>
-            </tr>
+          <thead class="vue-advanced-table-header" v-bind:class="classObject.header" v-bind:style="{ left: left + 'px'}">
+            <vue-advanced-table-column-header v-for="column in columnOrder" v-bind:key="column" v-bind:column="column" v-bind="$props" v-bind:hiddenColumns="hiddenColumns"/>
           </thead>
           <tbody v-bind:class="classObject.body">
             <vue-advanced-table-row v-for="(row, index) in reorderedRows" v-bind:row="row" v-bind:key="index">
@@ -91,7 +89,8 @@ export default {
       columnOrder: [],
       hiddenColumns: [],
       selectedRows: {},
-      search: ''
+      search: '',
+      scrollX: 0
     }
   },
   components: {
@@ -116,6 +115,10 @@ export default {
       self.columnOrder = self.columns.map(function(column) {
         return column.name;
       });
+    },
+    setScrollPosition: function(event) {
+      const self = this;
+      self.scrollX = event.target.scrollLeft;
     }
   },
   computed: {
@@ -184,6 +187,10 @@ export default {
       }
 
       return classes;
+    },
+    left: function() {
+      const self = this;
+      return self.scrollX * -1;
     }
   }
 }
@@ -231,5 +238,13 @@ export default {
     position: absolute;
     top: 0;
     background-color: #fff;
+    display: flex;
+    align-items: stretch;
+    overflow: hidden;
+  }
+
+  .vue-advanced-table-header .vue-advanced-table-column-header {
+    display: flex;
+    align-items: flex-end;
   }
 </style>

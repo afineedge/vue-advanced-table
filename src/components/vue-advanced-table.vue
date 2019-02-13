@@ -13,11 +13,15 @@
     <div class="vue-advanced-table-wrapper">
       <div class="vue-advanced-table-scroll">
         <table cellpadding="0" cellspacing="0" border="0" width="100%" v-bind:class="classes">
-          <thead>
-            <vue-advanced-table-column-header v-for="column in columnOrder" v-bind:key="column" v-bind:column="column" v-bind="$props" v-bind:hiddenColumns="hiddenColumns" v-bind:columnName="column"/>
+          <thead class="vue-advanced-table-header-placeholder">
+            <tr>
+              <vue-advanced-table-column-header v-for="column in columnOrder" v-bind:key="column" v-bind:column="column" v-bind="$props" v-bind:hiddenColumns="hiddenColumns" v-bind:columnName="column"/>
+            </tr>
           </thead>
-          <thead class="vue-advanced-table-floating-header">
-            <vue-advanced-table-column-header v-for="column in columnOrder" v-bind:key="column" v-bind:column="column" v-bind="$props" v-bind:hiddenColumns="hiddenColumns"/>
+          <thead class="vue-advanced-table-header">
+            <tr>
+              <vue-advanced-table-column-header v-for="column in columnOrder" v-bind:key="column" v-bind:column="column" v-bind="$props" v-bind:hiddenColumns="hiddenColumns"/>
+            </tr>
           </thead>
           <tbody>
             <vue-advanced-table-row v-for="(row, index) in reorderedRows" v-bind:row="row" v-bind:key="index">
@@ -190,8 +194,13 @@ export default {
     overflow-y: scroll;
   }
 
-  .vue-advanced-table-floating-header {
+  .vue-advanced-table-header-placeholder {
+    opacity: 0;
+  }
+
+  .vue-advanced-table-header {
     position: absolute;
     top: 0;
+    background-color: #fff;
   }
 </style>

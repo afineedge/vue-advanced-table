@@ -18,11 +18,11 @@
       </div>
       <div class="vue-advanced-table-scroll" v-on:scroll="setScrollPosition($event)">
         <table cellpadding="0" cellspacing="0" border="0" width="100%" v-bind:class="classObject.table">
-          <!-- <thead class="vue-advanced-table-header-placeholder" v-bind:class="classObject.header">
+          <thead class="vue-advanced-table-header-placeholder" v-bind:class="classObject.header">
             <tr>
               <vue-advanced-table-column-header v-for="column in columnOrder" v-bind:key="column" v-bind:column="column" v-bind="$props" v-bind:hiddenColumns="hiddenColumns" v-bind:columnName="column"/>
             </tr>
-          </thead> -->
+          </thead>
           <tbody v-bind:class="classObject.body">
             <vue-advanced-table-row v-for="(row, index) in reorderedRows" v-bind:row="row" v-bind:key="index">
               <vue-advanced-table-cell v-for="column in columnOrder" v-bind:key="column" v-bind:column="getColumnByName(column)" v-bind:row="row" v-bind="$props" v-bind:hiddenColumns="hiddenColumns" v-bind:class="classObject.cell" v-bind:columnName="column">
@@ -108,7 +108,6 @@ export default {
   mounted: function() {
     const self = this;
     var storedData;
-    var columnOrder;
     if (self.storage.length > 0){
       storedData = self.getStoredTableInfo();
     }
@@ -249,10 +248,7 @@ export default {
 
       if (typeof self.classes === 'string'){
         classes.table = self.classes;
-        return classes;
-      }
-
-      if (typeof self.classes === 'object'){
+      } else if (typeof self.classes === 'object'){
         const keys = Object.keys(self.classes);
         var validKeys = Object.keys(classes);
         for (let i = 0; i < keys.length; i++){
@@ -315,6 +311,7 @@ export default {
 
   .vue-advanced-table-header-placeholder {
     opacity: 0;
+    visibility: collapse;
   }
 
   .vue-advanced-table-header {

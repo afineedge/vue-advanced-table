@@ -111,7 +111,7 @@ export default {
     padding: 4px;
     display: flex;
     flex-direction: column;
-    width: 200px;
+    width: 300px;
     margin: 0 auto;
   }
 

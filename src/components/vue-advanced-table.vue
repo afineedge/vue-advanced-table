@@ -12,20 +12,20 @@
     </div>
     <div class="vue-advanced-table-wrapper">
       <div class="vue-advanced-table-scroll">
-        <table cellpadding="0" cellspacing="0" border="0" width="100%" v-bind:class="classes">
-          <thead class="vue-advanced-table-header-placeholder">
+        <table cellpadding="0" cellspacing="0" border="0" width="100%" v-bind:class="classObject.table">
+          <thead class="vue-advanced-table-header-placeholder" v-bind:class="classObject.header">
             <tr>
               <vue-advanced-table-column-header v-for="column in columnOrder" v-bind:key="column" v-bind:column="column" v-bind="$props" v-bind:hiddenColumns="hiddenColumns" v-bind:columnName="column"/>
             </tr>
           </thead>
-          <thead class="vue-advanced-table-header">
+          <thead class="vue-advanced-table-header" v-bind:class="classObject.header">
             <tr>
               <vue-advanced-table-column-header v-for="column in columnOrder" v-bind:key="column" v-bind:column="column" v-bind="$props" v-bind:hiddenColumns="hiddenColumns"/>
             </tr>
           </thead>
-          <tbody>
+          <tbody v-bind:class="classObject.body">
             <vue-advanced-table-row v-for="(row, index) in reorderedRows" v-bind:row="row" v-bind:key="index">
-              <vue-advanced-table-cell v-for="column in columnOrder" v-bind:key="column" v-bind:column="getColumnByName(column)" v-bind:row="row" v-bind="$props" v-bind:hiddenColumns="hiddenColumns">
+              <vue-advanced-table-cell v-for="column in columnOrder" v-bind:key="column" v-bind:column="getColumnByName(column)" v-bind:row="row" v-bind="$props" v-bind:hiddenColumns="hiddenColumns" v-bind:class="classObject.cell">
                 <slot v-bind:name="'column-' + column" v-bind:row="row">
                 </slot>
               </vue-advanced-table-cell>
@@ -82,7 +82,8 @@ export default {
       default: true
     },
     classes: {
-      type: String
+      type: [String, Object],
+      default: ''
     }
   },
   data: function() {
@@ -156,6 +157,34 @@ export default {
         return response;
       })
     },
+    classObject: function() {
+      const self = this;
+      var classes = {
+        table: '',
+        header: '',
+        body: '',
+        cell: '',
+        footer: ''
+      }
+
+      if (typeof self.classes === 'string'){
+        classes.table = self.classes;
+        return classes;
+      }
+
+      if (typeof self.classes === 'object'){
+        const keys = Object.keys(self.classes);
+        var validKeys = Object.keys(classes);
+        for (let i = 0; i < keys.length; i++){
+          const key = keys[i];
+          if (validKeys.indexOf(key) > -1){
+            classes[key] = self.classes[key];
+          }
+        }
+      }
+
+      return classes;
+    }
   }
 }
 </script>

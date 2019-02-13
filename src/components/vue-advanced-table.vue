@@ -113,7 +113,7 @@ export default {
 
     if (storedData !== null && typeof storedData === 'object'){
       if (Array.isArray(storedData.columnOrder)){
-        self.columnOrder = storedData.columnOrder;
+        self.setColumnOrder(storedData.columnOrder);
       }
       if (Array.isArray(storedData.hiddenColumns)){
         self.hiddenColumns = storedData.hiddenColumns;
@@ -131,9 +131,31 @@ export default {
     },
     setColumnOrder: function(order) {
       const self = this;
-      self.columnOrder = self.columns.map(function(column) {
-        return column.name;
-      });
+
+      if (Array.isArray(order)){
+        const columns = self.columns.map(function(column) {
+          return column.name;
+        });
+        let columnOrder = [];
+        const currColumns = self.columns.map(function(column) {
+          return column.name;
+        });
+        for (let i = 0; i < order.length; i++){
+          if (columns.indexOf(order[i]) > -1){
+            columnOrder.push(order[i]);
+          }
+        }
+        for (let i = 0; i < currColumns.length; i++){
+          if (columnOrder.indexOf(currColumns[i]) == -1){
+            columnOrder.push(currColumns[i]);
+          }
+        }
+        self.columnOrder = columnOrder;
+      } else {
+        self.columnOrder = self.columns.map(function(column) {
+          return column.name;
+        });
+      }
     },
     setScrollPosition: function(event) {
       const self = this;

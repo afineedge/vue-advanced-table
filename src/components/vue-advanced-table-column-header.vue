@@ -1,18 +1,20 @@
 <template>
-    <td class="vue-advanced-table-column-header" v-on:click="handleClick" v-if="isColumnVisible(column)" v-bind:style="{ width: width + 'px' }">
-      <span class="vue-advanced-table-column-header-content-placeholder">{{ getColumnByName(column).label }}</span>
-      <div class="vue-advanced-table-column-header-content">
+  <th class="vue-advanced-table-column-header" v-on:click="handleClick" v-if="isColumnVisible(column)" v-bind:style="{ width: width + 'px' }">
+    <!-- <span class="vue-advanced-table-column-header-content-placeholder">{{ getColumnByName(column).label }}</span> -->
+    <div class="vue-advanced-table-column-header-content">
+      <div class="vue-advanced-table-column-header-label">
         {{ getColumnByName(column).label }}
-        <template v-if="canColumnBeOrdered">
-          <span v-bind:style="{ color: ordered && direction === 'desc' ? 'initial' : '#ccc' }">
-            &#x25B2;
-          </span>
-          <span v-bind:style="{ color: ordered && direction === 'asc' ? 'initial' : '#ccc' }">
-            &#x25BC;
-          </span>
-        </template>
       </div>
-    </td>
+      <div class="vue-advanced-table-column-header-direction" v-if="canColumnBeOrdered">
+        <span v-bind:style="{ color: ordered && direction === 'desc' ? 'initial' : '#ccc' }">
+          &#x25B2;
+        </span>
+        <span v-bind:style="{ color: ordered && direction === 'asc' ? 'initial' : '#ccc' }">
+          &#x25BC;
+        </span>
+      </div>
+    </div>
+  </th>
 </template>
 
 <script>
@@ -45,14 +47,16 @@ export default {
   },
   data: function() {
     return {
-      width: 200
+      width: 80,
+      targetCell: null
     }
   },
   mounted: function() {
     const self = this;
+    const interval = 5;
     setInterval(function(){
-      self.getColumnWidth();
-    }, 1)
+      self.setColumnWidth();
+    }, interval);
   },
   methods: {
     getColumnByName: function(name) {
@@ -61,15 +65,17 @@ export default {
         return column.name === name;
       });
     },
-    getColumnWidth: function(){
+    setTargetCell: function() {
       const self = this;
-      var el = self.$parent.$el.querySelector('[columnName="' + self.column + '"]');
+      self.targetCell = self.$parent.$el.querySelector('[columnName="' + self.column + '"]');
+    },
+    setColumnWidth: function(){
+      const self = this;
+      const el = self.targetCell;
       if (el !== null){
-        if (el.nextElementSibling === null){
-          self.width = el.offsetWidth;
-        } else {
-          self.width = el.offsetWidth;
-        }
+        self.width = el.offsetWidth;
+      } else {
+        self.setTargetCell();
       }
     },
     handleClick: function() {
@@ -118,11 +124,21 @@ export default {
   }
 
   .vue-advanced-table-column-header-content {
-    position: absolute;
-    top: 0;
+    white-space: nowrap;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+  }
+
+  .vue-advanced-table-column-header-label {
+    white-space: normal;
   }
 
   .vue-advanced-table-column-header-content-placeholder {
     opacity: 0;
+  }
+
+  .vue-advanced-table-column-header-direction {
+    white-space: nowrap;
   }
 </style>

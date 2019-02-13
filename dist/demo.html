@@ -1,8 +1,17 @@
 <meta charset="utf-8">
-<title>vue-advanced-table demo</title>
+<title>vueAdvancedTable demo</title>
 <script src="https://unpkg.com/vue"></script>
-<script src="./vue-advanced-table.js"></script>
+<script src="./vueAdvancedTable.umd.js"></script>
+<link rel="stylesheet" href="./vueAdvancedTable.css">
 
+<div id="app">
+  <demo></demo>
+</div>
 
-<vue-advanced-table></vue-advanced-table>
-
+<script>
+new Vue({
+  components: {
+    demo: vueAdvancedTable
+  }
+}).$mount('#app')
+</script>

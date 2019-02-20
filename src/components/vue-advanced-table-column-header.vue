@@ -1,6 +1,5 @@
 <template>
   <th class="vue-advanced-table-column-header" v-on:click="handleClick" v-if="isColumnVisible(column)" v-bind:style="{ width: width + 'px' }">
-    <!-- <span class="vue-advanced-table-column-header-content-placeholder">{{ getColumnByName(column).label }}</span> -->
     <div class="vue-advanced-table-column-header-content">
       <div class="vue-advanced-table-column-header-label">
         {{ getColumnByName(column).label }}

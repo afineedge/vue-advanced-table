@@ -6,7 +6,7 @@
     <vue-advanced-table-overlay v-if="overlay.active === true">
       <div class="button-collection">
         <draggable v-model="localColumnOrder">
-          <div class="drag-handle" v-for="column in localColumnOrder" v-bind:key="column">
+          <div class="drag-handle" v-for="column in columnOrder" v-bind:key="column">
             <div class="column" v-bind:class="{'inactive': !isColumnVisible(column)}">
               &#8691;&nbsp;
               {{ getColumnByName(column).label }}
@@ -81,23 +81,27 @@ export default {
     isColumnVisible: function(column) {
       const self = this;
       return self.hiddenColumns.indexOf(column) === -1
-    },
-    updateColumnOrder: function() {
-      const self = this;
-      self.$parent.columnOrder = self.localColumnOrder;
     }
   },
+  mounted: function() {
+  },
   watch: {
-    columnOrder: function() {
-      const self = this;
-      if (self.localColumnOrder !== self.columnOrder){
-        self.localColumnOrder = self.columnOrder;
+    columnOrder: {
+      immediate: true,
+      handler: function() {
+        const self = this;
+        if (JSON.stringify(self.localColumnOrder) !== JSON.stringify(self.columnOrder)){
+          self.localColumnOrder = self.columnOrder;
+        }
       }
     },
-    localColumnOrder: function() {
-      const self = this;
-      if (self.localColumnOrder !== self.columnOrder){
-        self.$emit('update:columnOrder', self.localColumnOrder);
+    localColumnOrder: {
+      immediate: true,
+      handler: function() {
+        const self = this;
+        if (JSON.stringify(self.localColumnOrder) !== JSON.stringify(self.columnOrder)){
+          self.$emit('update:columnOrder', self.localColumnOrder);
+        }
       }
     }
   }
@@ -117,6 +121,7 @@ export default {
 
   .button-collection button {
     width: 100%;
+    padding-left: 8px;
   }
 
   .button-collection .inactive {

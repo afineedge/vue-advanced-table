@@ -12,15 +12,15 @@
     </div>
     <div class="vue-advanced-table-wrapper">
       <div class="vue-advanced-table-header-scroll">
-        <div class="vue-advanced-table-header" v-bind:class="classObject.header" v-bind:style="{ marginLeft: left + 'px'}">
-          <vue-advanced-table-column-header v-for="column in columnOrder" v-bind:class="classObject.headerCell" v-bind:key="column" v-bind:column="column" v-bind="$props" v-bind:hiddenColumns="hiddenColumns"/>
-        </div>
+        <tr class="vue-advanced-table-header" v-bind:class="classObject.header" v-bind:style="{ marginLeft: left + 'px'}">
+          <vue-advanced-table-column-header v-for="column in columnOrder" v-bind:class="classObject.headerCell" v-bind:key="column" v-bind:column="column" v-bind="$props" v-bind:hiddenColumns="hiddenColumns" v-if="isColumnVisible(column)" />
+        </tr>
       </div>
       <div class="vue-advanced-table-scroll" v-on:scroll="setScrollPosition($event)">
         <table cellpadding="0" cellspacing="0" border="0" width="100%" v-bind:class="classObject.table">
           <thead class="vue-advanced-table-header-placeholder" v-bind:class="classObject.header">
             <tr>
-              <vue-advanced-table-column-header v-for="column in columnOrder" v-bind:key="column" v-bind:column="column" v-bind="$props" v-bind:hiddenColumns="hiddenColumns" v-bind:columnName="column"/>
+              <vue-advanced-table-column-header v-for="column in columnOrder" v-bind:key="column" v-bind:column="column" v-bind="$props" v-bind:hiddenColumns="hiddenColumns" v-bind:columnName="column" v-if="isColumnVisible(column)" />
             </tr>
           </thead>
           <tbody v-bind:class="classObject.body">
@@ -181,6 +181,10 @@ export default {
     getStoredTableInfo: function() {
       const self = this;
       return JSON.parse(localStorage.getItem('vue-advanced-table-' + self.storage));
+    },
+    isColumnVisible: function(column) {
+      const self = this;
+      return self.hiddenColumns.indexOf(column) === -1
     }
   },
   watch: {
@@ -226,10 +230,10 @@ export default {
             return column.name === Object.keys(row)[i] && typeof column.render == 'function';
           });
           if (typeof renderColumn === 'object') {
-            if(renderColumn.render(data).toLowerCase().indexOf(self.search.toLowerCase()) > -1) {
+            if(renderColumn.render(data).toString().toLowerCase().indexOf(self.search.toString().toLowerCase()) > -1) {
               response = true;
             }
-          } else if (data.toString().toLowerCase().indexOf(self.search.toLowerCase()) > -1) {
+          } else if (data.toString().toString().toLowerCase().indexOf(self.search.toString().toLowerCase()) > -1) {
             response = true;
           }
         }
@@ -302,7 +306,7 @@ export default {
   .vue-advanced-table-header-scroll {
     overflow: hidden;
     flex-shrink: 0;
-    width: 120%;
+    width: 100%;
   }
 
   .vue-advanced-table-scroll {

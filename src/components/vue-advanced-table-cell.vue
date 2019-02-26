@@ -48,7 +48,7 @@ export default {
       const self = this;
       const column = self.getColumnByName(self.column.name);
       if (typeof column.render === 'function') {
-        return column.render(self.row[column.name]);
+        return column.render(self.row[column.name], self);
       }
 
       return self.row[column.name];

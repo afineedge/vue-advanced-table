@@ -1,5 +1,5 @@
 <template>
-  <th class="vue-advanced-table-column-header" v-on:click="handleClick" v-if="isColumnVisible(column)" v-bind:style="{ width: width + 'px' }">
+  <th class="vue-advanced-table-column-header" v-on:click="handleClick" v-bind:style="{ width: width + 'px' }">
     <div class="vue-advanced-table-column-header-content">
       <div class="vue-advanced-table-column-header-label">
         {{ getColumnByName(column).label }}
@@ -91,10 +91,6 @@ export default {
           order.column = self.column;
         }
       }
-    },
-    isColumnVisible: function(column) {
-      const self = this;
-      return self.hiddenColumns.indexOf(column) === -1
     }
   },
   computed: {
@@ -120,6 +116,7 @@ export default {
     padding: 4px;
     box-sizing: border-box;
     border-bottom: 1px solid #ccc;
+    flex-shrink: 0;
   }
 
   .vue-advanced-table-column-header-content {

@@ -1,5 +1,5 @@
 <template>
-    <td class="vue-advanced-table-cell" v-if="isColumnVisible(column.name)">
+    <td class="vue-advanced-table-cell">
       <slot>{{ content }}</slot>
     </td>
 </template>

@@ -1,8 +1,8 @@
 <template>
   <div>
     <template v-for="(button, index) in buttons">
-      <vue-advanced-table-button-column-settings v-if="button === 'columnVisibility'" v-bind:key="index" v-bind="$props" v-on:update:columnOrder="$emit('update:columnOrder', $event)"></vue-advanced-table-button-column-settings>
-      <button type="button" v-on:click="button.action" v-bind:key="index" v-else>
+      <vue-advanced-table-button-column-settings v-if="isColumnSettingsButton(button)" v-bind:key="index" v-bind="$props" v-bind:class="getButtonClass(button)" v-on:update:columnOrder="$emit('update:columnOrder', $event)"></vue-advanced-table-button-column-settings>
+      <button type="button" v-on:click="button.action" v-bind:key="index" v-bind:class="getButtonClass(button)" v-else>
         {{ button.label }}
       </button>
     </template>
@@ -30,6 +30,10 @@ export default {
     hiddenColumns: {
       type: Array,
       required: true
+    },
+    classObject: {
+      type: Object,
+      required: true
     }
   },
   data: function() {
@@ -45,6 +49,21 @@ export default {
   mounted: function() {
   },
   methods: {
+    getButtonClass: function(button) {
+      var self = this;
+      if (typeof button.class === 'string'){
+        if (typeof self.classObject.buttons === 'string'){
+          return self.classObject.buttons + ' ' + button.class;
+        }
+
+        return button.class;
+      }
+
+      return self.classObject.buttons;
+    },
+    isColumnSettingsButton: function(button) {
+      return button === 'columnVisibility' || button.extend === 'columnVisibility';
+    }
   },
   computed: {
   }

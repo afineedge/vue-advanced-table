@@ -1,8 +1,8 @@
 <template>
   <div class="vue-advanced-table" ref="table">
     <div class="vue-advanced-table-controls" v-if="buttons.length > 0 || searchable">
-      <div class="vue-advanced-table-buttons" v-if="buttons.length > 0">
-        <vue-advanced-table-buttons v-bind="$props" v-bind:columnOrder="columnOrder" v-bind:hiddenColumns="hiddenColumns" v-on:update:columnOrder="columnOrder = $event"></vue-advanced-table-buttons>
+      <div class="vue-advanced-table-buttons" v-bind:class="classObject.buttonContainer" v-if="buttons.length > 0">
+        <vue-advanced-table-buttons v-bind="$props" v-bind:columnOrder="columnOrder" v-bind:hiddenColumns="hiddenColumns" v-bind:classObject="classObject" v-on:update:columnOrder="columnOrder = $event"></vue-advanced-table-buttons>
       </div>
       <div class="vue-advanced-table-search" v-if="searchable !== false">
         <slot name="table-search">
@@ -13,19 +13,19 @@
     <div class="vue-advanced-table-wrapper">
       <div class="vue-advanced-table-header-scroll">
         <tr class="vue-advanced-table-header" v-bind:class="classObject.header" v-bind:style="{ marginLeft: left + 'px'}">
-          <vue-advanced-table-column-header v-for="column in columnOrder" v-bind:class="classObject.headerCell" v-bind:key="column" v-bind:column="column" v-bind="$props" v-bind:hiddenColumns="hiddenColumns" v-if="isColumnVisible(column)" />
+          <vue-advanced-table-column-header v-for="column in filteredColumnOrder" v-bind:class="classObject.headerCell" v-bind:key="column" v-bind:column="column" v-bind="$props" v-bind:hiddenColumns="hiddenColumns" />
         </tr>
       </div>
       <div class="vue-advanced-table-scroll" v-on:scroll="setScrollPosition($event)">
         <table cellpadding="0" cellspacing="0" border="0" width="100%" v-bind:class="classObject.table">
           <thead class="vue-advanced-table-header-placeholder" v-bind:class="classObject.header">
             <tr>
-              <vue-advanced-table-column-header v-for="column in columnOrder" v-bind:key="column" v-bind:column="column" v-bind="$props" v-bind:hiddenColumns="hiddenColumns" v-bind:columnName="column" v-if="isColumnVisible(column)" />
+              <vue-advanced-table-column-header v-for="column in filteredColumnOrder" v-bind:key="column" v-bind:column="column" v-bind="$props" v-bind:hiddenColumns="hiddenColumns" v-bind:columnName="column" />
             </tr>
           </thead>
           <tbody v-bind:class="classObject.body">
             <vue-advanced-table-row v-for="(row, index) in reorderedRows" v-bind:row="row" v-bind:key="index">
-              <vue-advanced-table-cell v-for="column in columnOrder" v-bind:key="column" v-bind:column="getColumnByName(column)" v-bind:row="row" v-bind="$props" v-bind:hiddenColumns="hiddenColumns" v-bind:class="classObject.cell" v-bind:columnName="column">
+              <vue-advanced-table-cell v-for="column in filteredColumnOrder" v-bind:key="column" v-bind:column="getColumnByName(column)" v-bind:row="row" v-bind="$props" v-bind:hiddenColumns="hiddenColumns" v-bind:class="classObject.cell" v-bind:columnName="column">
                 <slot v-bind:name="'column-' + column" v-bind:row="row">
                 </slot>
               </vue-advanced-table-cell>
@@ -202,6 +202,12 @@ export default {
     }
   },
   computed: {
+    filteredColumnOrder : function() {
+      const self = this;
+      return self.columnOrder.filter(function(column){
+        return self.isColumnVisible(column);
+      });
+    },
     reorderedRows: function() {
       const self = this;
       var rows = self.filteredRows;
@@ -243,6 +249,8 @@ export default {
     classObject: function() {
       const self = this;
       var classes = {
+        buttonContainer: '',
+        buttons: '',
         table: '',
         header: '',
         headerCell: '',

@@ -5,10 +5,10 @@
         {{ getColumnByName(column).label }}
       </div>
       <div class="vue-advanced-table-column-header-direction" v-if="canColumnBeOrdered">
-        <span v-bind:style="{ color: ordered && direction === 'desc' ? 'initial' : '#ccc' }">
+        <span class="vue-advanced-table-order" v-bind:class="{ active: ordered && direction === 'desc' ? 'active' : '' }">
           &#x25B2;
         </span>
-        <span v-bind:style="{ color: ordered && direction === 'asc' ? 'initial' : '#ccc' }">
+        <span class="vue-advanced-table-order" v-bind:class="{ active: ordered && direction === 'asc' ? 'active' : '' }">
           &#x25BC;
         </span>
       </div>
@@ -137,5 +137,13 @@ export default {
 
   .vue-advanced-table-column-header-direction {
     white-space: nowrap;
+  }
+
+  .vue-advanced-table-order{
+    color: #ccc;
+  }
+
+  .vue-advanced-table-order.active{
+    color: #000;
   }
 </style>

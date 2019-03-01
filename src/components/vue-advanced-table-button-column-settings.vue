@@ -45,7 +45,11 @@ export default {
     hiddenColumns: {
       type: Array,
       required: true
-    }
+    },
+    rows: {
+      type: Array,
+      required: false
+    },
   },
   components: {
     draggable,

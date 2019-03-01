@@ -2,7 +2,7 @@
   <div class="vue-advanced-table" ref="table">
     <div class="vue-advanced-table-controls" v-if="buttons.length > 0 || searchable">
       <div class="vue-advanced-table-buttons" v-if="buttons.length > 0">
-        <vue-advanced-table-buttons v-bind="$props" v-bind:columnOrder="columnOrder" v-bind:hiddenColumns="hiddenColumns" v-on:update:columnOrder="columnOrder = $event"></vue-advanced-table-buttons>
+        <vue-advanced-table-buttons v-bind="$props" v-bind:columnOrder="columnOrder" v-bind:rows="rows" v-bind:hiddenColumns="hiddenColumns" v-on:update:columnOrder="columnOrder = $event"></vue-advanced-table-buttons>
       </div>
       <div class="vue-advanced-table-search" v-if="searchable !== false">
         <slot name="table-search">
@@ -42,6 +42,12 @@ import vueAdvancedTableColumnHeader from './vue-advanced-table-column-header.vue
 import vueAdvancedTableRow from './vue-advanced-table-row.vue'
 import vueAdvancedTableCell from './vue-advanced-table-cell.vue'
 import vueAdvancedTableButtons from './vue-advanced-table-buttons.vue'
+import Vue from 'vue'
+import JsonCSV from 'vue-json-csv'
+import JsonExcel from 'vue-json-excel'
+
+Vue.component('downloadCsv', JsonCSV)
+Vue.component('downloadExcel', JsonExcel)
 
 export default {
   name: 'vue-advanced-table',
@@ -61,7 +67,12 @@ export default {
     buttons: {
       type: Array,
       default: function(){
-        return ['columnVisibility'];
+        return [
+            'columnVisibility',
+            'exportCSV',
+            'exportExcel',
+            'exportPdf'
+        ];
       }
     },
     order: {

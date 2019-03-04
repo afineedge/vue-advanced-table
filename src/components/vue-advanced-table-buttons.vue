@@ -1,12 +1,8 @@
 <template>
   <div>
     <template v-for="(button, index) in buttons">
-      {{button}}
-      <vue-advanced-table-button-column-settings v-if="button === 'columnVisibility'" v-bind:key="index" v-bind="$props" v-on:update:columnOrder="$emit('update:columnOrder', $event)"></vue-advanced-table-button-column-settings>
-       <vue-advanced-table-button-export-csv v-else-if="button === 'exportCSV'" v-bind:key="index" v-bind="$props"></vue-advanced-table-button-export-csv>
-       <vue-advanced-table-button-export-excel v-else-if="button === 'exportExcel'" v-bind:key="index" v-bind="$props"></vue-advanced-table-button-export-excel>
-       <vue-advanced-table-button-export-pdf v-else-if="button === 'exportPdf'" v-bind:key="index" v-bind="$props"></vue-advanced-table-button-export-pdf>
-      <button type="button" v-on:click="button.action" v-bind:key="index" v-else-if="button.action">
+      <vue-advanced-table-button-column-settings v-if="isColumnSettingsButton(button)" v-bind:key="index" v-bind="$props" v-bind:class="getButtonClass(button)" v-on:update:columnOrder="$emit('update:columnOrder', $event)"></vue-advanced-table-button-column-settings>
+      <button type="button" v-on:click="button.action" v-bind:key="index" v-bind:class="getButtonClass(button)" v-else>
         {{ button.label }}
       </button>
     </template>
@@ -15,32 +11,29 @@
 
 <script>
 import vueAdvancedTableButtonColumnSettings from './vue-advanced-table-button-column-settings.vue'
-import vueAdvancedTableButtonExportCsv from './vue-advanced-table-button-export-csv.vue'
-import vueAdvancedTableButtonExportExcel from './vue-advanced-table-button-export-excel.vue'
-import vueAdvancedTableButtonExportPdf from './vue-advanced-table-button-export-pdf.vue'
 
 export default {
   name: 'vue-advanced-table-buttons',
   props: {
     buttons: {
       type: Array,
-      required: false
+      required: true
     },
     columns: {
       type: Array,
-      required: false
+      required: true
     },
     columnOrder: {
       type: Array,
-      required: false
+      required: true
     },
     hiddenColumns: {
       type: Array,
-      required: false
+      required: true
     },
-    rows: {
-      type: Array,
-      required: false
+    classObject: {
+      type: Object,
+      required: true
     }
   },
   data: function() {
@@ -51,14 +44,26 @@ export default {
     }
   },
   components: {
-    vueAdvancedTableButtonColumnSettings,
-    vueAdvancedTableButtonExportCsv,
-    vueAdvancedTableButtonExportExcel,
-    vueAdvancedTableButtonExportPdf
+    vueAdvancedTableButtonColumnSettings
   },
   mounted: function() {
   },
   methods: {
+    getButtonClass: function(button) {
+      var self = this;
+      if (typeof button.class === 'string'){
+        if (typeof self.classObject.buttons === 'string'){
+          return self.classObject.buttons + ' ' + button.class;
+        }
+
+        return button.class;
+      }
+
+      return self.classObject.buttons;
+    },
+    isColumnSettingsButton: function(button) {
+      return button === 'columnVisibility' || button.extend === 'columnVisibility';
+    }
   },
   computed: {
   }

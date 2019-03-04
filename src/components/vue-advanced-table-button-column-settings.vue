@@ -1,9 +1,7 @@
 <template>
-  <div>
-    <button v-on:click="toggleOverlay" class="trigger">
-      Column Settings
-    </button>
-    <vue-advanced-table-overlay v-if="overlay.active === true">
+  <button>
+    <span v-on:click="toggleOverlay">Column Settings</span>
+    <vue-advanced-table-overlay v-if="overlay.active">
       <div class="button-collection">
         <draggable v-model="localColumnOrder">
           <div class="drag-handle" v-for="column in columnOrder" v-bind:key="column">
@@ -24,7 +22,7 @@
         <div>Drag and drop the buttons to reorder the columns.</div>
       </div>
     </vue-advanced-table-overlay>
-  </div>
+  </button>
 </template>
 
 <script>

@@ -58,29 +58,29 @@ export default {
         var pdfFonts = require('pdfmake/build/vfs_fonts.js')
         pdfMake.vfs = pdfFonts.pdfMake.vfs;
       }
-      var docDefinition = { content: [		{text: 'but you can provide a custom styler as well', margin: [0, 20, 0, 8]},
+      var docDefinition = {pageOrientation: 'landscape', content: [		{text: 'but you can provide a custom styler as well', margin: [0, 20, 0, 8]},
 		{
 			style: 'tableExample',
 			table: {
 				headerRows: 1,
 				body: [
-					[{text: 'Header 1', style: 'tableHeader'}, {text: 'Header 2', style: 'tableHeader'}, {text: 'Header 3', style: 'tableHeader'}],
-					['Sample value 1', 'Sample value 2', 'Sample value 3'],
-					['Sample value 1', 'Sample value 2', 'Sample value 3'],
-					['Sample value 1', 'Sample value 2', 'Sample value 3'],
-					['Sample value 1', 'Sample value 2', 'Sample value 3'],
-					['Sample value 1', 'Sample value 2', 'Sample value 3'],
-					['Sample value 1', 'Sample value 2', 'Sample value 3'],
-					['Sample value 1', 'Sample value 2', 'Sample value 3'],
-					['Sample value 1', 'Sample value 2', 'Sample value 3'],
-					['Sample value 1', 'Sample value 2', 'Sample value 3'],
-					['Sample value 1', 'Sample value 2', 'Sample value 3'],
-					['Sample value 1', 'Sample value 2', 'Sample value 3'],
-					['Sample value 1', 'Sample value 2', 'Sample value 3'],
-					['Sample value 1', 'Sample value 2', 'Sample value 3'],
-					['Sample value 1', 'Sample value 2', 'Sample value 3'],
-					['Sample value 1', 'Sample value 2', 'Sample value 3'],
-					['Sample value 1', 'Sample value 2', 'Sample value 3'],
+					[{text: 'Header 1', style: 'tableHeader'}, {text: 'Header 2', style: 'tableHeader'}, {text: 'Header 3', style: 'tableHeader'},{text: 'Header 1', style: 'tableHeader'}, {text: 'Header 2', style: 'tableHeader'}, {text: 'Header 3', style: 'tableHeader'},{text: 'Header 1', style: 'tableHeader'}, {text: 'Header 2', style: 'tableHeader'}, {text: 'Header 3', style: 'tableHeader'}],
+					['Sample value 1', 'Sample value 2', 'Sample value 3','Sample value 1', 'Sample value 2', 'Sample value 3',,'Sample value 1', 'Sample value 2', 'Sample value 3'],
+					['Sample value 1', 'Sample value 2', 'Sample value 3','Sample value 1', 'Sample value 2', 'Sample value 3',,'Sample value 1', 'Sample value 2', 'Sample value 3'],
+					['Sample value 1', 'Sample value 2', 'Sample value 3','Sample value 1', 'Sample value 2', 'Sample value 3',,'Sample value 1', 'Sample value 2', 'Sample value 3'],
+					['Sample value 1', 'Sample value 2', 'Sample value 3','Sample value 1', 'Sample value 2', 'Sample value 3',,'Sample value 1', 'Sample value 2', 'Sample value 3'],
+					['Sample value 1', 'Sample value 2', 'Sample value 3','Sample value 1', 'Sample value 2', 'Sample value 3',,'Sample value 1', 'Sample value 2', 'Sample value 3'],
+					['Sample value 1', 'Sample value 2', 'Sample value 3','Sample value 1', 'Sample value 2', 'Sample value 3',,'Sample value 1', 'Sample value 2', 'Sample value 3'],
+					['Sample value 1', 'Sample value 2', 'Sample value 3','Sample value 1', 'Sample value 2', 'Sample value 3',,'Sample value 1', 'Sample value 2', 'Sample value 3'],
+					['Sample value 1', 'Sample value 2', 'Sample value 3','Sample value 1', 'Sample value 2', 'Sample value 3',,'Sample value 1', 'Sample value 2', 'Sample value 3'],
+					['Sample value 1', 'Sample value 2', 'Sample value 3','Sample value 1', 'Sample value 2', 'Sample value 3',,'Sample value 1', 'Sample value 2', 'Sample value 3'],
+					['Sample value 1', 'Sample value 2', 'Sample value 3','Sample value 1', 'Sample value 2', 'Sample value 3',,'Sample value 1', 'Sample value 2', 'Sample value 3'],
+					['Sample value 1', 'Sample value 2', 'Sample value 3','Sample value 1', 'Sample value 2', 'Sample value 3',,'Sample value 1', 'Sample value 2', 'Sample value 3'],
+					['Sample value 1', 'Sample value 2', 'Sample value 3','Sample value 1', 'Sample value 2', 'Sample value 3',,'Sample value 1', 'Sample value 2', 'Sample value 3'],
+					['Sample value 1', 'Sample value 2', 'Sample value 3','Sample value 1', 'Sample value 2', 'Sample value 3',,'Sample value 1', 'Sample value 2', 'Sample value 3'],
+					['Sample value 1', 'Sample value 2', 'Sample value 3','Sample value 1', 'Sample value 2', 'Sample value 3',,'Sample value 1', 'Sample value 2', 'Sample value 3'],
+					['Sample value 1', 'Sample value 2', 'Sample value 3','Sample value 1', 'Sample value 2', 'Sample value 3',,'Sample value 1', 'Sample value 2', 'Sample value 3'],
+					['Sample value 1', 'Sample value 2', 'Sample value 3','Sample value 1', 'Sample value 2', 'Sample value 3',,'Sample value 1', 'Sample value 2', 'Sample value 3'],
 				]
 			},
 			layout: {

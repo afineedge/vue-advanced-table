@@ -1,6 +1,6 @@
 <template>
-  <button>
-    <span v-on:click="toggleOverlay">Column Settings</span>
+  <button v-on:click.self="toggleOverlay" v-bind:class="classes">
+    Column Settings
     <vue-advanced-table-overlay v-if="overlay.active">
       <div class="button-collection">
         <draggable v-model="localColumnOrder">
@@ -42,6 +42,10 @@ export default {
     },
     hiddenColumns: {
       type: Array,
+      required: true
+    },
+    classes: {
+      type: String,
       required: true
     }
   },

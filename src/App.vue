@@ -270,7 +270,8 @@ export default {
           direction: 'asc'
         },
         buttons: [
-          'columnVisibility'
+          'columnVisibility',
+          'exportCSV'
         ],
         orderable: true,
         searchable: true,

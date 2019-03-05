@@ -61,7 +61,7 @@ export default {
     buttons: {
       type: Array,
       default: function(){
-        return ['columnVisibility'];
+        return [];
       }
     },
     order: {

@@ -13,14 +13,14 @@
     <div class="vue-advanced-table-wrapper">
       <div class="vue-advanced-table-header-scroll">
         <tr class="vue-advanced-table-header" v-bind:class="classObject.header" v-bind:style="{ marginLeft: left + 'px'}">
-          <vue-advanced-table-column-header v-for="column in filteredColumnOrder" v-bind:class="classObject.headerCell" v-bind:key="column" v-bind:column="column" v-bind="$props" v-bind:hiddenColumns="hiddenColumns" />
+          <vue-advanced-table-column-header v-for="column in filteredColumnOrder" v-bind:classObject="classObject" v-bind:key="column" v-bind:column="column" v-bind="$props" v-bind:hiddenColumns="hiddenColumns" />
         </tr>
       </div>
       <div class="vue-advanced-table-scroll" v-on:scroll="setScrollPosition($event)">
         <table cellpadding="0" cellspacing="0" border="0" width="100%" v-bind:class="classObject.table">
           <thead class="vue-advanced-table-header-placeholder" v-bind:class="classObject.header">
             <tr>
-              <vue-advanced-table-column-header v-for="column in filteredColumnOrder" v-bind:key="column" v-bind:column="column" v-bind="$props" v-bind:hiddenColumns="hiddenColumns" v-bind:columnName="column" />
+              <vue-advanced-table-column-header v-for="column in filteredColumnOrder" v-bind:classObject="classObject" v-bind:key="column" v-bind:column="column" v-bind="$props" v-bind:hiddenColumns="hiddenColumns" v-bind:columnName="column" />
             </tr>
           </thead>
           <tbody v-bind:class="classObject.body">

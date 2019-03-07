@@ -2,7 +2,7 @@
 <template>
 	<div>
 		<download-excel
-			v-bind:data="rows">
+			v-bind:data="changedRows">
 			<button v-on:click="test(rows)">
 				Export Excel
 			</button>
@@ -43,21 +43,63 @@ export default {
   },
   data: function() {
     return {
+    	changedRows: []
     }
   },
-  methods: {
-    test: function(data) {
-    	const self = this;
+  	computed: {
+		sortedEmployeeList: function() {
 
-    	console.log("columns", self.columns);
-		console.log("columnOrder", self.columnOrder);
-		console.log("hiddenColumns", self.hiddenColumns);
-    	console.log("in test this", this);
-    	console.log("in test data", data);
+  		var self = this;
+    	//console.log("TEST rows", self.$props.rows);
+    	console.log("TEST rows before", self.rows);
+    	var rowsInOrder = [];
+    	var emptyStruct = {};
+    	var resultStruct = {};
+
+    	for (let i = 0; i < self.columnOrder.length; i++) {
+    		emptyStruct[self.columnOrder[i]] = '';
+    	}
+
+
+    	for (let j = 0; j < self.rows.length; j++) {
+    		var tempStruct = JSON.parse(JSON.stringify(emptyStruct));
+    		for (let i = 0; i < self.columnOrder.length; i++) {
+    			tempStruct[self.columnOrder[i]] = self.rows[j][self.columnOrder[i]];
+    		}
+			var resultStruct  = JSON.parse(JSON.stringify(tempStruct));
+    		rowsInOrder.push(resultStruct);
+    	}
+    	self.changedRows = rowsInOrder;
+		}
+	}
+
+  methods: {
+
+    test: function(data) {
+   //  	var self = this;
+   //  	//console.log("TEST rows", self.$props.rows);
+   //  	console.log("TEST rows before", self.rows);
+   //  	var rowsInOrder = [];
+   //  	var emptyStruct = {};
+   //  	var resultStruct = {};
+
+   //  	for (let i = 0; i < self.columnOrder.length; i++) {
+   //  		emptyStruct[self.columnOrder[i]] = '';
+   //  	}
+
+
+   //  	for (let j = 0; j < self.rows.length; j++) {
+   //  		var tempStruct = JSON.parse(JSON.stringify(emptyStruct));
+   //  		for (let i = 0; i < self.columnOrder.length; i++) {
+   //  			tempStruct[self.columnOrder[i]] = self.rows[j][self.columnOrder[i]];
+   //  		}
+			// var resultStruct  = JSON.parse(JSON.stringify(tempStruct));
+   //  		rowsInOrder.push(resultStruct);
+   //  	}
+   console.log(data)
     }
   },
-  mounted: function() {
-  },
+
   watch: {
   }
 }

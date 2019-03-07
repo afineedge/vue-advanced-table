@@ -1,5 +1,5 @@
 <template>
-  <div class="vue-advanced-table" ref="table">
+  <div class="vue-advanced-table">
     <div class="vue-advanced-table-controls" v-if="buttons.length > 0 || searchable">
       <div class="vue-advanced-table-buttons" v-bind:class="classObject.buttonContainer" v-if="buttons.length > 0">
         <vue-advanced-table-buttons v-bind="$props" v-bind:columnOrder="columnOrder" v-bind:hiddenColumns="hiddenColumns" v-bind:classObject="classObject" v-on:update:columnOrder="columnOrder = $event"></vue-advanced-table-buttons>
@@ -17,7 +17,7 @@
         </tr>
       </div>
       <div class="vue-advanced-table-scroll" v-on:scroll="setScrollPosition($event)">
-        <table cellpadding="0" cellspacing="0" border="0" width="100%" v-bind:class="classObject.table">
+        <table cellpadding="0" cellspacing="0" border="0" width="100%" v-bind:class="classObject.table" ref="table">
           <thead class="vue-advanced-table-header-placeholder" v-bind:class="classObject.header">
             <tr>
               <vue-advanced-table-column-header v-for="column in filteredColumnOrder" v-bind:key="column" v-bind:column="column" v-bind="$props" v-bind:hiddenColumns="hiddenColumns" v-bind:columnName="column" />
@@ -51,8 +51,12 @@ export default {
       required: true
     },
     rows: {
-      type: Array,
-      required: true
+     type: Array,
+     required: false
+    },
+    tableElement: {
+     type: String,
+     required: false
     },
     columns: {
       type: Array,

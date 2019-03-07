@@ -8,12 +8,6 @@
 			</button>
 
 	</download-excel>
-<!-- 		<download-csv
-			:data   = "json_data">
-			Download Data
-			<img src="download_icon.png">
-			<div>
-		</download-csv> -->
 	</div>
 </template>
 
@@ -26,9 +20,13 @@ import JsonExcel from 'vue-json-excel'
 Vue.component('downloadExcel', JsonExcel)
 
 export default {
-  name: 'vue-advanced-table-button-column-settings',
+  name: 'vue-advanced-table-button-export-excel',
   props: {
     rows: {
+      type: Array,
+      required: true
+    },
+     columns: {
       type: Array,
       required: true
     },
@@ -49,7 +47,11 @@ export default {
   },
   methods: {
     test: function(data) {
+    	const self = this;
 
+    	console.log("columns", self.columns);
+		console.log("columnOrder", self.columnOrder);
+		console.log("hiddenColumns", self.hiddenColumns);
     	console.log("in test this", this);
     	console.log("in test data", data);
     }

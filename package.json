@@ -10,6 +10,7 @@
   "dependencies": {
     "babel-runtime": "^6.26.0",
     "fs": "0.0.1-security",
+    "html2canvas": "^1.0.0-alpha.12",
     "jspdf": "^1.5.3",
     "jspdf-autotable": "^3.0.10",
     "pdfmake": "^0.1.53",

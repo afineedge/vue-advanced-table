@@ -43,6 +43,10 @@ export default {
     classObject: {
       type: Object,
       required: true
+    },
+    storage: {
+      type: String,
+      required: true
     }
   },
   data: function() {

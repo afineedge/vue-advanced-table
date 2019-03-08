@@ -8,13 +8,13 @@
             {{ getColumnByName(column).label }}
           </div>
           <div>
-             <button v-on:click="changeColumnPosition(index, 'up')">
+             <button v-on:click="changeColumnPosition(index, 'up')" title="Move up" v-bind:class="classes">
               &#8679;
              </button>
-             <button v-on:click="changeColumnPosition(index, 'down')">
+             <button v-on:click="changeColumnPosition(index, 'down')" title="Move down" v-bind:class="classes">
               &#8681;
              </button>
-             <button v-on:click="toggleColumnVisibility(column)" v-bind:class="{'inactive': !isColumnVisible(column)}">
+             <button v-on:click="toggleColumnVisibility(column)" v-bind:class="['inactive' ? !isColumnVisible(column) : '', classes]">
               Toggle
              </button>
           </div>
@@ -43,6 +43,10 @@ export default {
       required: true
     },
     classes: {
+      type: String,
+      required: true
+    },
+    storage: {
       type: String,
       required: true
     }
@@ -93,6 +97,11 @@ export default {
     }
   },
   mounted: function() {
+    const self = this;
+    if (self.storage.length === 0){
+      // eslint-disable-next-line
+      console.error('[Vue warn]: "columnVisibility" button is active, but "storage" prop is not being passed to vue-advanced-table. Changes to column settings will not be saved.', self);
+    }
   },
   watch: {
     columnOrder: function() {
@@ -138,6 +147,7 @@ export default {
   }
 
   .vue-advanced-table-column-setting button {
+    margin-left: 4px !important;
     cursor: pointer;
   }
 

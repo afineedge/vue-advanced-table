@@ -2,25 +2,25 @@
   <div class="vue-advanced-table">
     <div class="vue-advanced-table-controls" v-if="buttons.length > 0 || searchable">
       <div class="vue-advanced-table-buttons" v-bind:class="classObject.buttonContainer" v-if="buttons.length > 0">
-        <vue-advanced-table-buttons v-bind="$props" v-bind:columnOrder="columnOrder" v-bind:hiddenColumns="hiddenColumns" v-bind:classObject="classObject" v-on:update:columnOrder="columnOrder = $event"></vue-advanced-table-buttons>
+        <vue-advanced-table-buttons v-bind="$props" v-bind:columnOrder="columnOrder" v-bind:hiddenColumns="hiddenColumns" v-bind:storage="storage" v-bind:classObject="classObject" v-on:update:columnOrder="columnOrder = $event"></vue-advanced-table-buttons>
       </div>
       <div class="vue-advanced-table-search" v-if="searchable !== false">
         <slot name="table-search">
-          <input v-model="search" placeholder="Search" />
+          <input class="vue-advanced-table-search-input" v-model="search" placeholder="Search" v-bind:class="classObject.search" />
         </slot>
       </div>
     </div>
     <div class="vue-advanced-table-wrapper">
       <div class="vue-advanced-table-header-scroll">
         <tr class="vue-advanced-table-header" v-bind:class="classObject.header" v-bind:style="{ marginLeft: left + 'px'}">
-          <vue-advanced-table-column-header v-for="column in filteredColumnOrder" v-bind:class="classObject.headerCell" v-bind:key="column" v-bind:column="column" v-bind="$props" v-bind:hiddenColumns="hiddenColumns" />
+          <vue-advanced-table-column-header v-for="column in filteredColumnOrder" v-bind:classObject="classObject" v-bind:key="column" v-bind:column="column" v-bind="$props" v-bind:hiddenColumns="hiddenColumns" />
         </tr>
       </div>
       <div class="vue-advanced-table-scroll" v-on:scroll="setScrollPosition($event)">
         <table cellpadding="0" cellspacing="0" border="0" width="100%" v-bind:class="classObject.table" ref="table">
           <thead class="vue-advanced-table-header-placeholder" v-bind:class="classObject.header">
             <tr>
-              <vue-advanced-table-column-header v-for="column in filteredColumnOrder" v-bind:key="column" v-bind:column="column" v-bind="$props" v-bind:hiddenColumns="hiddenColumns" v-bind:columnName="column" />
+              <vue-advanced-table-column-header v-for="column in filteredColumnOrder" v-bind:classObject="classObject" v-bind:key="column" v-bind:column="column" v-bind="$props" v-bind:hiddenColumns="hiddenColumns" v-bind:columnName="column" />
             </tr>
           </thead>
           <tbody v-bind:class="classObject.body">
@@ -255,6 +255,7 @@ export default {
       var classes = {
         buttonContainer: '',
         buttons: '',
+        search: '',
         table: '',
         header: '',
         headerCell: '',

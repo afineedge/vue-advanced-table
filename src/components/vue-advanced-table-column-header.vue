@@ -1,5 +1,5 @@
 <template>
-  <th class="vue-advanced-table-column-header" v-on:click="handleClick" v-bind:style="{ width: width + 'px' }">
+  <th class="vue-advanced-table-column-header" v-on:click="handleClick" v-bind:style="{ width: width + 'px' }" v-bind:class="classObject.headerCell">
     <div class="vue-advanced-table-column-header-content">
       <div class="vue-advanced-table-column-header-label">
         {{ getColumnByName(column).label }}
@@ -41,6 +41,10 @@ export default {
     },
     hiddenColumns: {
       type: Array,
+      required: true
+    },
+    classObject: {
+      type: Object,
       required: true
     }
   },

@@ -5,20 +5,6 @@
 				<button v-on:click="test(rows)">
 					Export PDF
 				</button>
-
-
-<!-- 			<button v-on:click="test(rows)">
-				<pdf src="rows">
-				</pdf>
-				Export PDF
-			</button> -->
-
-<!-- 		<download-csv
-			:data   = "json_data">
-			Download Data
-			<img src="download_icon.png">
-			<div>
-		</download-csv> -->
 	</div>
 </template>
 
@@ -28,6 +14,7 @@
 // import 'jspdf-autotable';
 import fs from 'fs';
 import html2canvas from 'html2canvas';
+// import pdfMake from 'pdfmake'
 
 export default {
   name: 'vue-advanced-table-button-column-settings',
@@ -54,6 +41,7 @@ export default {
   methods: {
     test: function() {
     	var self = this;
+    	// var fs = = require('fs');
     	console.log("Table", self.table);
 
       var pdfMake = require('pdfmake/build/pdfmake.js')
@@ -61,7 +49,7 @@ export default {
         var pdfFonts = require('pdfmake/build/vfs_fonts.js')
         pdfMake.vfs = pdfFonts.pdfMake.vfs;
       }
-            html2canvas($('#justid')[0], {
+            html2canvas($('#tblCustomers')[0], {
 
                 onrendered: function (canvas) {
                     var data = canvas.toDataURL();

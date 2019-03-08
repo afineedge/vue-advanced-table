@@ -2,8 +2,9 @@
   <div v-bind:class="classObject.buttonContainer">
     <template v-for="(button, index) in buttons">
       <vue-advanced-table-button-column-settings v-if="isColumnSettingsButton(button)" v-bind:key="index" v-bind="$props" v-bind:classes="getButtonClass(button)" v-on:update:columnOrder="$emit('update:columnOrder', $event)"></vue-advanced-table-button-column-settings>
-       <vue-advanced-table-button-export-pdf v-else-if="isPdfExportButton(button)" v-bind:key="index" v-bind="$props" v-bind:classes="getButtonClass(button)"></vue-advanced-table-button-export-pdf>
-        <vue-advanced-table-button-export-excel v-else-if="isExcelExportButton(button)" v-bind:key="index" v-bind="$props" v-bind:classes="getButtonClass(button)"></vue-advanced-table-button-export-excel>
+      <vue-advanced-table-button-export-excel v-else-if="isExcelExportButton(button)" v-bind:key="index" v-bind="$props" v-bind:classes="getButtonClass(button)"></vue-advanced-table-button-export-excel>
+      <vue-advanced-table-button-export-csv v-else-if="isCsvExportButton(button)" v-bind:key="index" v-bind="$props" v-bind:classes="getButtonClass(button)"></vue-advanced-table-button-export-csv>
+
       <button type="button" v-on:click="button.action" v-bind:key="index" v-bind:class="getButtonClass(button)" v-else>
         {{ button.label }}
       </button>
@@ -13,8 +14,8 @@
 
 <script>
 import vueAdvancedTableButtonColumnSettings from './vue-advanced-table-button-column-settings.vue'
-import vueAdvancedTableButtonExportPdf from './vue-advanced-table-button-export-pdf.vue'
 import vueAdvancedTableButtonExportExcel from './vue-advanced-table-button-export-excel.vue'
+import vueAdvancedTableButtonExportCsv from './vue-advanced-table-button-export-csv.vue'
 
 export default {
   name: 'vue-advanced-table-buttons',
@@ -53,8 +54,8 @@ export default {
   },
   components: {
     vueAdvancedTableButtonColumnSettings,
-    vueAdvancedTableButtonExportPdf,
-    vueAdvancedTableButtonExportExcel
+    vueAdvancedTableButtonExportExcel,
+    vueAdvancedTableButtonExportCsv
 
   },
   mounted: function() {
@@ -75,11 +76,11 @@ export default {
     isColumnSettingsButton: function(button) {
       return button === 'columnVisibility' || button.extend === 'columnVisibility';
     },
-    isPdfExportButton: function(button) {
-      return button === 'exportPdf' || button.extend === 'exportPdf';
-    },
     isExcelExportButton: function(button) {
       return button === 'exportExcel' || button.extend === 'exportExcel';
+    },
+     isCsvExportButton: function(button) {
+      return button === 'exportCsv' || button.extend === 'exportCsv';
     },
   },
   computed: {

@@ -1,10 +1,10 @@
 
 <template>
-	<button v-on:click="createCSV()">
-		<slot>
-      Export CSV
-    </slot>
-	</button>
+    <button v-on:click="createCSV()">
+        <slot>
+            Export CSV
+         </slot>
+    </button>
 </template>
 
 <script>
@@ -48,20 +48,22 @@ export default {
     return {
     }
   },
-	computed: {
-		tableRows: function() {
-  		var self = this;
-      var table = self.rows.map(function(row) {
-        var rowData = [];
-        for (var i = 0; i < self.filteredColumnOrder.length; i++){
-          var column = self.filteredColumnOrder[i];
-          rowData.push(row[column]);
+    computed: {
+        tableRows: function() {
+            var self = this;
+            var table = self.rows.map(function(row) {
+                var rowData = [];
+                for (var i = 0; i < self.filteredColumnOrder.length; i++){
+                    var column = self.filteredColumnOrder[i];
+                    rowData.push(row[column]);
+                }
+
+                return rowData;
+            })
+
+         return [[...self.filteredColumnOrder], ...table];
         }
-        return rowData;
-      })
-      return [[...self.filteredColumnOrder], ...table];
-		}
-	},
+    },
 
   methods: {
 

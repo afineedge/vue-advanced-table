@@ -30,6 +30,10 @@ export default {
     hiddenColumns: {
       type: Array,
       required: true
+    },
+    button: {
+      type: [String, Object],
+      required: true
     }
   },
   components: {

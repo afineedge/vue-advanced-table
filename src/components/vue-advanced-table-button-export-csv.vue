@@ -1,6 +1,6 @@
 
 <template>
-	<button v-on:click="createExcel()">
+	<button v-on:click="createCSV()">
 		<slot>
       Export CSV
     </slot>
@@ -36,6 +36,10 @@ export default {
     hiddenColumns: {
       type: Array,
       required: true
+    },
+    button: {
+      type: [String, Object],
+      required: true
     }
   },
   components: {
@@ -56,53 +60,26 @@ export default {
         return rowData;
       })
       return [[...self.filteredColumnOrder], ...table];
-
-    	/*var columnOrderNoDeleted = JSON.parse(JSON.stringify(self.columnOrder));
-    	var rowsInOrder = [];
-    	var emptyStruct = {};
-    	var resultStruct = {};
-    	var arrayOfArrays = [];
-
-    	for (let i = 0; i < columnOrderNoDeleted.length; i++) {
-    		emptyStruct[columnOrderNoDeleted [i]] = '';
-    	}
-
-    	for (let j = 0; j < self.rows.length; j++) {
-    		var tempStruct = JSON.parse(JSON.stringify(emptyStruct));
-    		for (let i = 0; i < columnOrderNoDeleted.length; i++) {
-    			tempStruct[columnOrderNoDeleted[i]] = self.rows[j][self.columnOrder[i]];
-    		}
-			var resultStruct  = JSON.parse(JSON.stringify(tempStruct));
-    		rowsInOrder.push(resultStruct);
-    	}
-
-    	  for (let i=0; i < rowsInOrder.length; i++) {
-    		var entry = Object.values(rowsInOrder[i]);
-    		arrayOfArrays.push(entry);
-    	}
-    	arrayOfArrays.unshift(Object.keys(rowsInOrder[1]));
-
-    	return arrayOfArrays;*/
 		}
 	},
 
   methods: {
 
-    createExcel: function() {
+    createCSV: function() {
       const self = this;
 
       var wb = XLSX.utils.book_new();
       wb.Props = {
-        Title: "SheetJS Tutorial",
-        Subject: "Test",
-        Author: "Red Stapler",
-        CreatedDate: new Date(2017,12,19)
+        Title: self.button.title || 'Worksheet',
+        Subject: self.button.subject || '',
+        Author: self.button.author || '',
+        CreatedDate: new Date()
       };
 
-      wb.SheetNames.push("Test Sheet");
+      wb.SheetNames.push("Worksheet");
       var ws_data = self.tableRows;
       var ws = XLSX.utils.aoa_to_sheet(ws_data);
-      wb.Sheets["Test Sheet"] = ws;
+      wb.Sheets["Worksheet"] = ws;
       var wbout = XLSX.write(wb, {bookType:'csv',  type: 'binary'});
       function s2ab(s) {
         var buf = new ArrayBuffer(s.length);
@@ -113,7 +90,7 @@ export default {
         return buf;
       }
 
-      saveAs(new Blob([s2ab(wbout)],{type:"application/octet-stream"}), 'test.csv');
+      saveAs(new Blob([s2ab(wbout)],{type:"application/octet-stream"}), self.button.fileName ? self.button.fileName + '.csv' : 'test.csv');
     }
   }
 

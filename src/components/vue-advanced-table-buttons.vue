@@ -4,10 +4,10 @@
       <vue-advanced-table-button-column-settings v-if="isColumnSettingsButton(button)" v-bind:key="index" v-bind="$props" v-bind:classes="getButtonClass(button)" v-on:update:columnOrder="$emit('update:columnOrder', $event)">
         <span v-if="button.label">{{ button.label }}</span>
       </vue-advanced-table-button-column-settings>
-      <vue-advanced-table-button-export-excel v-else-if="isExcelExportButton(button)" v-bind:key="index" v-bind="$props" v-bind:class="getButtonClass(button)">
+      <vue-advanced-table-button-export-excel v-else-if="isExcelExportButton(button)" v-bind:key="index" v-bind="$props" v-bind:button="button" v-bind:class="getButtonClass(button)">
         <span v-if="button.label">{{ button.label }}</span>
       </vue-advanced-table-button-export-excel>
-      <vue-advanced-table-button-export-csv v-else-if="isCsvExportButton(button)" v-bind:key="index" v-bind="$props" v-bind:class="getButtonClass(button)">
+      <vue-advanced-table-button-export-csv v-else-if="isCsvExportButton(button)" v-bind:key="index" v-bind="$props" v-bind:button="button" v-bind:class="getButtonClass(button)">
         <span v-if="button.label">{{ button.label }}</span>
       </vue-advanced-table-button-export-csv>
 

@@ -1,7 +1,7 @@
 
 <template>
 	<button v-on:click="createExcel()">
-		Export Excel
+		Export for Excel
 	</button>
 </template>
 

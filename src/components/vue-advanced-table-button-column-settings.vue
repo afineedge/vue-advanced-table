@@ -134,6 +134,7 @@ export default {
     white-space: normal;
     text-align: left;
     cursor: initial;
+    color: #000;
   }
 
   .vue-advanced-table-column-setting {

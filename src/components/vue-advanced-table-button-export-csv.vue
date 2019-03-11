@@ -1,7 +1,9 @@
 
 <template>
-	<button v-on:click="createExcel()" v-bind:class="classes">
-		Export Csv
+	<button v-on:click="createExcel()">
+		<slot>
+      Export CSV
+    </slot>
 	</button>
 </template>
 
@@ -34,14 +36,6 @@ export default {
     hiddenColumns: {
       type: Array,
       required: true
-    },
-    classes: {
-      type: String,
-      required: true
-    },
-    button: {
-      type: [String, Object],
-      required: true
     }
   },
   components: {
@@ -53,6 +47,15 @@ export default {
 	computed: {
 		tableRows: function() {
   		var self = this;
+      var table = self.rows.map(function(row) {
+        var rowData = [];
+        for (var i = 0; i < self.filteredColumnOrder.length; i++){
+          var column = self.filteredColumnOrder[i];
+          rowData.push(row[column]);
+        }
+        return rowData;
+      })
+      return [[...self.filteredColumnOrder], ...table];
 
     	/*var columnOrderNoDeleted = JSON.parse(JSON.stringify(self.columnOrder));
     	var rowsInOrder = [];

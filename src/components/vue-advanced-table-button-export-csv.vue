@@ -1,10 +1,10 @@
 
 <template>
-	<button v-on:click="createCSV()">
-		<slot>
-      Export CSV
-    </slot>
-	</button>
+    <button v-on:click="createCSV()">
+        <slot>
+            Export CSV
+         </slot>
+    </button>
 </template>
 
 <script>

@@ -1,6 +1,8 @@
 <template>
   <button v-on:click.self="toggleOverlay" v-bind:class="classes">
-    Column Settings
+    <slot>
+      Column Settings
+    </slot>
     <vue-advanced-table-overlay v-if="overlay.active">
       <div class="vue-advanced-table-column-settings">
         <div class="vue-advanced-table-column-setting" v-for="(column, index) in columnOrder" v-bind:key="column">

@@ -80,13 +80,13 @@ export default {
 
 	  var wb = XLSX.utils.book_new();
 	        wb.Props = {
-	                Title: "SheetJS Tutorial",
-	                Subject: "Test",
-	                Author: "Red Stapler",
-	                CreatedDate: new Date(2017,12,19)
+            Title: "SheetJS Tutorial",
+            Subject: "",
+            Author: "",
+            CreatedDate: new Date(2017,12,19)
 	        };
 
-        wb.SheetNames.push("Test Sheet");
+        wb.SheetNames.push("");
         var ws_data = self.changedRows;
         var ws = XLSX.utils.aoa_to_sheet(ws_data);
         wb.Sheets["Test Sheet"] = ws;

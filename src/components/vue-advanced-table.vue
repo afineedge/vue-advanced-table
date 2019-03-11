@@ -2,7 +2,7 @@
   <div class="vue-advanced-table">
     <div class="vue-advanced-table-controls" v-if="buttons.length > 0 || searchable">
       <div class="vue-advanced-table-buttons" v-bind:class="classObject.buttonContainer" v-if="buttons.length > 0">
-        <vue-advanced-table-buttons v-bind="$props" v-bind:columnOrder="columnOrder" v-bind:hiddenColumns="hiddenColumns" v-bind:storage="storage" v-bind:classObject="classObject" v-on:update:columnOrder="columnOrder = $event"></vue-advanced-table-buttons>
+        <vue-advanced-table-buttons v-bind="$props" v-bind:columnOrder="columnOrder" v-bind:filteredColumnOrder="filteredColumnOrder" v-bind:hiddenColumns="hiddenColumns" v-bind:storage="storage" v-bind:classObject="classObject" v-bind:rows="reorderedRows" v-on:update:columnOrder="columnOrder = $event"></vue-advanced-table-buttons>
       </div>
       <div class="vue-advanced-table-search" v-if="searchable !== false">
         <slot name="table-search">

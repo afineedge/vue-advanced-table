@@ -49,22 +49,8 @@ export default {
     }
   },
 	computed: {
-		tableRows: function() {
-  		var self = this;
-      var table = self.rows.map(function(row) {
-        var rowData = [];
-        for (var i = 0; i < self.filteredColumnOrder.length; i++){
-          var column = self.filteredColumnOrder[i];
-          rowData.push(row[column]);
-        }
-        return rowData;
-      })
-      return [[...self.filteredColumnOrder], ...table];
-		}
-	},
-
+  },
   methods: {
-
     createCSV: function() {
       const self = this;
 
@@ -77,7 +63,7 @@ export default {
       };
 
       wb.SheetNames.push("Worksheet");
-      var ws_data = self.tableRows;
+      var ws_data = self.$parent.$parent.tableData;
       var ws = XLSX.utils.aoa_to_sheet(ws_data);
       wb.Sheets["Worksheet"] = ws;
       var wbout = XLSX.write(wb, {bookType:'csv',  type: 'binary'});
@@ -90,7 +76,7 @@ export default {
         return buf;
       }
 
-      saveAs(new Blob([s2ab(wbout)],{type:"application/octet-stream"}), self.button.fileName ? self.button.fileName + '.csv' : 'test.csv');
+      saveAs(new Blob([s2ab(wbout)],{type:"application/octet-stream"}), self.button.fileName ? self.button.fileName + '.csv' : 'Worksheet.csv');
     }
   }
 

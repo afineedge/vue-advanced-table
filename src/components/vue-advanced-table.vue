@@ -23,7 +23,7 @@
               <vue-advanced-table-column-header v-for="column in filteredColumnOrder" v-bind:classObject="classObject" v-bind:key="column" v-bind:column="column" v-bind="$props" v-bind:hiddenColumns="hiddenColumns" v-bind:columnName="column" />
             </tr>
           </thead>
-          <tbody v-bind:class="classObject.body">
+          <tbody v-bind:class="classObject.body" ref="tbody">
             <vue-advanced-table-row v-for="(row, index) in reorderedRows" v-bind:row="row" v-bind:key="index">
               <vue-advanced-table-cell v-for="column in filteredColumnOrder" v-bind:key="column" v-bind:column="getColumnByName(column)" v-bind:row="row" v-bind="$props" v-bind:hiddenColumns="hiddenColumns" v-bind:class="classObject.cell" v-bind:columnName="column">
                 <slot v-bind:name="'column-' + column" v-bind:row="row">
@@ -281,6 +281,28 @@ export default {
     left: function() {
       const self = this;
       return self.scrollX * -1;
+    },
+    tableData: function() {
+      var self = this;
+
+      var rows = self.$refs.tbody.getElementsByTagName('tr');
+      var data = [];
+      for (let i = 0; i < rows.length; i++){
+        let rowData = [];
+        const row = rows[i];
+        const cells = row.getElementsByTagName('td');
+        for (let r = 0; r < cells.length; r++){
+          const cell = cells[r];
+          rowData.push(cell.textContent.trim());
+        }
+        data.push(rowData);
+      }
+
+      var columnHeaders = self.filteredColumnOrder.map(function(column){
+        return self.getColumnByName(column).label;
+      })
+
+      return [[...columnHeaders], ...data];
     }
   }
 }

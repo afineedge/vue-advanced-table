@@ -9,7 +9,7 @@
           <div v-bind:class="{'inactive': !isColumnVisible(column)}">
             {{ getColumnByName(column).label }}
           </div>
-          <div>
+          <div class="vue-advanced-table-column-setting-actions">
              <button v-on:click="changeColumnPosition(index, 'up')" title="Move up" v-bind:class="classes">
               &#8679;
              </button>
@@ -161,5 +161,9 @@ export default {
   .vue-advanced-table-column-setting > div:first-of-type {
     flex-grow: 1;
     padding: 0 8px;
+  }
+
+  .vue-advanced-table-column-setting-actions {
+    white-space: nowrap;
   }
 </style>

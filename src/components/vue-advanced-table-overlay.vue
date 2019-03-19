@@ -1,6 +1,6 @@
 <template>
-    <div class="overlay" v-on:click.self="$parent.toggleOverlay" v-bind="$props">
-      <div class="overlay-content">
+    <div class="vue-advanced-table-overlay" v-on:click.self="$parent.toggleOverlay" v-bind="$props">
+      <div class="vue-advanced-table-overlay-content">
         <slot>
         </slot>
       </div>
@@ -30,7 +30,7 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-  .overlay {
+  .vue-advanced-table-overlay {
     position: fixed;
     top: 0;
     left: 0;
@@ -40,10 +40,12 @@ export default {
     z-index: 1;
   }
 
-  .overlay-content {
+  .vue-advanced-table-overlay-content {
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translateX(-50%) translateY(-50%);
+    max-height: 80vh;
+    overflow-y: auto;
   }
 </style>

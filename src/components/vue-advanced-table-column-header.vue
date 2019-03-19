@@ -75,7 +75,7 @@ export default {
     setColumnWidth: function(){
       const self = this;
       const el = self.targetCell;
-      if (el !== null){
+      if (el !== null && self.width !== el.offsetWidth){
         self.width = el.offsetWidth;
       } else {
         self.setTargetCell();

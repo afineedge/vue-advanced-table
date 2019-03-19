@@ -1,5 +1,5 @@
 <template>
-  <div class="vue-advanced-table">
+  <div class="vue-advanced-table-container">
     <div class="vue-advanced-table-controls" v-if="buttons.length > 0 || searchable">
       <div class="vue-advanced-table-buttons" v-bind:class="classObject.buttonContainer" v-if="buttons.length > 0">
         <vue-advanced-table-buttons v-bind="$props" v-bind:columnOrder="columnOrder" v-bind:filteredColumnOrder="filteredColumnOrder" v-bind:hiddenColumns="hiddenColumns" v-bind:storage="storage" v-bind:classObject="classObject" v-bind:rows="reorderedRows" v-on:update:columnOrder="columnOrder = $event"></vue-advanced-table-buttons>
@@ -12,12 +12,12 @@
     </div>
     <div class="vue-advanced-table-wrapper">
       <div class="vue-advanced-table-header-scroll">
-        <tr class="vue-advanced-table-header" v-bind:class="classObject.header" v-bind:style="{ marginLeft: left + 'px'}">
+        <tr class="vue-advanced-table-header" v-bind:class="classObject.header">
           <vue-advanced-table-column-header v-for="column in filteredColumnOrder" v-bind:classObject="classObject" v-bind:key="column" v-bind:column="column" v-bind="$props" v-bind:hiddenColumns="hiddenColumns" />
         </tr>
       </div>
-      <div class="vue-advanced-table-scroll" v-on:scroll="setScrollPosition($event)">
-        <table cellpadding="0" cellspacing="0" border="0" width="100%" v-bind:class="classObject.table" ref="table">
+      <div class="vue-advanced-table-scroll">
+        <div cellpadding="0" cellspacing="0" border="0" width="100%" v-bind:class="classObject.table" ref="table" class="vue-advanced-table">
           <thead class="vue-advanced-table-header-placeholder" v-bind:class="classObject.header">
             <tr>
               <vue-advanced-table-column-header v-for="column in filteredColumnOrder" v-bind:classObject="classObject" v-bind:key="column" v-bind:column="column" v-bind="$props" v-bind:hiddenColumns="hiddenColumns" v-bind:columnName="column" />
@@ -31,7 +31,7 @@
               </vue-advanced-table-cell>
             </vue-advanced-table-row>
           </tbody>
-        </table>
+        </div>
       </div>
     </div>
   </div>
@@ -100,7 +100,8 @@ export default {
       hiddenColumns: [],
       selectedRows: {},
       search: '',
-      scrollX: 0
+      tableData: [],
+      left: 0
     }
   },
   components: {
@@ -112,6 +113,13 @@ export default {
   mounted: function() {
     const self = this;
     var storedData;
+
+    var scroller = self.$el.querySelector('.vue-advanced-table-scroll');
+    var scrollHeader = self.$el.querySelector('.vue-advanced-table-header-scroll').querySelector('.vue-advanced-table-header');
+    scroller.addEventListener('scroll', function(e) {
+      scrollHeader.style.marginLeft = scroller.scrollLeft * -1 + 'px';
+    })
+
     if (self.storage.length > 0){
       storedData = self.getStoredTableInfo();
     }
@@ -126,6 +134,8 @@ export default {
     } else {
       self.setColumnOrder();
     }
+
+    self.updateTableData();
   },
   methods: {
     getColumnByName: function(name) {
@@ -164,7 +174,7 @@ export default {
     },
     setScrollPosition: function(event) {
       const self = this;
-      self.scrollX = event.target.scrollLeft;
+      // self.left = event.target.scrollLeft * -1;
     },
     storeTableInfo: function(param) {
       const self = this;
@@ -189,6 +199,29 @@ export default {
     isColumnVisible: function(column) {
       const self = this;
       return self.hiddenColumns.indexOf(column) === -1
+    },
+    updateTableData: function() {
+      const self = this;
+      Vue.nextTick(function(){
+        var rows = self.$refs.tbody.getElementsByTagName('tr');
+        var data = [];
+        for (let i = 0; i < rows.length; i++){
+          let rowData = [];
+          const row = rows[i];
+          const cells = row.getElementsByTagName('td');
+          for (let r = 0; r < cells.length; r++){
+            const cell = cells[r];
+            rowData.push(cell.textContent.trim());
+          }
+          data.push(rowData);
+        }
+
+        var columnHeaders = self.filteredColumnOrder.map(function(column){
+          return self.getColumnByName(column).label;
+        })
+
+        self.tableData = [[...columnHeaders], ...data];
+      })
     }
   },
   watch: {
@@ -203,6 +236,14 @@ export default {
       if (self.storage.length > 0){
         self.storeTableInfo('hiddenColumns');
       }
+    },
+    filteredColumnOrder: function() {
+      const self = this;
+      self.updateTableData();
+    },
+    reorderedRows: function() {
+      const self = this;
+      self.updateTableData();
     }
   },
   computed: {
@@ -277,32 +318,6 @@ export default {
       }
 
       return classes;
-    },
-    left: function() {
-      const self = this;
-      return self.scrollX * -1;
-    },
-    tableData: function() {
-      var self = this;
-
-      var rows = self.$refs.tbody.getElementsByTagName('tr');
-      var data = [];
-      for (let i = 0; i < rows.length; i++){
-        let rowData = [];
-        const row = rows[i];
-        const cells = row.getElementsByTagName('td');
-        for (let r = 0; r < cells.length; r++){
-          const cell = cells[r];
-          rowData.push(cell.textContent.trim());
-        }
-        data.push(rowData);
-      }
-
-      var columnHeaders = self.filteredColumnOrder.map(function(column){
-        return self.getColumnByName(column).label;
-      })
-
-      return [[...columnHeaders], ...data];
     }
   }
 }
@@ -310,7 +325,7 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-  .vue-advanced-table {
+  .vue-advanced-table-container {
     display: flex;
     flex-direction: column;
     flex-grow: 1;

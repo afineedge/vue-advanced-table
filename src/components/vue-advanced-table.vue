@@ -24,7 +24,7 @@
             </tr>
           </thead>
           <tbody v-bind:class="classObject.body" ref="tbody">
-            <vue-advanced-table-row v-for="(row, index) in reorderedRows" v-bind:row="row" v-bind:key="index">
+            <vue-advanced-table-row v-for="(row, index) in reorderedRows" v-bind:row="row" v-bind:key="index" v-bind:search="search">
               <vue-advanced-table-cell v-for="column in filteredColumnOrder" v-bind:key="column" v-bind:column="getColumnByName(column)" v-bind:row="row" v-bind="$props" v-bind:hiddenColumns="hiddenColumns" v-bind:class="classObject.cell" v-bind:columnName="column">
                 <slot v-bind:name="'column-' + column" v-bind:row="row">
                 </slot>
@@ -100,8 +100,7 @@ export default {
       hiddenColumns: [],
       selectedRows: {},
       search: '',
-      tableData: [],
-      left: 0
+      tableData: []
     }
   },
   components: {
@@ -171,10 +170,6 @@ export default {
           return column.name;
         });
       }
-    },
-    setScrollPosition: function(event) {
-      const self = this;
-      // self.left = event.target.scrollLeft * -1;
     },
     storeTableInfo: function(param) {
       const self = this;
@@ -255,9 +250,9 @@ export default {
     },
     reorderedRows: function() {
       const self = this;
-      var rows = self.filteredRows;
+      var rows = self.rows;
       if (typeof self.order !== 'undefined'){
-        rows = self.filteredRows.sort(function(a, b) {
+        rows = self.rows.sort(function(a, b) {
           if (a[self.order.column] < b[self.order.column])
             return -1;
           if (a[self.order.column] > b[self.order.column])
@@ -270,26 +265,6 @@ export default {
       }
 
       return rows;
-    },
-    filteredRows: function() {
-      const self = this;
-      return self.rows.filter(function(row) {
-        var response = false;
-        for (let i = 0; i < Object.keys(row).length; i++){
-          var data = row[Object.keys(row)[i]];
-          var renderColumn = self.columns.find(function(column) {
-            return column.name === Object.keys(row)[i] && typeof column.render == 'function';
-          });
-          if (typeof renderColumn === 'object') {
-            if(renderColumn.render(data).toString().toLowerCase().indexOf(self.search.toString().toLowerCase()) > -1) {
-              response = true;
-            }
-          } else if (data.toString().toString().toLowerCase().indexOf(self.search.toString().toLowerCase()) > -1) {
-            response = true;
-          }
-        }
-        return response;
-      })
     },
     classObject: function() {
       const self = this;

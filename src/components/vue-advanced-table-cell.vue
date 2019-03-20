@@ -8,18 +8,6 @@
 export default {
   name: 'vue-advanced-table-cell',
   props: {
-    rows: {
-      type: Array,
-      required: true
-    },
-    columns: {
-      type: Array,
-      required: true
-    },
-    hiddenColumns: {
-      type: Array,
-      required: true
-    },
     row: {
       type: Object,
       required: true
@@ -32,26 +20,15 @@ export default {
   mounted: function() {
   },
   methods: {
-    getColumnByName: function(name) {
-      const self = this;
-      return self.columns.find(function(column) {
-        return column.name === name;
-      });
-    },
-    isColumnVisible: function(column) {
-      const self = this;
-      return self.hiddenColumns.indexOf(column) === -1
-    }
   },
   computed: {
     content: function() {
       const self = this;
-      const column = self.getColumnByName(self.column.name);
-      if (typeof column.render === 'function') {
-        return column.render(self.row[column.name], self);
+      if (typeof self.column.render === 'function') {
+        return self.column.render(self.row[self.column.name], self);
       }
 
-      return self.row[column.name];
+      return self.row[self.column.name];
     }
   }
 }

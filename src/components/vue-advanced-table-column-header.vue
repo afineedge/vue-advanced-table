@@ -1,5 +1,5 @@
 <template>
-  <th class="vue-advanced-table-column-header" v-on:click="handleClick" v-bind:style="{ width: width + 'px' }" v-bind:class="classObject.headerCell">
+  <th class="vue-advanced-table-column-header" v-on:click="handleClick" v-bind:class="classObject.headerCell">
     <div class="vue-advanced-table-column-header-content">
       <div class="vue-advanced-table-column-header-label">
         {{ getColumnByName(column).label }}
@@ -77,6 +77,7 @@ export default {
       const el = self.targetCell;
       if (el !== null && self.width !== el.offsetWidth){
         self.width = el.offsetWidth;
+        self.$el.width = self.width;
       } else {
         self.setTargetCell();
       }

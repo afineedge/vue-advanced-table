@@ -24,10 +24,9 @@
             </tr>
           </thead>
           <tbody v-bind:class="classObject.body" ref="tbody">
-            <vue-advanced-table-row v-for="(row, index) in reorderedRows" v-bind:row="row" v-bind:key="row[primaryKey]" v-bind:search="search">
-              <vue-advanced-table-cell v-for="column in filteredColumnOrder" v-bind:key="column" v-bind:column="getColumnByName(column)" v-bind:row="row" v-bind="$props" v-bind:hiddenColumns="hiddenColumns" v-bind:class="classObject.cell" v-bind:columnName="column">
-                <slot v-bind:name="'column-' + column" v-bind:row="row">
-                </slot>
+            <vue-advanced-table-row v-for="row in filteredRows" v-bind:row="row" v-bind:key="row[primaryKey]" v-bind:class="{ active: selectedRows.indexOf(row[primaryKey]) > -1 }">
+              <vue-advanced-table-cell v-for="column in filteredColumnOrder" v-bind:key="column" v-bind:column="getColumnByName(column)" v-bind:row="row" v-bind:class="classObject.cell">
+                <slot v-bind:name="'column-' + column" v-bind:row="row" v-bind:primary-key="primaryKey"></slot>
               </vue-advanced-table-cell>
             </vue-advanced-table-row>
           </tbody>
@@ -51,12 +50,19 @@ export default {
       required: true
     },
     rows: {
-     type: Array,
-     required: false
+      type: Array,
+      required: true
+    },
+    selectedRows: {
+      type: Array,
+      required: false,
+      default: function(){
+        return [];
+      }
     },
     tableElement: {
-     type: String,
-     required: false
+      type: String,
+      required: false
     },
     columns: {
       type: Array,
@@ -98,7 +104,6 @@ export default {
     return {
       columnOrder: [],
       hiddenColumns: [],
-      selectedRows: {},
       search: '',
       tableData: []
     }
@@ -115,7 +120,7 @@ export default {
 
     var scroller = self.$el.querySelector('.vue-advanced-table-scroll');
     var scrollHeader = self.$el.querySelector('.vue-advanced-table-header-scroll').querySelector('.vue-advanced-table-header');
-    scroller.addEventListener('scroll', function(e) {
+    scroller.addEventListener('scroll', function() {
       scrollHeader.style.marginLeft = scroller.scrollLeft * -1 + 'px';
     })
 
@@ -238,19 +243,27 @@ export default {
         return node[0].text.trim();
       }
     },
-    getValueForSorting: function(data, column) {
+    getValueForSorting: function(data, column, row) {
       const self = this;
+      const scopedSlots = self.$scopedSlots;
+      const slot = scopedSlots['column-' + column.name];
+      let sortData = data;
+      if (typeof slot === 'function'){
+        sortData = self.getVNodeText(slot({
+          row: row
+        }), column);
+      }
       if (typeof column.format === 'string'){
         if (column.format === 'date'){
-          return new Date(data);
+          return new Date(sortData);
         } else if (column.format === 'dollar'){
-          return Number(data.replace(/[^0-9.-]+/g,""));
+          return Number(sortData.replace(/[^0-9.-]+/g,""));
         }
       }
-      if (!isNaN(+data)){
-        return Number(data);
+      if (!isNaN(+sortData) && sortData.toString().length > 0){
+        return Number(sortData);
       }
-      return data;
+      return sortData;
     }
   },
   watch: {
@@ -286,43 +299,42 @@ export default {
         return self.isColumnVisible(column);
       });
     },
-    displayRows: function() {
+    filteredRows: function() {
       const self = this;
-      const scopedSlots = self.$scopedSlots;
-      let displayRows = [];
-      for (var i = 0; i < self.rows.length; i++){
-        const row = self.rows[i];
-        let displayRow = {};
-        for (var r = 0; r < Object.keys(row).length; r++){
-          const column = Object.keys(row)[r];
-          const data = row[column];
-          const slot = scopedSlots['column-' + column];
-          if (typeof slot === 'function'){
-            displayRow[column] = self.getVNodeText(slot({
-              row: row
-            }), column);
-          } else {
-            displayRow[column] = data.toString().trim();
+      const rows = self.rows;
+      return rows.filter(function(row){
+        let found = false;
+        for (let i = 0; i < self.columnOrder.length; i++){
+          const column = self.getColumnByName(self.columnOrder[i]);
+          if (typeof row[column.name] !== 'undefined'){
+            let data = self.getValueForSorting(row[column.name], column, row);
+            if (data.toString().toLowerCase().indexOf(self.search.toString().toLowerCase()) > -1){
+              found = true;
+              break;
+            }
           }
         }
-        displayRows.push(displayRow);
-      }
-      return displayRows;
+        return found;
+      });
     },
     reorderedRows: function() {
       const self = this;
-      const rows = self.rows;
+      const rows = self.filteredRows;
       if (typeof self.order !== 'undefined' && self.order.column.length > 0){
         let sortedRows = self.rows.sort(function(a, b) {
-          const sortA = self.displayRows.find(function(row){
-            return row[self.primaryKey] === a[self.primaryKey];
-          });
-          const sortB = self.displayRows.find(function(row){
-            return row[self.primaryKey] === b[self.primaryKey];
-          });
           const column = self.getColumnByName(self.order.column);
-          let dataA = self.getValueForSorting(sortA[self.order.column], column);
-          let dataB = self.getValueForSorting(sortB[self.order.column], column);
+          let dataA = self.getValueForSorting(a[self.order.column], column, a);
+          let dataB = self.getValueForSorting(b[self.order.column], column, b);
+          if (dataA === dataB){
+            return 0;
+          }
+          if (dataA === ''){
+            return 1;
+          }
+          if (dataB === ''){
+            return -1;
+          }
+
           if (dataA < dataB){
             return -1;
           }

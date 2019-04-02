@@ -17,7 +17,7 @@
         </tr>
       </div>
       <div class="vue-advanced-table-scroll">
-        <div cellpadding="0" cellspacing="0" border="0" width="100%" v-bind:class="classObject.table" ref="table" class="vue-advanced-table">
+        <table cellpadding="0" cellspacing="0" border="0" width="100%" v-bind:class="classObject.table" ref="table" class="vue-advanced-table">
           <thead class="vue-advanced-table-header-placeholder" v-bind:class="classObject.header">
             <tr>
               <vue-advanced-table-column-header v-for="column in filteredColumnOrder" v-bind:classObject="classObject" v-bind:key="column" v-bind:column="column" v-bind="$props" v-bind:hiddenColumns="hiddenColumns" v-bind:columnName="column" />
@@ -30,7 +30,7 @@
               </vue-advanced-table-cell>
             </vue-advanced-table-row>
           </tbody>
-        </div>
+        </table>
       </div>
     </div>
   </div>

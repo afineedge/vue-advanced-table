@@ -11,7 +11,7 @@
         <template v-if="button.label">{{ button.label }}</template>
       </vue-advanced-table-button-export-csv>
 
-      <button type="button" v-on:click="button.action" v-bind:key="index" v-bind:class="getButtonClass(button)" v-else>
+      <button type="button" v-on:click="button.action($parent.$parent)" v-bind:key="index" v-bind:class="getButtonClass(button)" v-else>
         {{ button.label }}
       </button>
     </template>

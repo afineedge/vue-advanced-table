@@ -44,30 +44,30 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 import vueAdvancedTable from '../vue-advanced-table.vue'
 
 export default {
-	components: {
-		vueAdvancedTable
-	},
-	data: function() {
-		return {
-			tableConfig: {
-				primaryKey: 'id',
-				rows: [{
-					id: 0,
-					employeeName: 'Oscar Dunbrough'
-				},{
-					id: 1,
-					employeeName: 'Samantha Hutchence'
-				}],
-				columns: [{
-					label: 'ID',
-					name: 'id'
-				},{
-					label: 'Name',
-					name: 'employeeName'
-				}]
-			}
-		}
-	}
+  components: {
+    vueAdvancedTable
+  },
+  data: function() {
+    return {
+      tableConfig: {
+        primaryKey: 'id',
+        rows: [{
+            id: 0,
+            employeeName: 'Oscar Dunbrough'
+          },{
+            id: 1,
+            employeeName: 'Samantha Hutchence'
+        }],
+        columns: [{
+          label: 'ID',
+          name: 'id'
+        },{
+          label: 'Name',
+          name: 'employeeName'
+        }]
+      }
+    }
+  }
 }
 </script>
 ```
@@ -103,42 +103,41 @@ new Vue({
 table.js
 ```
 <script>
-	<template>
-		<div>
-			<vue-advanced-table v-bind="tableConfig"></vue-advanced-table>	    
-		</div>
-	</template>
+  <template>
+    <div>
+      <vue-advanced-table v-bind="tableConfig"></vue-advanced-table>	    
+    </div>
+  </template>
 
-	<script>
-
-  export default {
-		name: 'table',
-		components: {
-			vueAdvancedTable
-		},
-		data: function() {
-			return {
-				tableConfig: {
-					primaryKey: 'id',
-					rows: [{
-						id: 0,
-						employeeName: 'Oscar Dunbrough'
-					},{
-						id: 1,
-						employeeName: 'Samantha Hutchence'
-					}],
-					columns: [{
-						label: 'ID',
-						name: 'id'
-					},{
-						label: 'Name',
-						name: 'employeeName'
-					}]
-				}
-	    }
-	  }
-	}
-	</script>
+  <script>
+    export default {
+      name: 'table',
+      components: {
+        vueAdvancedTable
+      },
+      data: function() {
+        return {
+          tableConfig: {
+            primaryKey: 'id',
+            rows: [{
+              id: 0,
+              employeeName: 'Oscar Dunbrough'
+            },{
+              id: 1,
+              employeeName: 'Samantha Hutchence'
+            }],
+            columns: [{
+              label: 'ID',
+              name: 'id'
+            },{
+              label: 'Name',
+              name: 'employeeName'
+            }]
+          }
+        }
+      }
+    }
+  </script>
 </script>
 
 ```

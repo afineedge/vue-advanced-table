@@ -309,4 +309,25 @@ Location in ```localStorage``` in which to save table state for next time table 
 |---|---|---|
 |```false```|```String``` or ```Object```|```''```|
 
-Determines classes to be assigned to table if ```string```, or to elements matching keys if ```object```.
+Determines classes to be assigned to ```<table>``` element in component if ```string```, or to elements matching keys if ```object```.
+
+To assign classes to individual elements, use an object with keys for each object you wish to assign classes to. Example:
+```
+{
+  table: 'table table-sm table-striped',
+  header: 'bg-primary text-white',
+  buttons: 'btn-primary'
+}
+```
+
+#### Available targets for classes
+|Name|Description|
+|---|---|
+|```table```|```<table>``` element inside component|
+|```header```|```<thead>``` element inside component|
+|```headerCell```|column header inside table header|
+|```body```|```<tbody>``` element inside component|
+|```cell```|```<td>``` element inside table rows|
+|```buttonContainer```|container element for buttons|
+|```buttons```|each button (concatenated with classes assigned in ```buttons``` array of table)|
+|```search```|input element for search|

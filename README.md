@@ -105,7 +105,7 @@ table.js
 <script>
   <template>
     <div>
-      <vue-advanced-table v-bind="tableConfig"></vue-advanced-table>	    
+      <vue-advanced-table v-bind:rows="tableConfig.rows" v-bind:columns="tableConfig.columns" v-bind:primary-key="'id'"></vue-advanced-table>	    
     </div>
   </template>
 
@@ -118,7 +118,6 @@ table.js
       data: function() {
         return {
           tableConfig: {
-            primaryKey: 'id',
             rows: [{
               id: 0,
               employeeName: 'Oscar Dunbrough'

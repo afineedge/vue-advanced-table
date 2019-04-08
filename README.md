@@ -324,9 +324,9 @@ To assign classes to individual elements, use an object with keys for each objec
 |---|---|
 |```table```|```<table>``` element inside component|
 |```header```|```<thead>``` element inside component|
-|```headerCell```|column header inside table header|
+|```headerCell```|```<th>``` inside table header|
 |```body```|```<tbody>``` element inside component|
 |```cell```|```<td>``` element inside table rows|
-|```buttonContainer```|container element for buttons|
-|```buttons```|each button (concatenated with classes assigned in ```buttons``` array of table)|
-|```search```|input element for search|
+|```buttonContainer```|container ```<div>``` for buttons|
+|```buttons```|each ```<button>``` (concatenated with classes assigned in ```buttons``` array of table)|
+|```search```|```<input>``` element for search|

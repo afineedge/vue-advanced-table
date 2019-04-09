@@ -60,10 +60,6 @@ export default {
         return [];
       }
     },
-    tableElement: {
-      type: String,
-      required: false
-    },
     columns: {
       type: Array,
       required: true

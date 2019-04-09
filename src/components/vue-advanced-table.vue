@@ -24,7 +24,7 @@
             </tr>
           </thead>
           <tbody v-bind:class="classObject.body" ref="tbody">
-            <vue-advanced-table-row v-for="row in filteredRows" v-bind:row="row" v-bind:key="row[primaryKey]" v-bind:class="{ active: selectedRows.indexOf(row[primaryKey]) > -1 }">
+            <vue-advanced-table-row v-for="row in reorderedRows" v-bind:row="row" v-bind:key="row[primaryKey]" v-bind:class="{ active: selectedRows.indexOf(row[primaryKey]) > -1 }">
               <vue-advanced-table-cell v-for="column in filteredColumnOrder" v-bind:key="column" v-bind:column="getColumnByName(column)" v-bind:row="row" v-bind:class="classObject.cell">
                 <slot v-bind:name="'column-' + column" v-bind:row="row" v-bind:primary-key="primaryKey"></slot>
               </vue-advanced-table-cell>

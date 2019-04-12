@@ -54,33 +54,12 @@ export default {
       targetCell: null
     }
   },
-  mounted: function() {
-    const self = this;
-    const interval = 5;
-    setInterval(function(){
-      self.setColumnWidth();
-    }, interval);
-  },
   methods: {
     getColumnByName: function(name) {
       const self = this;
       return self.columns.find(function(column) {
         return column.name === name;
       });
-    },
-    setTargetCell: function() {
-      const self = this;
-      self.targetCell = self.$parent.$el.querySelector('[columnName="' + self.column + '"]');
-    },
-    setColumnWidth: function(){
-      const self = this;
-      const el = self.targetCell;
-      if (el !== null && self.width !== el.offsetWidth){
-        self.width = el.offsetWidth;
-        self.$el.width = self.width;
-      } else {
-        self.setTargetCell();
-      }
     },
     handleClick: function() {
       const self = this;
@@ -122,6 +101,8 @@ export default {
     box-sizing: border-box;
     border-bottom: 1px solid #ccc;
     flex-shrink: 0;
+    position: sticky;
+    top: 0;
   }
 
   .vue-advanced-table-column-header-content {

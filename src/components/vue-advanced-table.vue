@@ -11,21 +11,16 @@
       </div>
     </div>
     <div class="vue-advanced-table-wrapper">
-      <div class="vue-advanced-table-header-scroll">
-        <tr class="vue-advanced-table-header" v-bind:class="classObject.header">
-          <vue-advanced-table-column-header v-for="column in filteredColumnOrder" v-bind:classObject="classObject" v-bind:key="column" v-bind:column="column" v-bind="$props" v-bind:hiddenColumns="hiddenColumns" />
-        </tr>
-      </div>
       <div class="vue-advanced-table-scroll">
         <table cellpadding="0" cellspacing="0" border="0" width="100%" v-bind:class="classObject.table" ref="table" class="vue-advanced-table">
-          <thead class="vue-advanced-table-header-placeholder" v-bind:class="classObject.header">
+          <thead class="vue-advanced-table-header" v-bind:class="classObject.header">
             <tr>
-              <vue-advanced-table-column-header v-for="column in filteredColumnOrder" v-bind:classObject="classObject" v-bind:key="column" v-bind:column="column" v-bind="$props" v-bind:hiddenColumns="hiddenColumns" v-bind:columnName="column" />
+              <vue-advanced-table-column-header v-for="column in filteredColumnOrder" v-bind:classObject="classObject" v-bind:key="column" v-bind:column="column" v-bind="$props" v-bind:hiddenColumns="hiddenColumns" v-bind:columnName="column" v-bind:style="getFixedStyle(column, 'header')" />
             </tr>
           </thead>
           <tbody v-bind:class="classObject.body" ref="tbody">
             <vue-advanced-table-row v-for="row in reorderedRows" v-bind:row="row" v-bind:key="row[primaryKey]" v-bind:class="{ active: selectedRows.indexOf(row[primaryKey]) > -1 }">
-              <vue-advanced-table-cell v-for="column in filteredColumnOrder" v-bind:key="column" v-bind:column="getColumnByName(column)" v-bind:row="row" v-bind:class="classObject.cell">
+              <vue-advanced-table-cell v-for="column in filteredColumnOrder" v-bind:key="column" v-bind:column="getColumnByName(column)" v-bind:row="row" v-bind:class="classObject.cell" v-bind:style="getFixedStyle(column, 'cell')">
                 <slot v-bind:name="'column-' + column" v-bind:row="row" v-bind:primary-key="primaryKey"></slot>
               </vue-advanced-table-cell>
             </vue-advanced-table-row>
@@ -113,12 +108,6 @@ export default {
   mounted: function() {
     const self = this;
     var storedData;
-
-    var scroller = self.$el.querySelector('.vue-advanced-table-scroll');
-    var scrollHeader = self.$el.querySelector('.vue-advanced-table-header-scroll').querySelector('.vue-advanced-table-header');
-    scroller.addEventListener('scroll', function() {
-      scrollHeader.style.marginLeft = scroller.scrollLeft * -1 + 'px';
-    })
 
     if (self.storage.length > 0){
       storedData = self.getStoredTableInfo();
@@ -260,6 +249,24 @@ export default {
         return Number(sortData);
       }
       return sortData;
+    },
+    getFixedStyle: function(column, target){
+      const self = this;
+      if (self.fixedColumn === column){
+        if (target === 'header'){
+          return {
+            position: 'sticky',
+            left: 0,
+            zIndex: 2
+          }
+        } else {
+          return {
+            position: 'sticky',
+            left: 0,
+            zIndex: 1
+          }
+        }
+      }
     }
   },
   watch: {
@@ -294,6 +301,17 @@ export default {
       return self.columnOrder.filter(function(column){
         return self.isColumnVisible(column);
       });
+    },
+    fixedColumn: function() {
+      const self = this;
+      var fixedColumns = self.filteredColumnOrder.filter(function(column){
+        return self.getColumnByName(column).fixed;
+      });
+      if (fixedColumns.length > 1){
+        // eslint-disable-next-line
+        console.error('[Vue warn]: Multiple columns are assigned attribute "fixed" with value "true". Only the first column will be fixed.', self);
+      }
+      return fixedColumns[0];
     },
     filteredRows: function() {
       const self = this;
@@ -413,25 +431,19 @@ export default {
     overflow: hidden;
     flex-shrink: 0;
     width: 100%;
+    position: relative;
   }
 
   .vue-advanced-table-scroll {
     overflow-y: scroll;
-  }
-
-  .vue-advanced-table-header-placeholder {
-    opacity: 0;
-    visibility: collapse;
+    position: relative;
   }
 
   .vue-advanced-table-header {
-    display: flex;
-    align-items: stretch;
-    overflow: hidden;
   }
 
-  .vue-advanced-table-header .vue-advanced-table-column-header {
-    display: flex;
-    align-items: flex-end;
+  .vue-advanced-table-column-header {
+    background-color: #fff;
+    border-top: 0px;
   }
 </style>

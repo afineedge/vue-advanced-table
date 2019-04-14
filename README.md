@@ -203,6 +203,7 @@ The columns to be referenced from each row of the data set. Must be an array of 
 |```name``` |```true```|```String```|N/A|The column in the data to assign to this column|
 |```visible``` |```false```|```Boolean```|```true```|Determines whether column is visible or not|
 |```orderable``` |```false```|```Boolean```|```true```|Determines whether column is orderable or not|
+|```fixed```|```false```|```Boolean```|```false```|When table exceeds window width, fixes column to left side of table when scrolled horizontally so column would not appear. Only the first column assigned ```fixed``` will be fixed to the left; other columns will be ignored.
 |```render``` |```false```|```Function```|N/A|Function that returns value to display instead of row's column value. Original value is passed into this function as only parameter|
 
 ##### Column render example

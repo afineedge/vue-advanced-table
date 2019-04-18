@@ -38,6 +38,5 @@ export default {
 <style scoped>
   .vue-advanced-table-cell {
     padding: 4px;
-    background-color: #fff;
   }
 </style>

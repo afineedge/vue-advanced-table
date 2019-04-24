@@ -247,8 +247,6 @@ export default {
       }
       if (!isNaN(+sortData) && sortData.toString().length > 0){
         return Number(sortData);
-      } else if (typeof sortData === 'string'){
-        return sortData.toLowerCase().trim();
       }
       return sortData;
     },
@@ -341,8 +339,8 @@ export default {
       if (typeof self.order !== 'undefined' && self.order.column.length > 0){
         let sortedRows = self.rows.sort(function(a, b) {
           const column = self.getColumnByName(self.order.column);
-          let dataA = self.getValueForSorting(a[self.order.column], column, a);
-          let dataB = self.getValueForSorting(b[self.order.column], column, b);
+          let dataA = self.getValueForSorting(a[self.order.column], column, a).toString().toLowerCase().trim();
+          let dataB = self.getValueForSorting(b[self.order.column], column, b).toString().toLowerCase().trim();
           if (dataA === dataB){
             return 0;
           }

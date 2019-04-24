@@ -247,6 +247,8 @@ export default {
       }
       if (!isNaN(+sortData) && sortData.toString().length > 0){
         return Number(sortData);
+      } else if (typeof sortData === 'string'){
+        return sortData.toLowerCase().trim();
       }
       return sortData;
     },

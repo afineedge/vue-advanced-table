@@ -257,14 +257,15 @@ export default {
           return {
             position: 'sticky',
             left: 0,
-            zIndex: 2
+            zIndex: 2,
+            backgroundColor: 'inherit'
           }
         } else {
           return {
             position: 'sticky',
             left: 0,
             zIndex: 1,
-            backgroundColor: '#fff'
+            backgroundColor: 'inherit'
           }
         }
       }

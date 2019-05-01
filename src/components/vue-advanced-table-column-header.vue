@@ -103,6 +103,7 @@ export default {
     flex-shrink: 0;
     position: sticky;
     top: 0;
+    background-color: inherit;
   }
 
   .vue-advanced-table-column-header-content {

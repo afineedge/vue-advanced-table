@@ -13,18 +13,18 @@
     <div class="vue-advanced-table-wrapper">
       <div class="vue-advanced-table-scroll">
         <table cellpadding="0" cellspacing="0" border="0" width="100%" v-bind:class="classObject.table" ref="table" class="vue-advanced-table">
-          <thead class="vue-advanced-table-header" v-bind:class="classObject.header">
-            <tr>
-              <vue-advanced-table-column-header v-for="column in filteredColumnOrder" v-bind:classObject="classObject" v-bind:key="column" v-bind:column="column" v-bind="$props" v-bind:hiddenColumns="hiddenColumns" v-bind:columnName="column" v-bind:style="getFixedStyle(column, 'header')" />
-            </tr>
-          </thead>
           <tbody v-bind:class="classObject.body" ref="tbody">
             <vue-advanced-table-row v-for="row in reorderedRows" v-bind:row="row" v-bind:key="row[primaryKey]" v-bind:class="{ active: selectedRows.indexOf(row[primaryKey]) > -1 }">
-              <vue-advanced-table-cell v-for="column in filteredColumnOrder" v-bind:key="column" v-bind:column="getColumnByName(column)" v-bind:row="row" v-bind:class="classObject.cell" v-bind:style="getFixedStyle(column, 'cell')">
+              <vue-advanced-table-cell v-for="column in filteredColumnOrder" v-bind:key="column" v-bind:column="getColumnByName(column)" v-bind:row="row" v-bind:class="classObject.cell" v-bind:style="getFixedStyle(column)">
                 <slot v-bind:name="'column-' + column" v-bind:row="row" v-bind:primary-key="primaryKey"></slot>
               </vue-advanced-table-cell>
             </vue-advanced-table-row>
           </tbody>
+          <thead class="vue-advanced-table-header" v-bind:class="classObject.header">
+            <tr>
+              <vue-advanced-table-column-header v-for="column in filteredColumnOrder" v-bind:classObject="classObject" v-bind:key="column" v-bind:column="column" v-bind="$props" v-bind:hiddenColumns="hiddenColumns" v-bind:columnName="column" />
+            </tr>
+          </thead>
         </table>
       </div>
     </div>
@@ -253,20 +253,10 @@ export default {
     getFixedStyle: function(column, target){
       const self = this;
       if (self.fixedColumn === column){
-        if (target === 'header'){
-          return {
-            position: 'sticky',
-            left: 0,
-            zIndex: 2,
-            backgroundColor: 'inherit'
-          }
-        } else {
-          return {
-            position: 'sticky',
-            left: 0,
-            zIndex: 1,
-            backgroundColor: 'inherit'
-          }
+        return {
+          position: 'sticky',
+          left: 0,
+          backgroundColor: 'inherit'
         }
       }
     }

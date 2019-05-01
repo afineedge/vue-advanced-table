@@ -14,19 +14,22 @@
       <div class="vue-advanced-table-scroll">
         <table cellpadding="0" cellspacing="0" border="0" width="100%" v-bind:class="classObject.table" ref="table" class="vue-advanced-table">
           <tbody v-bind:class="classObject.body" ref="tbody">
-            <vue-advanced-table-row v-for="row in reorderedRows" v-bind:row="row" v-bind:key="row[primaryKey]" v-bind:class="{ active: selectedRows.indexOf(row[primaryKey]) > -1 }">
-              <vue-advanced-table-cell v-for="column in filteredColumnOrder" v-bind:key="column" v-bind:column="getColumnByName(column)" v-bind:row="row" v-bind:class="classObject.cell" v-bind:style="getFixedStyle(column)">
+            <vue-advanced-table-row v-for="row in currentPageRows" v-bind:row="row" v-bind:key="row[primaryKey]" v-bind:class="{ active: selectedRows.indexOf(row[primaryKey]) > -1 }">
+              <vue-advanced-table-cell v-for="column in filteredColumnOrder" v-bind:key="column" v-bind:column="getColumnByName(column)" v-bind:row="row" v-bind:class="classObject.cell" v-bind:style="getFixedStyle(column, 'cell')">
                 <slot v-bind:name="'column-' + column" v-bind:row="row" v-bind:primary-key="primaryKey"></slot>
               </vue-advanced-table-cell>
             </vue-advanced-table-row>
           </tbody>
           <thead class="vue-advanced-table-header" v-bind:class="classObject.header">
             <tr>
-              <vue-advanced-table-column-header v-for="column in filteredColumnOrder" v-bind:classObject="classObject" v-bind:key="column" v-bind:column="column" v-bind="$props" v-bind:hiddenColumns="hiddenColumns" v-bind:columnName="column" />
+              <vue-advanced-table-column-header v-for="column in filteredColumnOrder" v-bind:classObject="classObject" v-bind:key="column" v-bind:column="column" v-bind="$props" v-bind:hiddenColumns="hiddenColumns" v-bind:columnName="column" v-bind:style="getFixedStyle(column, 'header')" />
             </tr>
           </thead>
         </table>
       </div>
+    </div>
+    <div class="vue-advanced-table-pagination">
+      <vue-advanced-table-pagination v-if="perPage" v-model="currentPage" v-bind:total="reorderedRows.length" v-bind:perPage="perPage" v-bind:classes="classObject"></vue-advanced-table-pagination>
     </div>
   </div>
 </template>
@@ -36,6 +39,7 @@ import vueAdvancedTableColumnHeader from './vue-advanced-table-column-header.vue
 import vueAdvancedTableRow from './vue-advanced-table-row.vue'
 import vueAdvancedTableCell from './vue-advanced-table-cell.vue'
 import vueAdvancedTableButtons from './vue-advanced-table-buttons.vue'
+import vueAdvancedTablePagination from './vue-advanced-table-pagination.vue'
 
 export default {
   name: 'vue-advanced-table',
@@ -82,6 +86,12 @@ export default {
       type: Boolean,
       default: true
     },
+    perPage: {
+      type: Number
+    },
+    page: {
+      type: Number
+    },
     storage: {
       type: String,
       default: ''
@@ -96,18 +106,24 @@ export default {
       columnOrder: [],
       hiddenColumns: [],
       search: '',
-      tableData: []
+      tableData: [],
+      currentPage: 1
     }
   },
   components: {
     vueAdvancedTableColumnHeader,
     vueAdvancedTableRow,
     vueAdvancedTableCell,
-    vueAdvancedTableButtons
+    vueAdvancedTableButtons,
+    vueAdvancedTablePagination
   },
   mounted: function() {
     const self = this;
     var storedData;
+
+    if (typeof self.page !== 'undefined'){
+      self.currentPage = self.page;
+    }
 
     if (self.storage.length > 0){
       storedData = self.getStoredTableInfo();
@@ -224,8 +240,10 @@ export default {
           console.error('[Vue warn]: Column "' + column + '" template may contain only one root element.', self);
         }
         return self.getVNodeText(node[0].children, column);
-      } else {
+      } else if (node[0].text){
         return node[0].text.trim();
+      } else {
+        return '';
       }
     },
     getValueForSorting: function(data, column, row) {
@@ -253,10 +271,19 @@ export default {
     getFixedStyle: function(column, target){
       const self = this;
       if (self.fixedColumn === column){
-        return {
-          position: 'sticky',
-          left: 0,
-          backgroundColor: 'inherit'
+        if (target === 'header'){
+          return {
+            position: 'sticky',
+            left: 0,
+            zIndex: 1,
+            backgroundColor: 'inherit'
+          }
+        } else {
+          return {
+            position: 'sticky',
+            left: 0,
+            backgroundColor: 'inherit'
+          }
         }
       }
     }
@@ -357,6 +384,15 @@ export default {
 
       return rows;
     },
+    currentPageRows: function() {
+      var self = this;
+      if (typeof self.perPage !== 'undefined'){
+        var page = self.currentPage - 1;
+        var startIndex = page * self.perPage;
+        return self.reorderedRows.slice(startIndex, startIndex + self.perPage);
+      }
+      return self.reorderedRows;
+    },
     classObject: function() {
       const self = this;
       var classes = {
@@ -367,7 +403,12 @@ export default {
         header: '',
         headerCell: '',
         body: '',
-        cell: ''
+        cell: '',
+        paginationContainer: '',
+        paginationButtons: {
+          inactive: '',
+          active: ''
+        }
       }
 
       if (typeof self.classes === 'string'){

@@ -262,11 +262,11 @@ export default {
         } else if (column.format === 'dollar'){
           return Number(sortData.replace(/[^0-9.-]+/g,""));
         }
-      }
-      if (!isNaN(+sortData) && sortData.toString().length > 0){
+      } else if (!isNaN(+sortData) && sortData.toString().length > 0){
         return Number(sortData);
+      } else {
+        return sortData.toString().trim();
       }
-      return sortData;
     },
     getFixedStyle: function(column, target){
       const self = this;
@@ -355,8 +355,8 @@ export default {
       if (typeof self.order !== 'undefined' && self.order.column.length > 0){
         let sortedRows = self.rows.sort(function(a, b) {
           const column = self.getColumnByName(self.order.column);
-          let dataA = self.getValueForSorting(a[self.order.column], column, a).toString().toLowerCase().trim();
-          let dataB = self.getValueForSorting(b[self.order.column], column, b).toString().toLowerCase().trim();
+          let dataA = self.getValueForSorting(a[self.order.column], column, a);
+          let dataB = self.getValueForSorting(b[self.order.column], column, b);
           if (dataA === dataB){
             return 0;
           }

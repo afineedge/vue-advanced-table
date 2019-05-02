@@ -275,7 +275,6 @@ export default {
           return {
             position: 'sticky',
             left: 0,
-            zIndex: 1,
             backgroundColor: 'inherit'
           }
         } else {

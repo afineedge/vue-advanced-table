@@ -33,6 +33,7 @@
 </template>
 
 <script>
+/* eslint-disable */
 import vueAdvancedTableColumnHeader from './vue-advanced-table-column-header.vue'
 import vueAdvancedTableRow from './vue-advanced-table-row.vue'
 import vueAdvancedTableCell from './vue-advanced-table-cell.vue'
@@ -256,15 +257,14 @@ export default {
       }
       if (typeof column.format === 'string'){
         if (column.format === 'date'){
-          return new Date(sortData);
+          return Date.parse(new Date(sortData)).toString().toLowerCase();
         } else if (column.format === 'dollar'){
-          return Number(sortData.replace(/[^0-9.-]+/g,""));
+          return Number(sortData.replace(/[^0-9.-]+/g,"")).toString().toLowerCase();
         }
       } else if (!isNaN(+sortData) && sortData.toString().length > 0){
-        return Number(sortData);
-      } else {
-        return sortData.toString().trim();
+        return Number(sortData).toString().toLowerCase();
       }
+      return sortData.toString().toLowerCase();
     },
     getFixedStyle: function(column, target){
       const self = this;
@@ -333,12 +333,13 @@ export default {
       const self = this;
       const rows = self.rows;
       return rows.filter(function(row){
+
         let found = false;
         for (let i = 0; i < self.columnOrder.length; i++){
           const column = self.getColumnByName(self.columnOrder[i]);
           if (typeof row[column.name] !== 'undefined'){
             let data = self.getValueForSorting(row[column.name], column, row);
-            if (data.toString().toLowerCase().indexOf(self.search.toString().toLowerCase()) > -1){
+            if (data.indexOf(self.search.toString().toLowerCase()) > -1){
               found = true;
               break;
             }
@@ -350,8 +351,9 @@ export default {
     reorderedRows: function() {
       const self = this;
       const rows = self.filteredRows;
+
       if (typeof self.order !== 'undefined' && self.order.column.length > 0){
-        let sortedRows = self.rows.sort(function(a, b) {
+        let sortedRows = rows.sort(function(a, b) {
           const column = self.getColumnByName(self.order.column);
           let dataA = self.getValueForSorting(a[self.order.column], column, a);
           let dataB = self.getValueForSorting(b[self.order.column], column, b);
@@ -378,7 +380,6 @@ export default {
         }
         return sortedRows;
       }
-
       return rows;
     },
     currentPageRows: function() {

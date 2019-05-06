@@ -28,9 +28,7 @@
         </table>
       </div>
     </div>
-    <div class="vue-advanced-table-pagination">
-      <vue-advanced-table-pagination v-if="perPage" v-model="currentPage" v-bind:total="reorderedRows.length" v-bind:perPage="perPage" v-bind:classes="classObject"></vue-advanced-table-pagination>
-    </div>
+    <vue-advanced-table-pagination v-if="perPage" v-model="currentPage" v-bind:total="reorderedRows.length" v-bind:perPage="perPage" v-bind:classes="classObject"></vue-advanced-table-pagination>
   </div>
 </template>
 

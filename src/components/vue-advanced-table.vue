@@ -14,7 +14,7 @@
       <div class="vue-advanced-table-scroll">
         <table cellpadding="0" cellspacing="0" border="0" width="100%" v-bind:class="classObject.table" ref="table" class="vue-advanced-table">
           <tbody v-bind:class="classObject.body" ref="tbody">
-            <vue-advanced-table-row v-for="row in currentPageRows" v-bind:row="row" v-bind:key="row[primaryKey]" v-bind:class="{ active: selectedRows.indexOf(row[primaryKey]) > -1 }">
+            <vue-advanced-table-row v-for="row in currentPageRows" v-bind:row="row" v-bind:key="row[primaryKey]" v-bind:class="{ active: selectedRows.indexOf(row[primaryKey]) > -1 }" v-bind:process-row="processRow">
               <vue-advanced-table-cell v-for="column in filteredColumnOrder" v-bind:key="column" v-bind:column="getColumnByName(column)" v-bind:row="row" v-bind:class="classObject.cell" v-bind:style="getFixedStyle(column, 'cell')">
                 <slot v-bind:name="'column-' + column" v-bind:row="row" v-bind:primary-key="primaryKey"></slot>
               </vue-advanced-table-cell>
@@ -28,9 +28,7 @@
         </table>
       </div>
     </div>
-    <div class="vue-advanced-table-pagination">
-      <vue-advanced-table-pagination v-if="perPage" v-model="currentPage" v-bind:total="reorderedRows.length" v-bind:perPage="perPage" v-bind:classes="classObject"></vue-advanced-table-pagination>
-    </div>
+    <vue-advanced-table-pagination v-if="perPage" v-model="currentPage" v-bind:total="reorderedRows.length" v-bind:perPage="perPage" v-bind:classes="classObject"></vue-advanced-table-pagination>
   </div>
 </template>
 
@@ -96,6 +94,12 @@ export default {
     storage: {
       type: String,
       default: ''
+    },
+    processRow: {
+      type: Function,
+      default: function() {
+        return function() {};
+      }
     },
     classes: {
       type: [String, Object],

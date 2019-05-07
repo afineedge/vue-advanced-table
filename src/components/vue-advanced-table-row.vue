@@ -1,5 +1,5 @@
 <template>
-    <tr class="vue-advanced-table-row">
+    <tr class="vue-advanced-table-row" v-bind:class="processRow(row)">
       <slot>
       </slot>
     </tr>
@@ -17,6 +17,9 @@ export default {
     row: {
      type: Object,
      required: true
+    },
+    processRow: {
+     type: Function
     }
   },
   methods: {

@@ -259,12 +259,12 @@ export default {
       }
       if (typeof column.format === 'string'){
         if (column.format === 'date'){
-          return Date.parse(new Date(sortData)).toString().toLowerCase();
+          return Date.parse(new Date(sortData));
         } else if (column.format === 'dollar'){
-          return Number(sortData.replace(/[^0-9.-]+/g,"")).toString().toLowerCase();
+          return Number(sortData.replace(/[^0-9.-]+/g,""));
         }
       } else if (!isNaN(+sortData) && sortData.toString().length > 0){
-        return Number(sortData).toString().toLowerCase();
+        return Number(sortData);
       }
       return sortData.toString().toLowerCase();
     },
@@ -341,7 +341,7 @@ export default {
           const column = self.getColumnByName(self.columnOrder[i]);
           if (typeof row[column.name] !== 'undefined'){
             let data = self.getValueForSorting(row[column.name], column, row);
-            if (data.indexOf(self.search.toString().toLowerCase()) > -1){
+            if (data.toString().toLowerCase().indexOf(self.search.toString().toLowerCase()) > -1){
               found = true;
               break;
             }

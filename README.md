@@ -154,6 +154,9 @@ table.js
 |```searchable```   |```false```|```Boolean```|```true```|assigns visibility of search input|
 |```storage```      |```false```|```String```|```''```|location in ```localStorage``` in which to save table state for next time table is viewed. State is not saved if storage location is not provided|
 |```classes```      |```false```|```String``` or ```object```|```''```|determines classes to be assigned to table if ```string```, or to elements matching keys if ```object```|
+|```processRow```   |```false```|```Function```|N/A|determines classes to be conditionally assigned to rows based on data|
+|```perPage```      |```false```|```Number```|N/A|activates pagination and determines how many items to display per page|
+|```page```         |```false```|```Number```|N/A|determines page to be displayed when component mounted (if pagination active)|
 
 ## Props details
 
@@ -331,3 +334,23 @@ To assign classes to individual elements, use an object with keys for each objec
 |```buttonContainer```|container ```<div>``` for buttons|
 |```buttons```|each ```<button>``` (concatenated with classes assigned in ```buttons``` array of table)|
 |```search```|```<input>``` element for search|
+
+### processRow
+|Required|Format|Default value|
+|---|---|---|
+|```false```|```function```|N/A|
+
+Determines classes to be conditionally assigned to rows based on data.
+
+Example:
+`app.js`
+```
+processRow: function(row) {
+  if (row.status === 'active'){
+    return 'text-green';
+  } else {
+    return 'text-red';
+  }
+}
+```
+`index.html`

@@ -472,7 +472,7 @@ export default {
   }
 
   .vue-advanced-table-scroll {
-    overflow-y: scroll;
+    overflow-y: auto;
     position: relative;
   }
 

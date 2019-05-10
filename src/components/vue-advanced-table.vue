@@ -10,23 +10,21 @@
         </slot>
       </div>
     </div>
-    <div class="vue-advanced-table-wrapper">
-      <div class="vue-advanced-table-scroll">
-        <table cellpadding="0" cellspacing="0" border="0" width="100%" v-bind:class="classObject.table" ref="table" class="vue-advanced-table">
-          <tbody v-bind:class="classObject.body" ref="tbody">
-            <vue-advanced-table-row v-for="row in currentPageRows" v-bind:row="row" v-bind:key="row[primaryKey]" v-bind:class="{ active: selectedRows.indexOf(row[primaryKey]) > -1 }" v-bind:process-row="processRow">
-              <vue-advanced-table-cell v-for="column in filteredColumnOrder" v-bind:key="column" v-bind:column="getColumnByName(column)" v-bind:row="row" v-bind:class="classObject.cell" v-bind:style="getFixedStyle(column, 'cell')">
-                <slot v-bind:name="'column-' + column" v-bind:row="row" v-bind:primary-key="primaryKey"></slot>
-              </vue-advanced-table-cell>
-            </vue-advanced-table-row>
-          </tbody>
-          <thead class="vue-advanced-table-header" v-bind:class="classObject.header">
-            <tr>
-              <vue-advanced-table-column-header v-for="column in filteredColumnOrder" v-bind:classObject="classObject" v-bind:key="column" v-bind:column="column" v-bind="$props" v-bind:hiddenColumns="hiddenColumns" v-bind:columnName="column" v-bind:style="getFixedStyle(column, 'header')" />
-            </tr>
-          </thead>
-        </table>
-      </div>
+    <div class="vue-advanced-table-wrapper" ref="wrapper">
+      <table cellpadding="0" cellspacing="0" border="0" width="100%" v-bind:class="classObject.table" ref="table" class="vue-advanced-table">
+        <tbody v-bind:class="classObject.body" ref="tbody">
+          <vue-advanced-table-row v-for="row in currentPageRows" v-bind:row="row" v-bind:key="row[primaryKey]" v-bind:class="{ active: selectedRows.indexOf(row[primaryKey]) > -1 }" v-bind:process-row="processRow">
+            <vue-advanced-table-cell v-for="column in filteredColumnOrder" v-bind:key="column" v-bind:column="getColumnByName(column)" v-bind:row="row" v-bind:class="classObject.cell" v-bind:style="getFixedStyle(column, 'cell')">
+              <slot v-bind:name="'column-' + column" v-bind:row="row" v-bind:primary-key="primaryKey"></slot>
+            </vue-advanced-table-cell>
+          </vue-advanced-table-row>
+        </tbody>
+        <thead class="vue-advanced-table-header" v-bind:class="classObject.header">
+          <tr>
+            <vue-advanced-table-column-header v-for="column in filteredColumnOrder" v-bind:classObject="classObject" v-bind:key="column" v-bind:column="column" v-bind="$props" v-bind:hiddenColumns="hiddenColumns" v-bind:columnName="column" v-bind:style="getFixedStyle(column, 'header')" />
+          </tr>
+        </thead>
+      </table>
     </div>
     <vue-advanced-table-pagination v-if="perPage" v-model="currentPage" v-bind:total="reorderedRows.length" v-bind:perPage="perPage" v-bind:classes="classObject"></vue-advanced-table-pagination>
   </div>
@@ -315,6 +313,11 @@ export default {
     rows: function() {
       const self = this;
       self.updateTableData();
+    },
+    page: function() {
+      const self = this;
+      var wrapper = self.$refs.wrapper;
+      wrapper.scrollTop = 0;
     }
   },
   computed: {
@@ -440,6 +443,7 @@ export default {
     display: flex;
     flex-direction: column;
     flex-grow: 1;
+    min-height: 0px;
   }
 
   .vue-advanced-table-controls {
@@ -462,17 +466,14 @@ export default {
     position: relative;
     display: flex;
     flex-direction: column;
+    overflow-y: auto;
+    position: relative;
   }
 
   .vue-advanced-table-header-scroll {
     overflow: hidden;
     flex-shrink: 0;
     width: 100%;
-    position: relative;
-  }
-
-  .vue-advanced-table-scroll {
-    overflow-y: auto;
     position: relative;
   }
 

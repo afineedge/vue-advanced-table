@@ -1,5 +1,5 @@
 <template>
-  <button v-on:click.self="toggleOverlay" v-bind:class="classes">
+  <button v-on:click.self="toggleOverlay" v-bind:class="classes" v-bind:style="{'z-index': zIndex}">
     <slot>
       Column Settings
     </slot>
@@ -63,6 +63,15 @@ export default {
       },
       localColumnOrder: []
     }
+  },
+  computed: {
+      zIndex: function() {
+          var self = this;
+          if (self.overlay.active){
+            return 2;
+          }
+          return false;
+      }
   },
   methods: {
     toggleOverlay: function() {

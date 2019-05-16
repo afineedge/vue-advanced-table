@@ -288,6 +288,16 @@ export default {
           }
         }
       }
+    },
+    filteredTotal: function(column){
+      var self = this;
+      var response = 0;
+      for (var i = 1; i < self.loans; i++){
+          if (self.loans[i][column] === self.selectedType){
+            response += self.loans[i].value;
+          }
+      }
+      return response;
     }
   },
   watch: {
@@ -391,7 +401,7 @@ export default {
         return sortedRows;
       }
       return rows;
-    },
+    }
     currentPageRows: function() {
       var self = this;
       if (typeof self.perPage !== 'undefined'){
@@ -445,6 +455,7 @@ export default {
     flex-direction: column;
     flex-grow: 1;
     min-height: 0px;
+    z-index: 1;
   }
 
   .vue-advanced-table-controls {

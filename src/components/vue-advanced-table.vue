@@ -472,6 +472,11 @@ export default {
     position: relative;
   }
 
+  .vue-advanced-table {
+    max-width: fit-content;
+    width: fit-content;
+  }
+
   .vue-advanced-table-header-scroll {
     overflow: hidden;
     flex-shrink: 0;

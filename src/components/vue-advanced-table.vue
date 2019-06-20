@@ -438,13 +438,13 @@ export default {
       const self = this;
       if (typeof self.fixedColumn === 'undefined'){
         return {
-          maxWidth: 'fit-content',
-          width: 'fit-content'
+          width: '100%',
+          maxWidth: '100%'
         }
       } else {
         return {
-          width: '100%',
-          maxWidth: '100%'
+          maxWidth: 'fit-content',
+          width: 'fit-content'
         }
       }
     }

@@ -11,7 +11,7 @@
       </div>
     </div>
     <div class="vue-advanced-table-wrapper" ref="wrapper">
-      <table cellpadding="0" cellspacing="0" border="0" width="100%" v-bind:class="classObject.table" ref="table" class="vue-advanced-table">
+      <table cellpadding="0" cellspacing="0" border="0" v-bind:class="classObject.table" ref="table" class="vue-advanced-table" v-bind:style="tableWidth">
         <tbody v-bind:class="classObject.body" ref="tbody">
           <vue-advanced-table-row v-for="row in currentPageRows" v-bind:row="row" v-bind:key="row[primaryKey]" v-bind:class="{ active: selectedRows.indexOf(row[primaryKey]) > -1 }" v-bind:process-row="processRow">
             <vue-advanced-table-cell v-for="column in filteredColumnOrder" v-bind:key="column" v-bind:column="getColumnByName(column)" v-bind:row="row" v-bind:class="classObject.cell" v-bind:style="getFixedStyle(column, 'cell')">
@@ -433,6 +433,20 @@ export default {
       }
 
       return classes;
+    },
+    tableWidth: function() {
+      const self = this;
+      if (typeof self.fixedColumn === 'undefined'){
+        return {
+          maxWidth: 'fit-content',
+          width: 'fit-content'
+        }
+      } else {
+        return {
+          width: '100%',
+          maxWidth: '100%'
+        }
+      }
     }
   }
 }
@@ -470,11 +484,6 @@ export default {
     flex-direction: column;
     overflow-y: auto;
     position: relative;
-  }
-
-  .vue-advanced-table {
-    max-width: fit-content;
-    width: fit-content;
   }
 
   .vue-advanced-table-header-scroll {

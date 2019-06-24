@@ -21,7 +21,7 @@
         </tbody>
         <tfoot class="vue-advanced-table-footer" v-bind:class="classObject.footer">
           <tr>
-            <vue-advanced-table-column-footer v-for="column in filteredColumnOrder" v-bind:classObject="classObject" v-bind:key="column" v-bind:column="column" v-bind:columns="columns" v-bind:rows="reorderedRows">
+            <vue-advanced-table-column-footer v-if="footerVisible" v-for="column in filteredColumnOrder" v-bind:classObject="classObject" v-bind:key="column" v-bind:column="column" v-bind:columns="columns" v-bind:rows="reorderedRows">
               <slot v-bind:name="'footer-' + column" v-bind:table="reorderedRows" v-bind:primary-key="primaryKey"></slot>
             </vue-advanced-table-column-footer>
           </tr>
@@ -493,6 +493,16 @@ export default {
           width: 'fit-content'
         }
       }
+    },
+    footerVisible: function() {
+      const self = this;
+      var keys = Object.keys(self.$scopedSlots);
+      for (let i = 0; i < keys.length; i++){
+        if (keys[i].indexOf('footer-') === 0){
+          return true;
+        }
+      }
+      return false;
     }
   }
 }

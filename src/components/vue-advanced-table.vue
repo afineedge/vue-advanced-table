@@ -19,6 +19,13 @@
             </vue-advanced-table-cell>
           </vue-advanced-table-row>
         </tbody>
+        <tfoot class="vue-advanced-table-footer" v-bind:class="classObject.footer">
+          <tr>
+            <vue-advanced-table-column-footer v-for="column in filteredColumnOrder" v-bind:classObject="classObject" v-bind:key="column" v-bind:column="column" v-bind:columns="columns" v-bind:rows="reorderedRows">
+              <slot v-bind:name="'footer-' + column" v-bind:table="reorderedRows" v-bind:primary-key="primaryKey"></slot>
+            </vue-advanced-table-column-footer>
+          </tr>
+        </tfoot>
         <thead class="vue-advanced-table-header" v-bind:class="classObject.header">
           <tr>
             <vue-advanced-table-column-header v-for="column in filteredColumnOrder" v-bind:classObject="classObject" v-bind:key="column" v-bind:column="column" v-bind="$props" v-bind:hiddenColumns="hiddenColumns" v-bind:columnName="column" v-bind:style="getFixedStyle(column, 'header')" />
@@ -37,6 +44,7 @@ import vueAdvancedTableRow from './vue-advanced-table-row.vue'
 import vueAdvancedTableCell from './vue-advanced-table-cell.vue'
 import vueAdvancedTableButtons from './vue-advanced-table-buttons.vue'
 import vueAdvancedTablePagination from './vue-advanced-table-pagination.vue'
+import vueAdvancedTableColumnFooter from './vue-advanced-table-column-footer.vue'
 
 export default {
   name: 'vue-advanced-table',
@@ -118,7 +126,8 @@ export default {
     vueAdvancedTableRow,
     vueAdvancedTableCell,
     vueAdvancedTableButtons,
-    vueAdvancedTablePagination
+    vueAdvancedTablePagination,
+    vueAdvancedTableColumnFooter
   },
   mounted: function() {
     const self = this;
@@ -447,6 +456,8 @@ export default {
         headerCell: '',
         body: '',
         cell: '',
+        footer: '',
+        footerCell: '',
         paginationContainer: '',
         paginationButtons: {
           inactive: '',

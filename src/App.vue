@@ -16,6 +16,9 @@
               </option>
             </select>
           </template>
+          <template slot="footer-employeeID" slot-scope="data">
+            <div v-bind:style="{'align-self': right}">{{ data.table.length }}</div>
+          </template>
         </vue-advanced-table>
       </div>
       <div style="padding: 15px; background-color: #eee; flex-shrink: 0; margin-top: 15px;">
@@ -78,173 +81,26 @@ export default {
       employeeTable: {
         primaryKey: 'employeeID',
         rows: [{
-          firstName: 'Eric',
+          firstName: '',
           lastName: 'Edgerton',
           employeeID: 'EPAREE2',
           department: '0',
-          location: '0'
+          location: '0',
+          startDate: '03/01/2014'
         }, {
           firstName: 'Kevin',
           lastName: 'Morris',
           employeeID: 'EPARYJ6',
           department: '0',
-          location: '0'
+          location: '0',
+          startDate: ''
         }, {
           firstName: 'Tatiana',
           lastName: 'Nikolaeva',
           employeeID: 'EPARTN0',
           department: '0',
-          location: '0'
-        }, {
-          firstName: 'Aramis',
-          lastName: 'Camacho',
-          employeeID: 'EPARAC7',
-          department: '0',
-          location: '0'
-        }, {
-          firstName: 'Eric',
-          lastName: 'Edgerton',
-          employeeID: 'EPAREE2',
-          department: '0',
-          location: '0'
-        }, {
-          firstName: 'Kevin',
-          lastName: 'Morris',
-          employeeID: 'EPARYJ6',
-          department: '0',
-          location: '0'
-        }, {
-          firstName: 'Tatiana',
-          lastName: 'Nikolaeva',
-          employeeID: 'EPARTN0',
-          department: '0',
-          location: '0'
-        }, {
-          firstName: 'Aramis',
-          lastName: 'Camacho',
-          employeeID: 'EPARAC7',
-          department: '0',
-          location: '0'
-        }, {
-          firstName: 'Eric',
-          lastName: 'Edgerton',
-          employeeID: 'EPAREE2',
-          department: '0',
-          location: '0'
-        }, {
-          firstName: 'Kevin',
-          lastName: 'Morris',
-          employeeID: 'EPARYJ6',
-          department: '0',
-          location: '0'
-        }, {
-          firstName: 'Tatiana',
-          lastName: 'Nikolaeva',
-          employeeID: 'EPARTN0',
-          department: '0',
-          location: '0'
-        }, {
-          firstName: 'Aramis',
-          lastName: 'Camacho',
-          employeeID: 'EPARAC7',
-          department: '0',
-          location: '0'
-        }, {
-          firstName: 'Eric',
-          lastName: 'Edgerton',
-          employeeID: 'EPAREE2',
-          department: '0',
-          location: '0'
-        }, {
-          firstName: 'Kevin',
-          lastName: 'Morris',
-          employeeID: 'EPARYJ6',
-          department: '0',
-          location: '0'
-        }, {
-          firstName: 'Tatiana',
-          lastName: 'Nikolaeva',
-          employeeID: 'EPARTN0',
-          department: '0',
-          location: '0'
-        }, {
-          firstName: 'Aramis',
-          lastName: 'Camacho',
-          employeeID: 'EPARAC7',
-          department: '0',
-          location: '0'
-        }, {
-          firstName: 'Eric',
-          lastName: 'Edgerton',
-          employeeID: 'EPAREE2',
-          department: '0',
-          location: '0'
-        }, {
-          firstName: 'Kevin',
-          lastName: 'Morris',
-          employeeID: 'EPARYJ6',
-          department: '0',
-          location: '0'
-        }, {
-          firstName: 'Tatiana',
-          lastName: 'Nikolaeva',
-          employeeID: 'EPARTN0',
-          department: '0',
-          location: '0'
-        }, {
-          firstName: 'Aramis',
-          lastName: 'Camacho',
-          employeeID: 'EPARAC7',
-          department: '0',
-          location: '0'
-        }, {
-          firstName: 'Eric',
-          lastName: 'Edgerton',
-          employeeID: 'EPAREE2',
-          department: '0',
-          location: '0'
-        }, {
-          firstName: 'Kevin',
-          lastName: 'Morris',
-          employeeID: 'EPARYJ6',
-          department: '0',
-          location: '0'
-        }, {
-          firstName: 'Tatiana',
-          lastName: 'Nikolaeva',
-          employeeID: 'EPARTN0',
-          department: '0',
-          location: '0'
-        }, {
-          firstName: 'Aramis',
-          lastName: 'Camacho',
-          employeeID: 'EPARAC7',
-          department: '0',
-          location: '0'
-        }, {
-          firstName: 'Eric',
-          lastName: 'Edgerton',
-          employeeID: 'EPAREE2',
-          department: '0',
-          location: '0'
-        }, {
-          firstName: 'Kevin',
-          lastName: 'Morris',
-          employeeID: 'EPARYJ6',
-          department: '0',
-          location: '0'
-        }, {
-          firstName: 'Tatiana',
-          lastName: 'Nikolaeva',
-          employeeID: 'EPARTN0',
-          department: '0',
-          location: '0'
-        }, {
-          firstName: 'Aramis',
-          lastName: 'Camacho',
-          employeeID: 'EPARAC7',
-          department: '0',
-          location: '0'
+          location: '0',
+          startDate: '12/12/2012'
         }],
         columns: [{
           label: 'ID',
@@ -261,6 +117,10 @@ export default {
           render: function(data) {
             return self.getDepartmentByID(data).name;
           }
+        }, {
+          label: 'Start Date',
+          name: 'startDate',
+          format: 'date'
         }, {
           label: 'Location',
           name: 'location'

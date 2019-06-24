@@ -21,7 +21,7 @@
         </tbody>
         <tfoot class="vue-advanced-table-footer" v-bind:class="classObject.footer">
           <tr>
-            <vue-advanced-table-column-footer v-if="footerVisible" v-for="column in filteredColumnOrder" v-bind:classObject="classObject" v-bind:key="column" v-bind:column="column" v-bind:columns="columns" v-bind:rows="reorderedRows">
+            <vue-advanced-table-column-footer v-if="footerVisible" v-for="column in filteredColumnOrder" v-bind:classObject="classObject" v-bind:key="column" v-bind:column="column" v-bind:columns="columns" v-bind:rows="reorderedRows" v-bind:style="getFixedStyle(column, 'footer')">
               <slot v-bind:name="'footer-' + column" v-bind:table="reorderedRows" v-bind:primary-key="primaryKey"></slot>
             </vue-advanced-table-column-footer>
           </tr>

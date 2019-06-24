@@ -19,9 +19,9 @@
             </vue-advanced-table-cell>
           </vue-advanced-table-row>
         </tbody>
-        <tfoot class="vue-advanced-table-footer" v-bind:class="classObject.footer">
+        <tfoot class="vue-advanced-table-footer" v-bind:class="classObject.footer" v-if="footerVisible">
           <tr>
-            <vue-advanced-table-column-footer v-if="footerVisible" v-for="column in filteredColumnOrder" v-bind:classObject="classObject" v-bind:key="column" v-bind:column="column" v-bind:columns="columns" v-bind:rows="reorderedRows" v-bind:style="getFixedStyle(column, 'footer')">
+            <vue-advanced-table-column-footer v-for="column in filteredColumnOrder" v-bind:classObject="classObject" v-bind:key="column" v-bind:column="column" v-bind:columns="columns" v-bind:rows="reorderedRows" v-bind:style="getFixedStyle(column, 'footer')">
               <slot v-bind:name="'footer-' + column" v-bind:table="reorderedRows" v-bind:primary-key="primaryKey"></slot>
             </vue-advanced-table-column-footer>
           </tr>
@@ -283,7 +283,7 @@ export default {
     getFixedStyle: function(column, target){
       const self = this;
       if (self.fixedColumn === column){
-        if (target === 'header'){
+        if (target === 'header' || target === 'footer'){
           return {
             position: 'sticky',
             left: 0,

@@ -261,7 +261,8 @@ export default {
       }
       if (typeof column.format === 'string'){
         if (column.format === 'date'){
-          return Date.parse(new Date(sortData));
+          let date = new Date(sortData);
+          return date;
         } else if (column.format === 'dollar'){
           return Number(sortData.replace(/[^0-9.-]+/g,""));
         }
@@ -370,24 +371,58 @@ export default {
           if (dataA === dataB){
             return 0;
           }
-          if (dataA === ''){
-            return 1;
-          }
-          if (dataB === ''){
-            return -1;
-          }
+          if (self.order.direction == 'desc') {
+            if (column.format === 'date'){
+              if (isNaN(Date.parse(dataA))){
+                return 1;
+              }
+              if (isNaN(Date.parse(dataB))){
+                return -1;
+              }
+              dataA = new Date(dataA);
+              dataB = new Date(dataB); 
+            }
+            if (dataA === ''){
+              return 1;
+            }
+            if (dataB === ''){
+              return -1;
+            }
 
-          if (dataA < dataB){
-            return -1;
+            if (dataA < dataB){
+              return -1;
+            }
+            if (dataA > dataB){
+              return 1;
+            }
+            return 0;
+          } else {
+            if (column.format === 'date'){
+              if (isNaN(Date.parse(dataA))){
+                return 1;
+              }
+              if (isNaN(Date.parse(dataB))){
+                return -1;
+              }
+              dataA = new Date(dataA);
+              dataB = new Date(dataB); 
+            }
+            if (dataA === ''){
+              return 1;
+            }
+            if (dataB === ''){
+              return -1;
+            }
+
+            if (dataA < dataB){
+              return 1;
+            }
+            if (dataA > dataB){
+              return -1;
+            }
+            return 0;
           }
-          if (dataA > dataB){
-            return 1;
-          }
-          return 0;
         });
-        if (self.order.direction == 'desc') {
-          sortedRows.reverse();
-        }
         return sortedRows;
       }
       return rows;

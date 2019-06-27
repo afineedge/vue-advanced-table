@@ -49,69 +49,26 @@ export default {
         var pdfFonts = require('pdfmake/build/vfs_fonts.js')
         pdfMake.vfs = pdfFonts.pdfMake.vfs;
       }
-            html2canvas($('#tblCustomers')[0], {
-
-                onrendered: function (canvas) {
-                    var data = canvas.toDataURL();
-                    // var width = $("#tblCustomers").width();
-                    // var pageOrientation = 'landscape';
-                    // width = width/2;
-                    // var height = $("#tblCustomers").height();
-                    // height = height/2;
-                   // console.log("data", data);
-                    var docDefinition = {
-                    	pageOrientation: pageOrientation,
-                        content: [{
-                            image: data
-                            // ,
-                            // fit: [width,height]
-                        }]
-                    };
-                    pdfMake.createPdf(docDefinition).download("Table.pdf");
-                }
-            });
-  //     var docDefinition = {pageOrientation: 'landscape', content: [		{text: 'but you can provide a custom styler as well', margin: [0, 20, 0, 8]},
-		// {
-		// 	style: 'tableExample',
-		// 	table: {
-		// 		headerRows: 1,
-		// 		body: [
-		// 			[{text: 'Header 1', style: 'tableHeader'}, {text: 'Header 2', style: 'tableHeader'}, {text: 'Header 3', style: 'tableHeader'},{text: 'Header 1', style: 'tableHeader'}, {text: 'Header 2', style: 'tableHeader'}, {text: 'Header 3', style: 'tableHeader'},{text: 'Header 1', style: 'tableHeader'}, {text: 'Header 2', style: 'tableHeader'}, {text: 'Header 3', style: 'tableHeader'}],
-		// 			['Sample value 1', 'Sample value 2', 'Sample value 3','Sample value 1', 'Sample value 2', 'Sample value 3',,'Sample value 1', 'Sample value 2', 'Sample value 3'],
-		// 			['Sample value 1', 'Sample value 2', 'Sample value 3','Sample value 1', 'Sample value 2', 'Sample value 3',,'Sample value 1', 'Sample value 2', 'Sample value 3'],
-		// 			['Sample value 1', 'Sample value 2', 'Sample value 3','Sample value 1', 'Sample value 2', 'Sample value 3',,'Sample value 1', 'Sample value 2', 'Sample value 3'],
-		// 			['Sample value 1', 'Sample value 2', 'Sample value 3','Sample value 1', 'Sample value 2', 'Sample value 3',,'Sample value 1', 'Sample value 2', 'Sample value 3'],
-		// 			['Sample value 1', 'Sample value 2', 'Sample value 3','Sample value 1', 'Sample value 2', 'Sample value 3',,'Sample value 1', 'Sample value 2', 'Sample value 3'],
-		// 			['Sample value 1', 'Sample value 2', 'Sample value 3','Sample value 1', 'Sample value 2', 'Sample value 3',,'Sample value 1', 'Sample value 2', 'Sample value 3'],
-		// 			['Sample value 1', 'Sample value 2', 'Sample value 3','Sample value 1', 'Sample value 2', 'Sample value 3',,'Sample value 1', 'Sample value 2', 'Sample value 3'],
-		// 			['Sample value 1', 'Sample value 2', 'Sample value 3','Sample value 1', 'Sample value 2', 'Sample value 3',,'Sample value 1', 'Sample value 2', 'Sample value 3'],
-		// 			['Sample value 1', 'Sample value 2', 'Sample value 3','Sample value 1', 'Sample value 2', 'Sample value 3',,'Sample value 1', 'Sample value 2', 'Sample value 3'],
-		// 			['Sample value 1', 'Sample value 2', 'Sample value 3','Sample value 1', 'Sample value 2', 'Sample value 3',,'Sample value 1', 'Sample value 2', 'Sample value 3'],
-		// 			['Sample value 1', 'Sample value 2', 'Sample value 3','Sample value 1', 'Sample value 2', 'Sample value 3',,'Sample value 1', 'Sample value 2', 'Sample value 3'],
-		// 			['Sample value 1', 'Sample value 2', 'Sample value 3','Sample value 1', 'Sample value 2', 'Sample value 3',,'Sample value 1', 'Sample value 2', 'Sample value 3'],
-		// 			['Sample value 1', 'Sample value 2', 'Sample value 3','Sample value 1', 'Sample value 2', 'Sample value 3',,'Sample value 1', 'Sample value 2', 'Sample value 3'],
-		// 			['Sample value 1', 'Sample value 2', 'Sample value 3','Sample value 1', 'Sample value 2', 'Sample value 3',,'Sample value 1', 'Sample value 2', 'Sample value 3'],
-		// 			['Sample value 1', 'Sample value 2', 'Sample value 3','Sample value 1', 'Sample value 2', 'Sample value 3',,'Sample value 1', 'Sample value 2', 'Sample value 3'],
-		// 			['Sample value 1', 'Sample value 2', 'Sample value 3','Sample value 1', 'Sample value 2', 'Sample value 3',,'Sample value 1', 'Sample value 2', 'Sample value 3'],
-		// 		]
-		// 	},
-		// 	layout: {
-		// 		hLineWidth: function (i, node) {
-		// 			return (i === 0 || i === node.table.body.length) ? 2 : 1;
-		// 		},
-		// 		vLineWidth: function (i, node) {
-		// 			return (i === 0 || i === node.table.widths.length) ? 2 : 1;
-		// 		},
-		// 		hLineColor: function (i, node) {
-		// 			return (i === 0 || i === node.table.body.length) ? 'black' : 'gray';
-		// 		},
-		// 		vLineColor: function (i, node) {
-		// 			return (i === 0 || i === node.table.widths.length) ? 'black' : 'gray';
-		// 		},
-		// 	}
-
-		// },] }
-  //     pdfMake.createPdf(docDefinition).download('optionalName.pdf')
+      html2canvas($('#tblCustomers')[0], {
+        onrendered: function (canvas) {
+          var data = canvas.toDataURL();
+          // var width = $("#tblCustomers").width();
+          // var pageOrientation = 'landscape';
+          // width = width/2;
+          // var height = $("#tblCustomers").height();
+          // height = height/2;
+         // console.log("data", data);
+          var docDefinition = {
+          	pageOrientation: pageOrientation,
+              content: [{
+                  image: data
+                  // ,
+                  // fit: [width,height]
+              }]
+          };
+          pdfMake.createPdf(docDefinition).download("Table.pdf");
+        }
+      });
     }
    },
   mounted: function() {

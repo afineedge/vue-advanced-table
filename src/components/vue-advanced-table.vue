@@ -19,7 +19,7 @@
             </vue-advanced-table-cell>
           </vue-advanced-table-row>
         </tbody>
-        <tfoot class="vue-advanced-table-footer" v-bind:class="classObject.footer" v-if="footerVisible">
+        <tfoot class="vue-advanced-table-footer" v-bind:class="classObject.footer" v-if="footerVisible" ref="tfoot">
           <tr>
             <vue-advanced-table-column-footer v-for="column in filteredColumnOrder" v-bind:classObject="classObject" v-bind:key="column" v-bind:column="column" v-bind:columns="columns" v-bind:rows="reorderedRows" v-bind:style="getFixedStyle(column, 'footer')">
               <slot v-bind:name="'footer-' + column" v-bind:table="reorderedRows" v-bind:primary-key="primaryKey"></slot>
@@ -237,11 +237,24 @@ export default {
           data.push(rowData);
         }
 
+        var footerRow = self.$refs.tfoot.getElementsByTagName('tr');
+        var footerData = [];
+        for (let i = 0; i < footerRow.length; i++){
+          let rowData = [];
+          const row = footerRow[i];
+          const cells = row.getElementsByTagName('td');
+          for (let r = 0; r < cells.length; r++){
+            const cell = cells[r];
+            footerData.push(cell.textContent.trim());
+          }
+          footerData.push(rowData);
+        }
+
         var columnHeaders = self.filteredColumnOrder.map(function(column){
           return self.getColumnByName(column).label;
         })
 
-        self.tableData = [[...columnHeaders], ...data];
+        self.tableData = [[...columnHeaders], ...data, ...footerData];
       })
     },
     getVNodeText: function(node, column){

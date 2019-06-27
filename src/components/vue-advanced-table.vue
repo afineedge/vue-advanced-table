@@ -242,7 +242,7 @@ export default {
         for (let i = 0; i < footerRow.length; i++){
           let rowData = [];
           const row = footerRow[i];
-          const cells = row.getElementsByTagName('td');
+          const cells = row.getElementsByTagName('th');
           for (let r = 0; r < cells.length; r++){
             const cell = cells[r];
             footerData.push(cell.textContent.trim());
@@ -254,7 +254,7 @@ export default {
           return self.getColumnByName(column).label;
         })
 
-        self.tableData = [[...columnHeaders], ...data, ...footerData];
+        self.tableData = [[...columnHeaders], ...data, [...footerData]];
       })
     },
     getVNodeText: function(node, column){

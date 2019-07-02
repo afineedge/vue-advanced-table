@@ -237,24 +237,28 @@ export default {
           data.push(rowData);
         }
 
-        var footerRow = self.$refs.tfoot.getElementsByTagName('tr');
-        var footerData = [];
-        for (let i = 0; i < footerRow.length; i++){
-          let rowData = [];
-          const row = footerRow[i];
-          const cells = row.getElementsByTagName('th');
-          for (let r = 0; r < cells.length; r++){
-            const cell = cells[r];
-            footerData.push(cell.textContent.trim());
-          }
-          footerData.push(rowData);
-        }
-
         var columnHeaders = self.filteredColumnOrder.map(function(column){
           return self.getColumnByName(column).label;
         })
 
-        self.tableData = [[...columnHeaders], ...data, [...footerData]];
+        if (typeof self.$refs.tfoot !== 'undefined'){
+          var footerRow = self.$refs.tfoot.getElementsByTagName('tr');
+          var footerData = [];
+          for (let i = 0; i < footerRow.length; i++){
+            let rowData = [];
+            const row = footerRow[i];
+            const cells = row.getElementsByTagName('th');
+            for (let r = 0; r < cells.length; r++){
+              const cell = cells[r];
+              footerData.push(cell.textContent.trim());
+            }
+            footerData.push(rowData);
+          }
+
+          self.tableData = [[...columnHeaders], ...data, [...footerData]];
+        } else {
+          self.tableData = [[...columnHeaders], ...data];
+        }
       })
     },
     getVNodeText: function(node, column){

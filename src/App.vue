@@ -17,7 +17,7 @@
             </select>
           </template>
           <template slot="footer-employeeID" slot-scope="data">
-            <div v-bind:style="{'align-self': right}">{{ data.table.length }}</div>
+            <div v-bind:style="{'align-self': 'right'}">{{ data.table.length }}</div>
           </template>
         </vue-advanced-table>
       </div>

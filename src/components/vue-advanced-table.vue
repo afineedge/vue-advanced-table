@@ -39,6 +39,8 @@
 
 <script>
 /* eslint-disable */
+import Vue from 'vue';
+window.Vue = Vue;
 import vueAdvancedTableColumnHeader from './vue-advanced-table-column-header.vue'
 import vueAdvancedTableRow from './vue-advanced-table-row.vue'
 import vueAdvancedTableCell from './vue-advanced-table-cell.vue'
@@ -250,9 +252,9 @@ export default {
             const cells = row.getElementsByTagName('th');
             for (let r = 0; r < cells.length; r++){
               const cell = cells[r];
-              footerData.push(cell.textContent.trim());
+              rowData.push(cell.textContent.trim());
             }
-            footerData.push(rowData);
+            footerData = rowData;
           }
 
           self.tableData = [[...columnHeaders], ...data, [...footerData]];

@@ -92,14 +92,6 @@
 				}
 			}
 		},
-		created: function() {
-			var self = this;
-		},
-		watch: {
-			value: function() {
-				var self = this;
-			}
-		},
 		computed: {
 			totalPages: function() {
 				var self = this;
@@ -113,36 +105,25 @@
 					end: []
 				};
 				if (self.value < 4){
-					var startPage = 1;
+					let startPage = 1;
 					for (let i = 0; i <= 5; i++){
 						pages.start.push(startPage + i);
 					}
 					pages.end.push(self.totalPages);
 				} else if (self.value < self.totalPages - 3){
-					var startPage = self.value - 2;
+					let startPage = self.value - 2;
 					pages.start.push(1);
 					for (let i = 0; i <= 4; i++){
 						pages.middle.push(startPage + i);
 					}
 					pages.end.push(self.totalPages);
 				} else {
-					var startPage = self.totalPages - 4;
+					let startPage = self.totalPages - 4;
 					pages.start.push(1);
 					for (let i = 0; i <= 4; i++){
 						pages.end.push(startPage + i);
 					}
 				}
-				/*if (self.value < 5){
-					startPage = 1;
-				} else {
-					startPage = self.value;
-				}
-				for (var i = 0; i <= 4; i++){
-					pages.start.push(startPage + i);
-				}*/
-				/*for (let i = self.totalPages - 3; i <= self.totalPages; i++){
-					pages.end.push(i);
-				}*/
 				return pages;
 			}
 		},

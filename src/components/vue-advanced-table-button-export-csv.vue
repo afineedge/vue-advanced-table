@@ -54,6 +54,10 @@ export default {
     createCSV: function() {
       const self = this;
 
+      if (typeof self.action === 'function'){
+          self.action(); 
+      }
+
       var wb = XLSX.utils.book_new();
       wb.Props = {
         Title: self.button.title || 'Worksheet',

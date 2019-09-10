@@ -40,6 +40,11 @@ export default {
   },
   methods: {
     test: function() {
+
+      if (typeof self.action === 'function'){
+          self.action(); 
+      }
+      
     	var self = this;
     	// var fs = = require('fs');
     	console.log("Table", self.table);

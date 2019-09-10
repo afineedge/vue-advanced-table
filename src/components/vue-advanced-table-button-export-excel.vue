@@ -48,27 +48,31 @@ export default {
     return {
     }
   },
-    computed: {
-        tableRows: function() {
-            var self = this;
-            var table = self.rows.map(function(row) {
-            var rowData = [];
-            for (var i = 0; i < self.filteredColumnOrder.length; i++){
-                 var column = self.filteredColumnOrder[i];
-                rowData.push(row[column]);
-            }
-
-            return rowData;
-            })
-
-        return [[...self.filteredColumnOrder], ...table];
+  computed: {
+    tableRows: function() {
+      var self = this;
+      var table = self.rows.map(function(row) {
+        var rowData = [];
+        for (var i = 0; i < self.filteredColumnOrder.length; i++){
+          var column = self.filteredColumnOrder[i];
+          rowData.push(row[column]);
         }
-    },
+
+        return rowData;
+      })
+
+      return [[...self.filteredColumnOrder], ...table];
+    }
+  },
 
   methods: {
 
     createExcel: function() {
      const self = this;
+
+      if (typeof self.action === 'function'){
+          self.action(); 
+      }
 
       var wb = XLSX.utils.book_new();
       wb.Props = {

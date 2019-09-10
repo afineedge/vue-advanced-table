@@ -39115,12 +39115,12 @@ var vue_advanced_table_cell_component = normalizeComponent(
 )
 
 /* harmony default export */ var vue_advanced_table_cell = (vue_advanced_table_cell_component.exports);
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"06d1d155-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/vue-advanced-table-buttons.vue?vue&type=template&id=699d52e5&scoped=true&
-var vue_advanced_table_buttonsvue_type_template_id_699d52e5_scoped_true_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{class:_vm.classObject.buttonContainer},[_vm._l((_vm.buttons),function(button,index){return [(_vm.isColumnSettingsButton(button))?_c('vue-advanced-table-button-column-settings',_vm._b({key:index,attrs:{"classes":_vm.getButtonClass(button)},on:{"update:columnOrder":function($event){_vm.$emit('update:columnOrder', $event)}}},'vue-advanced-table-button-column-settings',_vm.$props,false),[(button.label)?[_vm._v(_vm._s(button.label))]:_vm._e()],2):(_vm.isExcelExportButton(button))?_c('vue-advanced-table-button-export-excel',_vm._b({key:index,class:_vm.getButtonClass(button),attrs:{"button":button}},'vue-advanced-table-button-export-excel',_vm.$props,false),[(button.label)?[_vm._v(_vm._s(button.label))]:_vm._e()],2):(_vm.isCsvExportButton(button))?_c('vue-advanced-table-button-export-csv',_vm._b({key:index,class:_vm.getButtonClass(button),attrs:{"button":button}},'vue-advanced-table-button-export-csv',_vm.$props,false),[(button.label)?[_vm._v(_vm._s(button.label))]:_vm._e()],2):_c('button',{key:index,class:_vm.getButtonClass(button),attrs:{"type":"button"},on:{"click":function($event){button.action(_vm.$parent.$parent)}}},[_vm._v("\n      "+_vm._s(button.label)+"\n    ")])]})],2)}
-var vue_advanced_table_buttonsvue_type_template_id_699d52e5_scoped_true_staticRenderFns = []
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"06d1d155-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/vue-advanced-table-buttons.vue?vue&type=template&id=71922505&scoped=true&
+var vue_advanced_table_buttonsvue_type_template_id_71922505_scoped_true_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{class:_vm.classObject.buttonContainer},[_vm._l((_vm.buttons),function(button,index){return [(_vm.isColumnSettingsButton(button))?_c('vue-advanced-table-button-column-settings',_vm._b({key:index,attrs:{"classes":_vm.getButtonClass(button),"action":button.action},on:{"update:columnOrder":function($event){_vm.$emit('update:columnOrder', $event)}}},'vue-advanced-table-button-column-settings',_vm.$props,false),[(button.label)?[_vm._v(_vm._s(button.label))]:_vm._e()],2):(_vm.isExcelExportButton(button))?_c('vue-advanced-table-button-export-excel',_vm._b({key:index,class:_vm.getButtonClass(button),attrs:{"button":button,"action":button.action}},'vue-advanced-table-button-export-excel',_vm.$props,false),[(button.label)?[_vm._v(_vm._s(button.label))]:_vm._e()],2):(_vm.isCsvExportButton(button))?_c('vue-advanced-table-button-export-csv',_vm._b({key:index,class:_vm.getButtonClass(button),attrs:{"button":button}},'vue-advanced-table-button-export-csv',_vm.$props,false),[(button.label)?[_vm._v(_vm._s(button.label))]:_vm._e()],2):_c('button',{key:index,class:_vm.getButtonClass(button),attrs:{"type":"button"},on:{"click":function($event){button.action(_vm.$parent.$parent)}}},[_vm._v("\n      "+_vm._s(button.label)+"\n    ")])]})],2)}
+var vue_advanced_table_buttonsvue_type_template_id_71922505_scoped_true_staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/vue-advanced-table-buttons.vue?vue&type=template&id=699d52e5&scoped=true&
+// CONCATENATED MODULE: ./src/components/vue-advanced-table-buttons.vue?vue&type=template&id=71922505&scoped=true&
 
 // CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"06d1d155-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/vue-advanced-table-button-column-settings.vue?vue&type=template&id=21bacf4e&scoped=true&
 var vue_advanced_table_button_column_settingsvue_type_template_id_21bacf4e_scoped_true_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('button',{class:_vm.classes,style:({'z-index': _vm.zIndex}),on:{"click":function($event){if($event.target !== $event.currentTarget){ return null; }return _vm.toggleOverlay($event)}}},[_vm._t("default",[_vm._v("\n    Column Settings\n  ")]),(_vm.overlay.active)?_c('vue-advanced-table-overlay',[_c('div',{staticClass:"vue-advanced-table-column-settings"},_vm._l((_vm.columnOrder),function(column,index){return _c('div',{key:column,staticClass:"vue-advanced-table-column-setting"},[_c('div',{class:{'inactive': !_vm.isColumnVisible(column)}},[_vm._v("\n          "+_vm._s(_vm.getColumnByName(column).label)+"\n        ")]),_c('div',{staticClass:"vue-advanced-table-column-setting-actions"},[_c('button',{class:_vm.classes,attrs:{"title":"Move up"},on:{"click":function($event){_vm.changeColumnPosition(index, 'up')}}},[_vm._v("\n            ⇧\n           ")]),_c('button',{class:_vm.classes,attrs:{"title":"Move down"},on:{"click":function($event){_vm.changeColumnPosition(index, 'down')}}},[_vm._v("\n            ⇩\n           ")]),_c('button',{class:['inactive' ? !_vm.isColumnVisible(column) : undefined, _vm.classes],on:{"click":function($event){_vm.toggleColumnVisibility(column)}}},[_vm._v("\n            Toggle\n           ")])])])}),0)]):_vm._e()],2)}
@@ -39352,12 +39352,12 @@ var vue_advanced_table_button_column_settings_component = normalizeComponent(
 )
 
 /* harmony default export */ var vue_advanced_table_button_column_settings = (vue_advanced_table_button_column_settings_component.exports);
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"06d1d155-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/vue-advanced-table-button-export-excel.vue?vue&type=template&id=23db726b&
-var vue_advanced_table_button_export_excelvue_type_template_id_23db726b_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('button',{on:{"click":function($event){_vm.createExcel()}}},[_vm._t("default",[_vm._v("\n        Export Excel\n    ")])],2)}
-var vue_advanced_table_button_export_excelvue_type_template_id_23db726b_staticRenderFns = []
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"06d1d155-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/vue-advanced-table-button-export-excel.vue?vue&type=template&id=cf3310ca&
+var vue_advanced_table_button_export_excelvue_type_template_id_cf3310ca_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('button',{on:{"click":function($event){_vm.createExcel()}}},[_vm._t("default",[_vm._v("\n        Export Excel\n    ")])],2)}
+var vue_advanced_table_button_export_excelvue_type_template_id_cf3310ca_staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/vue-advanced-table-button-export-excel.vue?vue&type=template&id=23db726b&
+// CONCATENATED MODULE: ./src/components/vue-advanced-table-button-export-excel.vue?vue&type=template&id=cf3310ca&
 
 // EXTERNAL MODULE: ./node_modules/core-js/modules/es6.typed.uint8-array.js
 var es6_typed_uint8_array = __webpack_require__("34ef");
@@ -39437,6 +39437,11 @@ var FileSaver_min = __webpack_require__("21a6");
   methods: {
     createExcel: function createExcel() {
       var self = this;
+
+      if (typeof self.action === 'function') {
+        self.action();
+      }
+
       var wb = xlsx_default.a.utils.book_new();
       wb.Props = {
         Title: self.button.title || 'Worksheet',
@@ -39483,8 +39488,8 @@ var FileSaver_min = __webpack_require__("21a6");
 
 var vue_advanced_table_button_export_excel_component = normalizeComponent(
   components_vue_advanced_table_button_export_excelvue_type_script_lang_js_,
-  vue_advanced_table_button_export_excelvue_type_template_id_23db726b_render,
-  vue_advanced_table_button_export_excelvue_type_template_id_23db726b_staticRenderFns,
+  vue_advanced_table_button_export_excelvue_type_template_id_cf3310ca_render,
+  vue_advanced_table_button_export_excelvue_type_template_id_cf3310ca_staticRenderFns,
   false,
   null,
   null,
@@ -39493,12 +39498,12 @@ var vue_advanced_table_button_export_excel_component = normalizeComponent(
 )
 
 /* harmony default export */ var vue_advanced_table_button_export_excel = (vue_advanced_table_button_export_excel_component.exports);
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"06d1d155-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/vue-advanced-table-button-export-csv.vue?vue&type=template&id=f3f168b4&
-var vue_advanced_table_button_export_csvvue_type_template_id_f3f168b4_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('button',{on:{"click":function($event){_vm.createCSV()}}},[_vm._t("default",[_vm._v("\n        Export CSV\n     ")])],2)}
-var vue_advanced_table_button_export_csvvue_type_template_id_f3f168b4_staticRenderFns = []
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"06d1d155-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/vue-advanced-table-button-export-csv.vue?vue&type=template&id=28827728&
+var vue_advanced_table_button_export_csvvue_type_template_id_28827728_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('button',{on:{"click":function($event){_vm.createCSV()}}},[_vm._t("default",[_vm._v("\n        Export CSV\n     ")])],2)}
+var vue_advanced_table_button_export_csvvue_type_template_id_28827728_staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/vue-advanced-table-button-export-csv.vue?vue&type=template&id=f3f168b4&
+// CONCATENATED MODULE: ./src/components/vue-advanced-table-button-export-csv.vue?vue&type=template&id=28827728&
 
 // CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js??ref--12-0!./node_modules/thread-loader/dist/cjs.js!./node_modules/babel-loader/lib!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/vue-advanced-table-button-export-csv.vue?vue&type=script&lang=js&
 
@@ -39552,6 +39557,11 @@ var vue_advanced_table_button_export_csvvue_type_template_id_f3f168b4_staticRend
   methods: {
     createCSV: function createCSV() {
       var self = this;
+
+      if (typeof self.action === 'function') {
+        self.action();
+      }
+
       var wb = xlsx_default.a.utils.book_new();
       wb.Props = {
         Title: self.button.title || 'Worksheet',
@@ -39598,8 +39608,8 @@ var vue_advanced_table_button_export_csvvue_type_template_id_f3f168b4_staticRend
 
 var vue_advanced_table_button_export_csv_component = normalizeComponent(
   components_vue_advanced_table_button_export_csvvue_type_script_lang_js_,
-  vue_advanced_table_button_export_csvvue_type_template_id_f3f168b4_render,
-  vue_advanced_table_button_export_csvvue_type_template_id_f3f168b4_staticRenderFns,
+  vue_advanced_table_button_export_csvvue_type_template_id_28827728_render,
+  vue_advanced_table_button_export_csvvue_type_template_id_28827728_staticRenderFns,
   false,
   null,
   null,
@@ -39719,11 +39729,11 @@ var vue_advanced_table_button_export_csv_component = normalizeComponent(
 
 var vue_advanced_table_buttons_component = normalizeComponent(
   components_vue_advanced_table_buttonsvue_type_script_lang_js_,
-  vue_advanced_table_buttonsvue_type_template_id_699d52e5_scoped_true_render,
-  vue_advanced_table_buttonsvue_type_template_id_699d52e5_scoped_true_staticRenderFns,
+  vue_advanced_table_buttonsvue_type_template_id_71922505_scoped_true_render,
+  vue_advanced_table_buttonsvue_type_template_id_71922505_scoped_true_staticRenderFns,
   false,
   null,
-  "699d52e5",
+  "71922505",
   null
   
 )

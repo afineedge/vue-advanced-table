@@ -40,9 +40,6 @@ export default {
     button: {
       type: [String, Object],
       required: true
-    },
-    action: {
-      type: Function
     }
   },
   components: {
@@ -73,8 +70,8 @@ export default {
     createExcel: function() {
      const self = this;
 
-      if (typeof self.action === 'function'){
-          self.action(); 
+      if (typeof self.button.action === 'function'){
+        self.button.action(); 
       }
 
       var wb = XLSX.utils.book_new();

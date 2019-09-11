@@ -44,8 +44,8 @@ export default {
   methods: {
     test: function() {
 
-      if (typeof self.action === 'function'){
-          self.action(); 
+      if (typeof self.button.action === 'function'){
+        self.button.action(); 
       }
       
     	var self = this;

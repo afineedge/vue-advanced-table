@@ -1,7 +1,7 @@
 <template>
   <div v-bind:class="classObject.buttonContainer">
     <template v-for="(button, index) in buttons">
-      <vue-advanced-table-button-column-settings v-if="isColumnSettingsButton(button)" v-bind:key="index" v-bind="$props" v-bind:classes="getButtonClass(button)" v-bind:action="button.action" v-on:update:columnOrder="$emit('update:columnOrder', $event)">
+      <vue-advanced-table-button-column-settings v-if="isColumnSettingsButton(button)" v-bind:key="index" v-bind="$props" v-bind:classes="getButtonClass(button)" v-bind:button="button" v-on:update:columnOrder="$emit('update:columnOrder', $event)">
         <template v-if="button.label">{{ button.label }}</template>
       </vue-advanced-table-button-column-settings>
       <vue-advanced-table-button-export-excel v-else-if="isExcelExportButton(button)" v-bind:key="index" v-bind="$props" v-bind:button="button" v-bind:class="getButtonClass(button)" v-bind:action="button.action">

@@ -30,6 +30,9 @@ export default {
     hiddenColumns: {
       type: Array,
       required: false
+    },
+    action: {
+      type: Function
     }
   },
   components: {

@@ -40,6 +40,9 @@ export default {
     button: {
       type: [String, Object],
       required: true
+    },
+    action: {
+      type: Function
     }
   },
   components: {

@@ -289,7 +289,8 @@ export default {
       }
       if (typeof column.format === 'string'){
         if (column.format === 'date'){
-          let date = new Date(sortData);
+          let newDate = new Date(sortData)
+          let date = (newDate.getMonth() + 1) + '/' + newDate.getDate() + '/' + newDate.getFullYear();
           return date;
         } else if (column.format === 'dollar'){
           return Number(sortData.replace(/[^0-9.-]+/g,""));

@@ -175,21 +175,18 @@ export default {
       const self = this;
 
       if (Array.isArray(order)){
-        const columns = self.columns.map(function(column) {
-          return column.name;
-        });
         let columnOrder = [];
         const currColumns = self.columns.map(function(column) {
           return column.name;
         });
         for (let i = 0; i < order.length; i++){
-          if (columns.indexOf(order[i]) > -1){
+          if (currColumns.indexOf(order[i]) > -1){
             columnOrder.push(order[i]);
           }
         }
         for (let i = 0; i < currColumns.length; i++){
           if (columnOrder.indexOf(currColumns[i]) == -1){
-            columnOrder.push(currColumns[i]);
+            columnOrder.splice(i, 0, currColumns[i]);
           }
         }
         self.columnOrder = columnOrder;

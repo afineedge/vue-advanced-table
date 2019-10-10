@@ -41,6 +41,7 @@
 /* eslint-disable */
 import Vue from 'vue';
 window.Vue = Vue;
+import nodeRenderer from './renderNode'
 import vueAdvancedTableColumnHeader from './vue-advanced-table-column-header.vue'
 import vueAdvancedTableRow from './vue-advanced-table-row.vue'
 import vueAdvancedTableCell from './vue-advanced-table-cell.vue'
@@ -262,19 +263,33 @@ export default {
     },
     getVNodeText: function(node, column){
       const self = this;
-      if (typeof node[0].children !== 'undefined'){
-        if (node[0].children.length > 1){
+      const DetailConstructor = Vue.extend(nodeRenderer);
+      const detailRenderer = new DetailConstructor({
+          propsData: {
+              node: node[0]
+          }
+      });
+      detailRenderer.$mount();
+      const element = detailRenderer.$el;
+      if (element.tagName === 'SELECT'){
+        return element.options[element.selectedIndex].text;
+      }
+      return element.value || element.innerText;
+
+      /*if (typeof node[0].children !== 'undefined'){
+        if (node[0].tag !== 'select'){
+        } else if (node[0].children.length > 1){
           // eslint-disable-next-line
-          console.error('[Vue warn]: Column "' + column + '" template may contain only one root element.', self);
+          console.error('[Vue warn]: Column "' + column.name + '" template may contain only one root element.', self);
         }
         return self.getVNodeText(node[0].children, column);
       } else if (node[0].text){
         return node[0].text.trim();
       } else {
         return '';
-      }
+      }  */                           
     },
-    getValueForSorting: function(data, column, row) {
+    getDisplayValue: function(data, column, row) {
       const self = this;
       const scopedSlots = self.$scopedSlots;
       const slot = scopedSlots['column-' + column.name];
@@ -284,10 +299,16 @@ export default {
           row: row
         }), column);
       }
+      if (typeof column.render === 'function'){
+        return column.render(sortData);
+      }
       if (typeof column.format === 'string'){
         if (column.format === 'date'){
-          let newDate = new Date(sortData)
-          let date = (newDate.getMonth() + 1) + '/' + newDate.getDate() + '/' + newDate.getFullYear();
+          if (sortData.length === 0){
+            return '';
+          }
+          let newDate = new Date(sortData);
+          let date = (("0" + (newDate.getMonth() + 1)).slice(-2)) + '/' + ("0" + (newDate.getDate())).slice(-2) + '/' + newDate.getFullYear();
           return date;
         } else if (column.format === 'dollar'){
           return Number(sortData.replace(/[^0-9.-]+/g,""));
@@ -295,7 +316,7 @@ export default {
       } else if (!isNaN(+sortData) && sortData.toString().length > 0){
         return Number(sortData);
       }
-      return sortData.toString().toLowerCase();
+      return sortData;
     },
     getFixedStyle: function(column, target){
       const self = this;
@@ -349,51 +370,37 @@ export default {
     }
   },
   computed: {
-    filteredColumnOrder: function() {
+    displayRows: function() {
       const self = this;
-      return self.columnOrder.filter(function(column){
-        return self.isColumnVisible(column);
-      });
-    },
-    fixedColumn: function() {
-      const self = this;
-      var fixedColumns = self.filteredColumnOrder.filter(function(column){
-        return self.getColumnByName(column).fixed;
-      });
-      if (fixedColumns.length > 1){
-        // eslint-disable-next-line
-        console.error('[Vue warn]: Multiple columns are assigned attribute "fixed" with value "true". Only the first column will be fixed.', self);
-      }
-      return fixedColumns[0];
-    },
-    filteredRows: function() {
-      const self = this;
-      const rows = self.rows;
-      return rows.filter(function(row){
-
-        let found = false;
-        for (let i = 0; i < self.columnOrder.length; i++){
-          const column = self.getColumnByName(self.columnOrder[i]);
-          if (typeof row[column.name] !== 'undefined'){
-            let data = self.getValueForSorting(row[column.name], column, row);
-            if (data.toString().toLowerCase().indexOf(self.search.toString().toLowerCase()) > -1){
-              found = true;
-              break;
-            }
-          }
-        }
-        return found;
-      });
-    },
-    reorderedRows: function() {
-      const self = this;
+      const render = [];
+      const columns = self.columns;
       const rows = self.filteredRows;
+      for (let i = 0; i < rows.length; i++){
+        let displayRow = [];
+        for (let r = 0; r < columns.length; r++){
+          let displayCell = rows[i][columns[r].name];
+          displayRow.push(self.getDisplayValue(displayCell, columns[r], rows[i]));
+        }
+        render.push(displayRow);
+      };
+      return render;
+    },
+    rowOrder: function() {
+      const self = this;
+      const order = [];
+      const rows = self.rows;
+      const displayRows = self.displayRows;
+      const len = displayRows.length;
+      const indices = new Array(len);
+      for (var i = 0; i < len; i++){
+        indices[i] = i;
+      }
 
       if (typeof self.order !== 'undefined' && self.order.column.length > 0){
-        let sortedRows = rows.sort(function(a, b) {
+        indices.sort(function(a, b) {
           const column = self.getColumnByName(self.order.column);
-          let dataA = self.getValueForSorting(a[self.order.column], column, a);
-          let dataB = self.getValueForSorting(b[self.order.column], column, b);
+          let dataA = self.getDisplayValue(rows[a][self.order.column], column, rows[a]);
+          let dataB = self.getDisplayValue(rows[b][self.order.column], column, rows[b]);
           if (dataA === dataB){
             return 0;
           }
@@ -449,9 +456,51 @@ export default {
             return 0;
           }
         });
-        return sortedRows;
       }
-      return rows;
+      return indices;
+    },
+    filteredColumnOrder: function() {
+      const self = this;
+      return self.columnOrder.filter(function(column){
+        return self.isColumnVisible(column);
+      });
+    },
+    fixedColumn: function() {
+      const self = this;
+      var fixedColumns = self.filteredColumnOrder.filter(function(column){
+        return self.getColumnByName(column).fixed;
+      });
+      if (fixedColumns.length > 1){
+        // eslint-disable-next-line
+        console.error('[Vue warn]: Multiple columns are assigned attribute "fixed" with value "true". Only the first column will be fixed.', self);
+      }
+      return fixedColumns[0];
+    },
+    filteredRows: function() {
+      const self = this;
+      const rows = self.rows;
+      const response = rows.filter(function(row){
+        let found = false;
+        for (let i = 0; i < self.columnOrder.length; i++){
+          const column = self.getColumnByName(self.columnOrder[i]);
+          if (typeof row[column.name] !== 'undefined'){
+            let data = self.getDisplayValue(row[column.name], column, row);
+            if (data.toString().toLowerCase().indexOf(self.search.toString().toLowerCase()) > -1){
+              found = true;
+              break;
+            }
+          }
+        }
+        return found;
+      });
+      return response;
+    },
+    reorderedRows: function(){
+      const self = this;
+      const rows = self.filteredRows;
+      return self.rowOrder.map(function(i){
+        return rows[i];
+      });
     },
     currentPageRows: function() {
       var self = this;

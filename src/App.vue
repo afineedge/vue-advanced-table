@@ -81,7 +81,7 @@ export default {
       employeeTable: {
         primaryKey: 'employeeID',
         rows: [{
-          firstName: '',
+          firstName: 'Eric',
           lastName: 'Edgerton',
           employeeID: 'EPAREE2',
           department: '0',

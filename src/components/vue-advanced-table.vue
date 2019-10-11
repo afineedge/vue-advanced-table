@@ -163,7 +163,7 @@ export default {
       }
     }
 
-    self.updateTableData();
+    // self.updateTableData();
   },
   methods: {
     getColumnByName: function(name) {
@@ -353,15 +353,15 @@ export default {
     },
     filteredColumnOrder: function() {
       const self = this;
-      self.updateTableData();
+      // self.updateTableData();
     },
     order: function() {
       const self = this;
-      self.updateTableData();
+      // self.updateTableData();
     },
     rows: function() {
       const self = this;
-      self.updateTableData();
+      // self.updateTableData();
     },
     page: function() {
       const self = this;
@@ -374,38 +374,66 @@ export default {
       const self = this;
       const render = [];
       const columns = self.columns;
-      const rows = self.filteredRows;
+      const rows = self.rows;
       for (let i = 0; i < rows.length; i++){
-        let displayRow = [];
+        let displayRow = {};
         for (let r = 0; r < columns.length; r++){
           let displayCell = rows[i][columns[r].name];
-          displayRow.push(self.getDisplayValue(displayCell, columns[r], rows[i]));
+          displayRow[columns[r].name] = self.getDisplayValue(displayCell, columns[r], rows[i]);
         }
         render.push(displayRow);
       };
       return render;
     },
-    rowOrder: function() {
+    filteredRows: function() {
       const self = this;
-      const order = [];
       const rows = self.rows;
       const displayRows = self.displayRows;
       const len = displayRows.length;
+      const indices = [];
+      const response = [];
+      const searchTerm = self.search.toString().toLowerCase();
+
+      if (self.search.toString().length === 0){
+        return rows;
+      } else {
+        for (var i = 0; i < displayRows.length; i++){
+          let displayRow = displayRows[i];
+          for (let r = 0; r < self.columnOrder.length; r++){
+            let data = displayRow[self.columnOrder[r]];
+            if (data.toString().toLowerCase().indexOf(searchTerm) > -1){
+              indices.push(i);
+              break;
+            }
+          }
+        }
+      }
+      for (let t = 0; t < indices.length; t++){
+        response.push(rows[indices[t]]);
+      }
+      return response;
+    },
+    rowOrder: function() {
+      const self = this;
+      const order = [];
+      const displayRows = self.displayRows;
+      const len = displayRows.length;
       const indices = new Array(len);
+      const column = self.getColumnByName(self.order.column);
+
       for (var i = 0; i < len; i++){
         indices[i] = i;
       }
 
       if (typeof self.order !== 'undefined' && self.order.column.length > 0){
         indices.sort(function(a, b) {
-          const column = self.getColumnByName(self.order.column);
-          let dataA = self.getDisplayValue(rows[a][self.order.column], column, rows[a]);
-          let dataB = self.getDisplayValue(rows[b][self.order.column], column, rows[b]);
+          let dataA = displayRows[a][self.order.column];
+          let dataB = displayRows[b][self.order.column];
           if (dataA === dataB){
             return 0;
           }
           if (self.order.direction == 'desc') {
-            if (column.format === 'date'){
+            /*if (column.format === 'date'){
               if (isNaN(Date.parse(dataA))){
                 return 1;
               }
@@ -414,7 +442,7 @@ export default {
               }
               dataA = new Date(dataA);
               dataB = new Date(dataB); 
-            }
+            }*/
             if (dataA === ''){
               return 1;
             }
@@ -430,7 +458,7 @@ export default {
             }
             return 0;
           } else {
-            if (column.format === 'date'){
+            /*if (column.format === 'date'){
               if (isNaN(Date.parse(dataA))){
                 return 1;
               }
@@ -439,7 +467,7 @@ export default {
               }
               dataA = new Date(dataA);
               dataB = new Date(dataB); 
-            }
+            }*/
             if (dataA === ''){
               return 1;
             }
@@ -459,6 +487,14 @@ export default {
       }
       return indices;
     },
+    reorderedRows: function(){
+      const self = this;
+      const rows = self.filteredRows;
+      return rows;
+      /*return self.rowOrder.map(function(i){
+        return rows[i];
+      });*/
+    },
     filteredColumnOrder: function() {
       const self = this;
       return self.columnOrder.filter(function(column){
@@ -475,32 +511,6 @@ export default {
         console.error('[Vue warn]: Multiple columns are assigned attribute "fixed" with value "true". Only the first column will be fixed.', self);
       }
       return fixedColumns[0];
-    },
-    filteredRows: function() {
-      const self = this;
-      const rows = self.rows;
-      const response = rows.filter(function(row){
-        let found = false;
-        for (let i = 0; i < self.columnOrder.length; i++){
-          const column = self.getColumnByName(self.columnOrder[i]);
-          if (typeof row[column.name] !== 'undefined'){
-            let data = self.getDisplayValue(row[column.name], column, row);
-            if (data.toString().toLowerCase().indexOf(self.search.toString().toLowerCase()) > -1){
-              found = true;
-              break;
-            }
-          }
-        }
-        return found;
-      });
-      return response;
-    },
-    reorderedRows: function(){
-      const self = this;
-      const rows = self.filteredRows;
-      return self.rowOrder.map(function(i){
-        return rows[i];
-      });
     },
     currentPageRows: function() {
       var self = this;

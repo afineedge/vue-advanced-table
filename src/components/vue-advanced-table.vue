@@ -483,15 +483,10 @@ export default {
       const rows = self.reorderedRows;
       const rowDisplayValues = self.rowDisplayValues;
       const response = rows.filter(function(row){
-        let found = false;
-        for (let i = 0; i < self.filteredColumnOrder.length; i++){
-          const column = self.getColumnByName(self.filteredColumnOrder[i]);
-          const rowForDisplay = rowDisplayValues[row[self.primaryKey]];
-          if (rowForDisplay.toString().toLowerCase().indexOf(self.search.toString().toLowerCase()) > -1){
-            found = true;
-            break;
-          }
-        }
+        const rowForDisplay = rowDisplayValues[row[self.primaryKey]];
+        const found = Object.values(rowForDisplay).some(function(data){
+          return data.toLowerCase().includes(self.search.toString().toLowerCase());
+        });
         return found;
       });
       return response;
@@ -512,9 +507,9 @@ export default {
       if (typeof self.perPage !== 'undefined'){
         var page = self.currentPage - 1;
         var startIndex = page * self.perPage;
-        return self.reorderedRows.slice(startIndex, startIndex + self.perPage);
+        return self.filteredRows.slice(startIndex, startIndex + self.perPage);
       }
-      return self.reorderedRows;
+      return self.filteredRows;
     },
     classObject: function() {
       const self = this;

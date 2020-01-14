@@ -386,6 +386,13 @@ export default {
       };
       return rowsAsObjects;
     },
+    rowOrderWithDirection: function() {
+      const self = this;
+      if (self.order.direction == 'desc') {
+        return self.rowOrder;
+      }
+      return self.rowOrder.slice().reverse();
+    },
     rowOrder: function() {
       const self = this;
       const order = [];
@@ -406,7 +413,7 @@ export default {
           if (dataA === dataB){
             return 0;
           }
-          if (self.order.direction == 'desc') {
+          //if (self.order.direction == 'desc') {
             if (column.format === 'date'){
               if (isNaN(Date.parse(dataA))){
                 return 1;
@@ -431,7 +438,7 @@ export default {
               return 1;
             }
             return 0;
-          } else {
+          /*} else {
             if (column.format === 'date'){
               if (isNaN(Date.parse(dataA))){
                 return 1;
@@ -456,7 +463,7 @@ export default {
               return -1;
             }
             return 0;
-          }
+          }*/
         });
       }
       return indices;
@@ -495,10 +502,10 @@ export default {
       const self = this;
       const rows = self.rowsAsObjects;
       const rowDisplayValues = self.rowDisplayValues;
-      const order = self.rowOrder;
+      const order = self.rowOrderWithDirection;
       const reorderedRows = [];
-      for (let i = 0; i < self.rowOrder.length; i++){
-        reorderedRows.push(rows[self.rowOrder[i]]);
+      for (let i = 0; i < order.length; i++){
+        reorderedRows.push(rows[order[i]]);
       }
       return reorderedRows;
     },

@@ -2,7 +2,7 @@
   <div class="vue-advanced-table-container">
     <div class="vue-advanced-table-controls" v-if="buttons.length > 0 || searchable">
       <div class="vue-advanced-table-buttons" v-bind:class="classObject.buttonContainer" v-if="buttons.length > 0">
-        <vue-advanced-table-buttons v-bind="$props" v-bind:columnOrder="columnOrder" v-bind:filteredColumnOrder="filteredColumnOrder" v-bind:hiddenColumns="hiddenColumns" v-bind:storage="storage" v-bind:classObject="classObject" v-bind:rows="reorderedRows" v-on:update:columnOrder="columnOrder = $event"></vue-advanced-table-buttons>
+        <vue-advanced-table-buttons v-bind="$props" v-bind:columnOrder="columnOrder" v-bind:filteredColumnOrder="filteredColumnOrder" v-bind:hiddenColumns="hiddenColumns" v-bind:storage="storage" v-bind:classObject="classObject" v-bind:rows="filteredRows" v-on:update:columnOrder="columnOrder = $event"></vue-advanced-table-buttons>
       </div>
       <div class="vue-advanced-table-search" v-if="searchable !== false">
         <slot name="table-search">
@@ -21,8 +21,8 @@
         </tbody>
         <tfoot class="vue-advanced-table-footer" v-bind:class="classObject.footer" v-if="footerVisible" ref="tfoot">
           <tr>
-            <vue-advanced-table-column-footer v-for="column in filteredColumnOrder" v-bind:classObject="classObject" v-bind:key="column" v-bind:column="column" v-bind:columns="columns" v-bind:rows="reorderedRows" v-bind:style="getFixedStyle(column, 'footer')">
-              <slot v-bind:name="'footer-' + column" v-bind:table="reorderedRows" v-bind:primary-key="primaryKey"></slot>
+            <vue-advanced-table-column-footer v-for="column in filteredColumnOrder" v-bind:classObject="classObject" v-bind:key="column" v-bind:column="column" v-bind:columns="columns" v-bind:rows="filteredRows" v-bind:style="getFixedStyle(column, 'footer')">
+              <slot v-bind:name="'footer-' + column" v-bind:table="filteredRows" v-bind:primary-key="primaryKey"></slot>
             </vue-advanced-table-column-footer>
           </tr>
         </tfoot>
@@ -33,7 +33,7 @@
         </thead>
       </table>
     </div>
-    <vue-advanced-table-pagination v-if="perPage" v-model="currentPage" v-bind:total="reorderedRows.length" v-bind:perPage="perPage" v-bind:classes="classObject"></vue-advanced-table-pagination>
+    <vue-advanced-table-pagination v-if="perPage" v-model="currentPage" v-bind:total="filteredRows.length" v-bind:perPage="perPage" v-bind:classes="classObject"></vue-advanced-table-pagination>
   </div>
 </template>
 
@@ -162,8 +162,6 @@ export default {
         }
       }
     }
-
-    self.updateTableData();
   },
   methods: {
     getColumnByName: function(name) {
@@ -351,18 +349,6 @@ export default {
         self.storeTableInfo('hiddenColumns');
       }
     },
-    filteredColumnOrder: function() {
-      const self = this;
-      self.updateTableData();
-    },
-    order: function() {
-      const self = this;
-      self.updateTableData();
-    },
-    rows: function() {
-      const self = this;
-      self.updateTableData();
-    },
     page: function() {
       const self = this;
       var wrapper = self.$refs.wrapper;
@@ -370,37 +356,53 @@ export default {
     }
   },
   computed: {
-    displayRows: function() {
+    rowDisplayValues: function() {
       const self = this;
-      const render = [];
+      const render = {};
       const columns = self.columns;
-      const rows = self.filteredRows;
+      const rows = self.rows;
       for (let i = 0; i < rows.length; i++){
-        let displayRow = [];
+        let displayRow = {};
         for (let r = 0; r < columns.length; r++){
           let displayCell = rows[i][columns[r].name];
-          displayRow.push(self.getDisplayValue(displayCell, columns[r], rows[i]));
+          displayRow[columns[r].name] = self.getDisplayValue(displayCell, columns[r], rows[i]);
         }
-        render.push(displayRow);
+        render[rows[i][self.primaryKey]] = displayRow;
       };
       return render;
+    },
+    rowsAsObjects: function() {
+      const self = this;
+      const rowsAsObjects = {};
+      const columns = self.columns;
+      const rows = self.rows;
+      for (let i = 0; i < rows.length; i++){
+        let rowObject = {};
+        for (let r = 0; r < columns.length; r++){
+          let data = rows[i][columns[r].name];
+          rowObject[columns[r].name] = data;
+        }
+        rowsAsObjects[rows[i][self.primaryKey]] = rowObject;
+      };
+      return rowsAsObjects;
     },
     rowOrder: function() {
       const self = this;
       const order = [];
       const rows = self.rows;
-      const displayRows = self.displayRows;
-      const len = displayRows.length;
+      const rowDisplayValues = self.rowDisplayValues;
+      const keys = Object.keys(rowDisplayValues);
+      const len = keys.length;
       const indices = new Array(len);
       for (var i = 0; i < len; i++){
-        indices[i] = i;
+        indices[i] = keys[i];
       }
 
       if (typeof self.order !== 'undefined' && self.order.column.length > 0){
         indices.sort(function(a, b) {
           const column = self.getColumnByName(self.order.column);
-          let dataA = self.getDisplayValue(rows[a][self.order.column], column, rows[a]);
-          let dataB = self.getDisplayValue(rows[b][self.order.column], column, rows[b]);
+          let dataA = rowDisplayValues[a][self.order.column];
+          let dataB = rowDisplayValues[b][self.order.column];
           if (dataA === dataB){
             return 0;
           }
@@ -478,17 +480,16 @@ export default {
     },
     filteredRows: function() {
       const self = this;
-      const rows = self.rows;
+      const rows = self.reorderedRows;
+      const rowDisplayValues = self.rowDisplayValues;
       const response = rows.filter(function(row){
         let found = false;
-        for (let i = 0; i < self.columnOrder.length; i++){
-          const column = self.getColumnByName(self.columnOrder[i]);
-          if (typeof row[column.name] !== 'undefined'){
-            let data = self.getDisplayValue(row[column.name], column, row);
-            if (data.toString().toLowerCase().indexOf(self.search.toString().toLowerCase()) > -1){
-              found = true;
-              break;
-            }
+        for (let i = 0; i < self.filteredColumnOrder.length; i++){
+          const column = self.getColumnByName(self.filteredColumnOrder[i]);
+          const rowForDisplay = rowDisplayValues[row[self.primaryKey]];
+          if (rowForDisplay.toString().toLowerCase().indexOf(self.search.toString().toLowerCase()) > -1){
+            found = true;
+            break;
           }
         }
         return found;
@@ -497,10 +498,14 @@ export default {
     },
     reorderedRows: function(){
       const self = this;
-      const rows = self.filteredRows;
-      return self.rowOrder.map(function(i){
-        return rows[i];
-      });
+      const rows = self.rowsAsObjects;
+      const rowDisplayValues = self.rowDisplayValues;
+      const order = self.rowOrder;
+      const reorderedRows = [];
+      for (let i = 0; i < self.rowOrder.length; i++){
+        reorderedRows.push(rows[self.rowOrder[i]]);
+      }
+      return reorderedRows;
     },
     currentPageRows: function() {
       var self = this;

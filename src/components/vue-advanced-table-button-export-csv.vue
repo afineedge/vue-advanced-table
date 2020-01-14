@@ -2,8 +2,8 @@
 <template>
     <button v-on:click="createCSV()">
         <slot>
-            Export CSV
-         </slot>
+          Export CSV
+        </slot>
     </button>
 </template>
 

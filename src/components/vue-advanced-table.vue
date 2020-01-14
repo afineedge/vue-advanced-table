@@ -165,9 +165,18 @@ export default {
   methods: {
     getColumnByName: function(name) {
       const self = this;
-      return self.columns.find(function(column) {
+      let column = self.columns.find(function(column) {
         return column.name === name;
       });
+
+      if (typeof column === 'undefined') {
+        return {
+          name: name,
+          label: name
+        }
+      } else {
+        return column;
+      }
     },
     setColumnOrder: function(order) {
       const self = this;
@@ -218,48 +227,12 @@ export default {
       const self = this;
       return self.hiddenColumns.indexOf(column) === -1
     },
-    updateTableData: function() {
-      const self = this;
-      Vue.nextTick(function(){
-        var rows = self.$refs.tbody.getElementsByTagName('tr');
-        var data = [];
-        for (let i = 0; i < rows.length; i++){
-          let rowData = [];
-          const row = rows[i];
-          const cells = row.getElementsByTagName('td');
-          for (let r = 0; r < cells.length; r++){
-            const cell = cells[r];
-            rowData.push(cell.textContent.trim());
-          }
-          data.push(rowData);
-        }
-
-        var columnHeaders = self.filteredColumnOrder.map(function(column){
-          return self.getColumnByName(column).label;
-        })
-
-        if (typeof self.$refs.tfoot !== 'undefined'){
-          var footerRow = self.$refs.tfoot.getElementsByTagName('tr');
-          var footerData = [];
-          for (let i = 0; i < footerRow.length; i++){
-            let rowData = [];
-            const row = footerRow[i];
-            const cells = row.getElementsByTagName('th');
-            for (let r = 0; r < cells.length; r++){
-              const cell = cells[r];
-              rowData.push(cell.textContent.trim());
-            }
-            footerData = rowData;
-          }
-
-          self.tableData = [[...columnHeaders], ...data, [...footerData]];
-        } else {
-          self.tableData = [[...columnHeaders], ...data];
-        }
-      })
-    },
     getVNodeText: function(node, column){
       const self = this;
+      if (typeof node[0].componentOptions !== 'undefined' && node[0].componentOptions.tag === 'router-link'){
+        return node[0].componentOptions.children[0].text;
+      }
+
       const DetailConstructor = Vue.extend(nodeRenderer);
       const detailRenderer = new DetailConstructor({
           propsData: {
@@ -271,20 +244,7 @@ export default {
       if (element.tagName === 'SELECT'){
         return element.options[element.selectedIndex].text;
       }
-      return element.value || element.innerText;
-
-      /*if (typeof node[0].children !== 'undefined'){
-        if (node[0].tag !== 'select'){
-        } else if (node[0].children.length > 1){
-          // eslint-disable-next-line
-          console.error('[Vue warn]: Column "' + column.name + '" template may contain only one root element.', self);
-        }
-        return self.getVNodeText(node[0].children, column);
-      } else if (node[0].text){
-        return node[0].text.trim();
-      } else {
-        return '';
-      }  */                           
+      return element.value || element.innerText || element.textContent;                          
     },
     getDisplayValue: function(data, column, row) {
       const self = this;
@@ -301,14 +261,14 @@ export default {
       }
       if (typeof column.format === 'string'){
         if (column.format === 'date'){
-          if (sortData.length === 0){
+          if (sortData.toString().length === 0){
             return '';
           }
           let newDate = new Date(sortData);
           let date = (("0" + (newDate.getMonth() + 1)).slice(-2)) + '/' + ("0" + (newDate.getDate())).slice(-2) + '/' + newDate.getFullYear();
           return date;
         } else if (column.format === 'dollar'){
-          return Number(sortData.replace(/[^0-9.-]+/g,""));
+          return Number(sortData.toString().replace(/[^0-9.-]+/g,""));
         }
       } else if (!isNaN(+sortData) && sortData.toString().length > 0){
         return Number(sortData);
@@ -357,11 +317,17 @@ export default {
   computed: {
     tableData: function() {
       const self = this;
-      var data = self.rowDisplayValues;
+      const rows = self.rowDisplayValuesFilteredColumns;
+      const data = [];
 
       var columnHeaders = self.filteredColumnOrder.map(function(column){
         return self.getColumnByName(column).label;
       })
+
+      for (let i = 0; i < rows.length; i++){
+        let values = Object.values(rows[i]);
+        data.push(values);
+      }
 
       if (typeof self.$refs.tfoot !== 'undefined'){
         var footerRow = self.$refs.tfoot.getElementsByTagName('tr');
@@ -385,28 +351,57 @@ export default {
     rowDisplayValues: function() {
       const self = this;
       const render = {};
-      const columns = self.columns;
       const rows = self.rows;
+      let keyExists = true;
+
       for (let i = 0; i < rows.length; i++){
+        if (keyExists && typeof rows[i][self.primaryKey] === 'undefined') {
+          // eslint-disable-next-line
+          console.error(`[Vue warn]: Column associated with designated primary key ${self.primaryKey} does not exist.`, self);
+          keyExists = false;
+        }
+        
         let displayRow = {};
+        let columns = Object.keys(rows[i]);
         for (let r = 0; r < columns.length; r++){
-          let displayCell = rows[i][columns[r].name];
-          displayRow[columns[r].name] = self.getDisplayValue(displayCell, columns[r], rows[i]);
+          let column = self.getColumnByName(columns[r]);
+          let displayCell = rows[i][column.name];
+          displayRow[column.name] = self.getDisplayValue(displayCell, column, rows[i]);
         }
         render[rows[i][self.primaryKey]] = displayRow;
       };
       return render;
     },
+    rowDisplayValuesFilteredColumns: function() {
+      const self = this;
+      const columns = self.filteredColumnOrder;
+      let rows = self.rowDisplayValues;
+      let response = [];
+
+      for (let i = 0; i < Object.keys(rows).length; i++) {
+        let row = {};
+        let key = Object.keys(rows)[i];
+        for (let j = 0; j < columns.length; j++) {
+          row[columns[j]] = rows[key][columns[j]];
+        }
+    
+        response.push(row);
+      }
+
+      return response;
+    },
     rowsAsObjects: function() {
       const self = this;
       const rowsAsObjects = {};
-      const columns = self.columns;
+
       const rows = self.rows;
       for (let i = 0; i < rows.length; i++){
         let rowObject = {};
+        let columns = Object.keys(rows[i]);
         for (let r = 0; r < columns.length; r++){
-          let data = rows[i][columns[r].name];
-          rowObject[columns[r].name] = data;
+          let column = self.getColumnByName(columns[r]);
+          let data = rows[i][column.name];
+          rowObject[column.name] = data;
         }
         rowsAsObjects[rows[i][self.primaryKey]] = rowObject;
       };
@@ -514,15 +509,19 @@ export default {
     filteredRows: function() {
       const self = this;
       const rows = self.reorderedRows;
-      const rowDisplayValues = self.rowDisplayValues;
-      const response = rows.filter(function(row){
-        const rowForDisplay = rowDisplayValues[row[self.primaryKey]];
-        const found = Object.values(rowForDisplay).some(function(data){
-          return data.toLowerCase().includes(self.search.toString().toLowerCase());
+      if (self.search.toString().length > 0) {
+        const rowDisplayValues = self.rowDisplayValues;
+        const response = rows.filter(function(row){
+          const rowForDisplay = rowDisplayValues[row[self.primaryKey]];
+          const found = Object.values(rowForDisplay).some(function(data){
+            return data.toLowerCase().includes(self.search.toString().toLowerCase());
+          });
+          return found;
         });
-        return found;
-      });
-      return response;
+        return response;
+      }
+
+      return rows;
     },
     reorderedRows: function(){
       const self = this;

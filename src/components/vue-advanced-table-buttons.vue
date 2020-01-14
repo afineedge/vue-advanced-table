@@ -4,7 +4,6 @@
       <vue-advanced-table-button-column-settings v-if="isColumnSettingsButton(button)" v-bind:key="index" v-bind="$props" v-bind:classes="getButtonClass(button)" v-bind:button="button" v-on:update:columnOrder="$emit('update:columnOrder', $event)">
         <template v-if="button.label">{{ button.label }}</template>
       </vue-advanced-table-button-column-settings>
-      </vue-advanced-table-button-export-excel>
       <vue-advanced-table-button-export-csv v-else-if="isCsvExportButton(button)" v-bind:key="index" v-bind="$props" v-bind:button="button" v-bind:class="getButtonClass(button)">
         <template v-if="button.label">{{ button.label }}</template>
       </vue-advanced-table-button-export-csv>
@@ -87,7 +86,15 @@ export default {
       return button === 'columnVisibility' || button.extend === 'columnVisibility';
     },
     isCsvExportButton: function(button) {
-      return button.toLowerCase() === 'exportcsv' || button.extend.toLowerCase() === 'exportcsv';
+      if (typeof button === 'string') {
+        return button.toLowerCase() === 'exportcsv'; 
+      }
+      
+      if (typeof button.extend === 'string') {
+        return button.extend.toLowerCase() === 'exportcsv'; 
+      }
+
+      return false;
     },
   },
   computed: {

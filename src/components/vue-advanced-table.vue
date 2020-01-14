@@ -13,7 +13,7 @@
     <div class="vue-advanced-table-wrapper" ref="wrapper">
       <table cellpadding="0" cellspacing="0" border="0" v-bind:class="classObject.table" ref="table" class="vue-advanced-table" v-bind:style="tableWidth">
         <tbody v-bind:class="classObject.body" ref="tbody">
-          <vue-advanced-table-row v-for="row in currentPageRows" v-bind:row="row" v-bind:key="row[primaryKey]" v-bind:class="{ active: selectedRows.indexOf(row[primaryKey]) > -1 }" v-bind:process-row="processRow">
+          <vue-advanced-table-row v-for="row in filteredRows" v-bind:row="row" v-bind:key="row[primaryKey]" v-bind:class="{ active: selectedRows.indexOf(row[primaryKey]) > -1 }" v-bind:process-row="processRow">
             <vue-advanced-table-cell v-for="column in filteredColumnOrder" v-bind:key="column" v-bind:column="getColumnByName(column)" v-bind:row="row" v-bind:class="classObject.cell" v-bind:style="getFixedStyle(column, 'cell')">
               <slot v-bind:name="'column-' + column" v-bind:row="row" v-bind:primary-key="primaryKey"></slot>
             </vue-advanced-table-cell>
@@ -33,8 +33,7 @@
         </thead>
       </table>
     </div>
-    <vue-advanced-table-pagination v-if="perPage" v-model="currentPage" v-bind:total="filteredRows.length" v-bind:perPage="perPage" v-bind:classes="classObject"></vue-advanced-table-pagination>
-  </div>
+   </div>
 </template>
 
 <script>
@@ -46,7 +45,6 @@ import vueAdvancedTableColumnHeader from './vue-advanced-table-column-header.vue
 import vueAdvancedTableRow from './vue-advanced-table-row.vue'
 import vueAdvancedTableCell from './vue-advanced-table-cell.vue'
 import vueAdvancedTableButtons from './vue-advanced-table-buttons.vue'
-import vueAdvancedTablePagination from './vue-advanced-table-pagination.vue'
 import vueAdvancedTableColumnFooter from './vue-advanced-table-column-footer.vue'
 
 export default {
@@ -94,12 +92,6 @@ export default {
       type: Boolean,
       default: true
     },
-    perPage: {
-      type: Number
-    },
-    page: {
-      type: Number
-    },
     storage: {
       type: String,
       default: ''
@@ -119,8 +111,7 @@ export default {
     return {
       columnOrder: [],
       hiddenColumns: [],
-      search: '',
-      currentPage: 1
+      search: ''
     }
   },
   components: {
@@ -128,16 +119,11 @@ export default {
     vueAdvancedTableRow,
     vueAdvancedTableCell,
     vueAdvancedTableButtons,
-    vueAdvancedTablePagination,
     vueAdvancedTableColumnFooter
   },
   mounted: function() {
     const self = this;
     var storedData;
-
-    if (typeof self.page !== 'undefined'){
-      self.currentPage = self.page;
-    }
 
     if (self.storage.length > 0){
       storedData = self.getStoredTableInfo();
@@ -255,7 +241,7 @@ export default {
       if (sortData.toString().length === 0){
         return '';
       }
-      
+
       if (typeof slot === 'function'){
         sortData = self.getVNodeText(slot({
           row: row
@@ -309,11 +295,6 @@ export default {
       if (self.storage.length > 0){
         self.storeTableInfo('hiddenColumns');
       }
-    },
-    page: function() {
-      const self = this;
-      var wrapper = self.$refs.wrapper;
-      wrapper.scrollTop = 0;
     }
   },
   computed: {
@@ -537,15 +518,6 @@ export default {
       }
       return reorderedRows;
     },
-    currentPageRows: function() {
-      var self = this;
-      if (typeof self.perPage !== 'undefined'){
-        var page = self.currentPage - 1;
-        var startIndex = page * self.perPage;
-        return self.filteredRows.slice(startIndex, startIndex + self.perPage);
-      }
-      return self.filteredRows;
-    },
     classObject: function() {
       const self = this;
       var classes = {
@@ -558,12 +530,7 @@ export default {
         body: '',
         cell: '',
         footer: '',
-        footerCell: '',
-        paginationContainer: '',
-        paginationButtons: {
-          inactive: '',
-          active: ''
-        }
+        footerCell: ''
       }
 
       if (typeof self.classes === 'string'){

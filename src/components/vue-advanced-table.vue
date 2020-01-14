@@ -251,6 +251,11 @@ export default {
       const scopedSlots = self.$scopedSlots;
       const slot = scopedSlots['column-' + column.name];
       let sortData = data;
+
+      if (sortData.toString().length === 0){
+        return '';
+      }
+      
       if (typeof slot === 'function'){
         sortData = self.getVNodeText(slot({
           row: row
@@ -261,9 +266,6 @@ export default {
       }
       if (typeof column.format === 'string'){
         if (column.format === 'date'){
-          if (sortData.toString().length === 0){
-            return '';
-          }
           let newDate = new Date(sortData);
           let date = (("0" + (newDate.getMonth() + 1)).slice(-2)) + '/' + ("0" + (newDate.getDate())).slice(-2) + '/' + newDate.getFullYear();
           return date;
@@ -514,7 +516,8 @@ export default {
         const response = rows.filter(function(row){
           const rowForDisplay = rowDisplayValues[row[self.primaryKey]];
           const found = Object.values(rowForDisplay).some(function(data){
-            return data.toLowerCase().includes(self.search.toString().toLowerCase());
+
+            return data.toString().toLowerCase().includes(self.search.toString().toLowerCase());
           });
           return found;
         });

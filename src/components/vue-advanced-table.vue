@@ -120,7 +120,6 @@ export default {
       columnOrder: [],
       hiddenColumns: [],
       search: '',
-      tableData: [],
       currentPage: 1
     }
   },
@@ -356,6 +355,33 @@ export default {
     }
   },
   computed: {
+    tableData: function() {
+      const self = this;
+      var data = self.rowDisplayValues;
+
+      var columnHeaders = self.filteredColumnOrder.map(function(column){
+        return self.getColumnByName(column).label;
+      })
+
+      if (typeof self.$refs.tfoot !== 'undefined'){
+        var footerRow = self.$refs.tfoot.getElementsByTagName('tr');
+        var footerData = [];
+        for (let i = 0; i < footerRow.length; i++){
+          let rowData = [];
+          const row = footerRow[i];
+          const cells = row.getElementsByTagName('th');
+          for (let r = 0; r < cells.length; r++){
+            const cell = cells[r];
+            rowData.push(cell.textContent.trim());
+          }
+          footerData = rowData;
+        }
+
+        return [[...columnHeaders], ...data, [...footerData]];
+      } else {
+        return [[...columnHeaders], ...data];
+      }
+    },
     rowDisplayValues: function() {
       const self = this;
       const render = {};
@@ -623,6 +649,11 @@ export default {
   }
 
   .vue-advanced-table-header {
+  }
+
+  .vue-advanced-table-column-footer {
+    background-color: #fff;
+    border-top: 0px;
   }
 
   .vue-advanced-table-column-header {

@@ -1,10 +1,10 @@
 <template>
   <div id="app">
-    <div style="display: flex; flex-direction: column;">
+    <div style="display: flex; flex-direction: column; height: 100%;">
       <div style="padding: 15px; background-color: #eee; flex-shrink: 0;">
         <h1 style="margin: 0px;">vue-advanced-table</h1>
       </div>
-      <div style="padding: 15px; display: flex; flex-direction: column; flex-grow: 1; flex-shrink: 1;">
+      <div style="padding: 15px; display: flex; flex-direction: column; flex-grow: 1; flex-shrink: 1; overflow-y: auto;">
         <vue-advanced-table v-bind="employeeTable">
           <template slot="column-employeeID" slot-scope="data">
             <input type="text" v-model.lazy="data.row.employeeID" style="width: 100px;" />
@@ -5757,6 +5757,7 @@ html {
 body {
   margin: 0px;
   height: 100%;
+  overflow-y: hidden;
 }
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;

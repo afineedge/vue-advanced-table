@@ -365,7 +365,11 @@ export default {
         let row = {};
         let key = Object.keys(rows)[i];
         for (let j = 0; j < columns.length; j++) {
-          row[columns[j]] = rows[key][columns[j]];
+          if (typeof rows[key][columns[j]] === 'string') {
+            row[columns[j]] = rows[key][columns[j]].trim();
+          } else {
+            row[columns[j]] = rows[key][columns[j]];
+          }
         }
     
         response.push(row);

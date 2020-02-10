@@ -1,9 +1,12 @@
 <template>
   <div v-bind:class="classObject.buttonContainer">
     <template v-for="(button, index) in buttons">
-      <vue-advanced-table-button-column-settings v-if="isColumnSettingsButton(button)" v-bind:key="index" v-bind="$props" v-bind:classes="getButtonClass(button)" v-bind:button="button" v-on:update:columnOrder="$emit('update:columnOrder', $event)">
+      <vue-advanced-table-button-column-settings v-if="isColumnSettingsButton(button)" v-bind:key="index" v-bind="$props" v-bind:classes="getButtonClass(button)" v-bind:button="button" v-on:update:columnOrder="$emit('update:columnOrder', $event)" v-on:update:savedColumns="$emit('update:savedColumns', $event)">
         <template v-if="button.label">{{ button.label }}</template>
       </vue-advanced-table-button-column-settings>
+      <vue-advanced-table-button-saved-column-settings v-else-if="isSavedColumnSettingsButton(button)" v-bind:key="index" v-bind="$props" v-bind:classes="getButtonClass(button)" v-bind:button="button" v-on:update:columnOrder="$emit('update:columnOrder', $event)" v-on:update:savedColumns="$emit('update:savedColumns', $event)">
+        <template v-if="button.label">{{ button.label }}</template>
+      </vue-advanced-table-button-saved-column-settings>
       <vue-advanced-table-button-export-csv v-else-if="isCsvExportButton(button)" v-bind:key="index" v-bind="$props" v-bind:button="button" v-bind:class="getButtonClass(button)">
         <template v-if="button.label">{{ button.label }}</template>
       </vue-advanced-table-button-export-csv>
@@ -17,6 +20,7 @@
 
 <script>
 import vueAdvancedTableButtonColumnSettings from './vue-advanced-table-button-column-settings.vue'
+import vueAdvancedTableButtonSavedColumnSettings from './vue-advanced-table-button-saved-column-settings.vue'
 import vueAdvancedTableButtonExportCsv from './vue-advanced-table-button-export-csv.vue'
 
 export default {
@@ -53,6 +57,10 @@ export default {
     storage: {
       type: String,
       required: true
+    },
+    savedColumns: {
+        type: Array,
+        required: true
     }
   },
   data: function() {
@@ -64,6 +72,7 @@ export default {
   },
   components: {
     vueAdvancedTableButtonColumnSettings,
+    vueAdvancedTableButtonSavedColumnSettings,
     vueAdvancedTableButtonExportCsv
 
   },
@@ -84,6 +93,9 @@ export default {
     },
     isColumnSettingsButton: function(button) {
       return button === 'columnVisibility' || button.extend === 'columnVisibility';
+    },
+    isSavedColumnSettingsButton: function(button) {
+      return button === 'savedColumns' || button.extend === 'savedColumns';
     },
     isCsvExportButton: function(button) {
       if (typeof button === 'string') {

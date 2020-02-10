@@ -5711,6 +5711,7 @@ export default {
         },
         buttons: [
           'columnVisibility',
+          'savedColumns',
           'exportCSV'
         ],
         orderable: true,

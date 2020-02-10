@@ -21,6 +21,16 @@
              </button>
           </div>
         </div>
+        <button class="vue-advanced-table-save-column-settings" v-if="save" v-on:click="toggleOverlay(); saveSetting.active = true">Save Column Settings</button>
+      </div>
+    </vue-advanced-table-overlay>
+    <vue-advanced-table-overlay v-if="saveSetting.active">
+      <div class="vue-advanced-table-column-settings">
+        <div class="vue-advanced-table-column-setting">
+          Setting Name:
+          <input v-model="saveSetting.name" />
+          <button class="vue-advanced-table-save-column-settings" v-on:click="saveColumnOrder(); toggleOverlay()">Save</button>
+        </div>
       </div>
     </vue-advanced-table-overlay>
   </button>
@@ -51,6 +61,10 @@ export default {
     storage: {
       type: String,
       required: true
+    },
+    savedColumns: {
+      type: Array,
+      required: true
     }
   },
   components: {
@@ -61,21 +75,38 @@ export default {
       overlay: {
         active: false
       },
-      localColumnOrder: []
+      saveSetting: {
+        active: false,
+        name: ''
+      },
+      localColumnOrder: [],
+      savedColumnOrders: []
     }
   },
   computed: {
-      zIndex: function() {
-          var self = this;
-          if (self.overlay.active){
-            return 2;
-          }
-          return false;
+    zIndex: function() {
+        var self = this;
+        if (self.overlay.active){
+          return 2;
+        }
+        return false;
+    },
+    save: function() {
+      const self = this;
+
+      if (self.$attrs.buttons.includes('savedColumns')) {
+        return true;
       }
+
+      return false;
+    }
   },
   methods: {
     toggleOverlay: function() {
       const self = this;
+      if (!self.overlay.active === true) {
+        self.saveSetting.active = false;
+      }
       return self.overlay.active = !self.overlay.active;
     },
     getColumnByName: function(name) {
@@ -105,6 +136,18 @@ export default {
         order.splice(index + 1, 0, order.splice(index, 1)[0]);
       }
       self.localColumnOrder = order;
+    },
+    saveColumnOrder: function() {
+      const self = this;
+
+
+      self.savedColumnOrders.push({
+        name: self.saveSetting.name,
+        columnOrder: self.columnOrder
+      });
+
+      self.saveSetting.name = '';
+      self.saveSetting.active = false;
     }
   },
   mounted: function() {
@@ -125,6 +168,18 @@ export default {
       const self = this;
       if (JSON.stringify(self.localColumnOrder) !== JSON.stringify(self.columnOrder)){
         self.$emit('update:columnOrder', self.localColumnOrder);
+      }
+    },
+    savedColumns: function() {
+      const self = this;
+      if (JSON.stringify(self.savedColumnOrders) !== JSON.stringify(self.savedColumns)){
+        self.savedColumnOrders = self.savedColumns;
+      }
+    },
+    savedColumnOrders: function() {
+      const self = this;
+      if (JSON.stringify(self.savedColumnOrders) !== JSON.stringify(self.savedColumns)){
+      self.$emit('update:savedColumns', self.savedColumnOrders);
       }
     }
   }
@@ -174,5 +229,9 @@ export default {
 
   .vue-advanced-table-column-setting-actions {
     white-space: nowrap;
+  }
+
+  .vue-advanced-table-save-column-settings {
+    margin: 5px;
   }
 </style>

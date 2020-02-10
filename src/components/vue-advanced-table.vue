@@ -2,7 +2,8 @@
   <div class="vue-advanced-table-container">
     <div class="vue-advanced-table-controls" v-if="buttons.length > 0 || searchable">
       <div class="vue-advanced-table-buttons" v-bind:class="classObject.buttonContainer" v-if="buttons.length > 0">
-        <vue-advanced-table-buttons v-bind="$props" v-bind:columnOrder="columnOrder" v-bind:filteredColumnOrder="filteredColumnOrder" v-bind:hiddenColumns="hiddenColumns" v-bind:storage="storage" v-bind:classObject="classObject" v-bind:rows="filteredRows" v-on:update:columnOrder="columnOrder = $event"></vue-advanced-table-buttons>
+        <vue-advanced-table-buttons v-bind="$props" v-bind:columnOrder="columnOrder" v-bind:filteredColumnOrder="filteredColumnOrder" v-bind:hiddenColumns="hiddenColumns" v-bind:storage="storage" v-bind:classObject="classObject" v-bind:rows="filteredRows"
+          v-bind:savedColumns="savedColumns" v-on:update:columnOrder="columnOrder = $event" v-on:update:savedColumns="savedColumns = $event"></vue-advanced-table-buttons>
       </div>
       <div class="vue-advanced-table-search" v-if="searchable !== false">
         <slot name="table-search">
@@ -111,6 +112,7 @@ export default {
     return {
       columnOrder: [],
       hiddenColumns: [],
+      savedColumns: [],
       search: ''
     }
   },
@@ -135,6 +137,9 @@ export default {
       }
       if (Array.isArray(storedData.hiddenColumns)){
         self.hiddenColumns = storedData.hiddenColumns;
+      }
+      if (Array.isArray(storedData.savedColumns)){
+        self.savedColumns = storedData.savedColumns;
       }
     } else {
       self.setColumnOrder();
@@ -193,7 +198,8 @@ export default {
       const self = this;
       var payload = {
         columnOrder: self.columnOrder,
-        hiddenColumns: self.hiddenColumns
+        hiddenColumns: self.hiddenColumns,
+        savedColumns: self.savedColumns
       };
 
       if (param === 'columnOrder'){
@@ -201,6 +207,9 @@ export default {
       }
       if (param === 'hiddenColumns'){
         payload.hiddenColumns = self.hiddenColumns;
+      }
+      if (param === 'savedColumns'){
+        payload.savedColumns = self.savedColumns;
       }
 
       localStorage.setItem('vue-advanced-table-' + self.storage, JSON.stringify(payload));
@@ -294,6 +303,13 @@ export default {
       const self = this;
       if (self.storage.length > 0){
         self.storeTableInfo('hiddenColumns');
+      }
+    },
+    savedColumns: function() {
+      const self = this;
+      console.log(self.savedColumns);
+      if (self.storage.length > 0){
+        self.storeTableInfo('savedColumns');
       }
     }
   },

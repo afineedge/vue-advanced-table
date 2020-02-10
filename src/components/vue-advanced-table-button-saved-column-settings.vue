@@ -1,5 +1,5 @@
 <template>
-    <button v-on:click.self="toggleOverlay" v-bind:style="{'z-index': zIndex}">
+    <button v-on:click.self="toggleOverlay" v-bind:style="{'z-index': zIndex}" v-bind:class="classes">
         <slot>
             Saved Column Settings
         </slot>
@@ -11,10 +11,10 @@
                 <div class="vue-advanced-table-saved-column-setting" v-for="(column, index) in savedColumns" v-bind:key="index" v-else>
                     <div>{{ column.name }}</div>
                     <div class="vue-advanced-table-saved-column-setting-actions">
-                        <button v-on:click="deleteSavedColumnSetting(column)">
+                        <button v-on:click="deleteSavedColumnSetting(column)" v-bind:class="classes">
                             Delete
                         </button>
-                        <button v-on:click="localColumnOrder = column.columnOrder">
+                        <button v-on:click="localColumnOrder = column.columnOrder" v-bind:class="classes">
                             Load
                         </button>
                     </div>

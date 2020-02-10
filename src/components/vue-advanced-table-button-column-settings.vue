@@ -21,15 +21,15 @@
              </button>
           </div>
         </div>
-        <button class="vue-advanced-table-save-column-settings" v-if="canSave" v-on:click="toggleOverlay(); saveSetting.active = true">Save Column Settings</button>
+        <button class="vue-advanced-table-save-column-settings" v-bind:class="classes" v-if="canSave" v-on:click="toggleOverlay(); saveSetting.active = true">Save Column Settings</button>
       </div>
     </vue-advanced-table-overlay>
     <vue-advanced-table-overlay v-if="saveSetting.active">
       <div class="vue-advanced-table-column-settings">
         <div class="vue-advanced-table-column-setting">
-          Setting Name:
-          <input v-model="saveSetting.name" />
-          <button class="vue-advanced-table-save-column-settings" v-on:click="saveColumnOrder(); toggleOverlay()">Save</button>
+          <span>Setting Name:</span>
+            <input v-model="saveSetting.name" v-on:keyup.space.prevent />
+            <button class="vue-advanced-table-save-column-settings" v-on:click="saveColumnOrder(); toggleOverlay()">Save</button>
         </div>
       </div>
     </vue-advanced-table-overlay>

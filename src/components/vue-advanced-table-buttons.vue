@@ -1,7 +1,7 @@
 <template>
   <div v-bind:class="classObject.buttonContainer">
     <template v-for="(button, index) in buttons">
-      <vue-advanced-table-button-column-settings v-if="isColumnSettingsButton(button)" v-bind:key="index" v-bind="$props" v-bind:classes="getButtonClass(button)" v-bind:button="button" v-on:update:columnOrder="$emit('update:columnOrder', $event)" v-on:update:savedColumns="$emit('update:savedColumns', $event)">
+      <vue-advanced-table-button-column-settings v-if="isColumnSettingsButton(button)" v-bind:key="index" v-bind="$props" v-bind:classes="getButtonClass(button)" v-bind:button="button" v-bind:canSave="hasSaveFeature" v-on:update:columnOrder="$emit('update:columnOrder', $event)" v-on:update:savedColumns="$emit('update:savedColumns', $event)">
         <template v-if="button.label">{{ button.label }}</template>
       </vue-advanced-table-button-column-settings>
       <vue-advanced-table-button-saved-column-settings v-else-if="isSavedColumnSettingsButton(button)" v-bind:key="index" v-bind="$props" v-bind:classes="getButtonClass(button)" v-bind:button="button" v-on:update:columnOrder="$emit('update:columnOrder', $event)" v-on:update:savedColumns="$emit('update:savedColumns', $event)">
@@ -110,6 +110,22 @@ export default {
     },
   },
   computed: {
+    hasSaveFeature: function() {
+      const self = this;
+      let hasSaveButton = self.buttons.includes('savedColumns');
+
+      if (hasSaveButton === true) {
+        return true;
+      } else {
+        let found = self.buttons.some(button => button.extend === 'savedColumns');
+
+        if (found === true) {
+          return true;
+        }
+      }
+
+      return false;
+    }
   }
 }
 </script>

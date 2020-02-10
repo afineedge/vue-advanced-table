@@ -21,7 +21,7 @@
              </button>
           </div>
         </div>
-        <button class="vue-advanced-table-save-column-settings" v-if="save" v-on:click="toggleOverlay(); saveSetting.active = true">Save Column Settings</button>
+        <button class="vue-advanced-table-save-column-settings" v-if="canSave" v-on:click="toggleOverlay(); saveSetting.active = true">Save Column Settings</button>
       </div>
     </vue-advanced-table-overlay>
     <vue-advanced-table-overlay v-if="saveSetting.active">
@@ -65,6 +65,10 @@ export default {
     savedColumns: {
       type: Array,
       required: true
+    },
+    canSave: {
+      type: Boolean,
+      required: true
     }
   },
   components: {
@@ -90,15 +94,6 @@ export default {
           return 2;
         }
         return false;
-    },
-    save: function() {
-      const self = this;
-
-      if (self.$attrs.buttons.includes('savedColumns')) {
-        return true;
-      }
-
-      return false;
     }
   },
   methods: {

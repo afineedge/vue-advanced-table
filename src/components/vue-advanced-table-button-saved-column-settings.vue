@@ -1,8 +1,10 @@
 <template>
-    <button v-on:click.self="toggleOverlay" v-bind:style="{'z-index': zIndex}" v-bind:class="classes">
-        <slot>
-            Saved Column Settings
-        </slot>
+    <div>
+        <button v-on:click.self="toggleOverlay" v-bind:class="classes">
+            <slot>
+                Saved Column Settings
+            </slot>
+        </button>
         <vue-advanced-table-overlay v-if="overlay.active">
             <div class="vue-advanced-table-saved-column-settings">
                 <div class="vue-advanced-table-saved-column-setting" v-if="savedColumns.length === 0">
@@ -21,7 +23,7 @@
                 </div>
             </div>
         </vue-advanced-table-overlay>
-    </button>
+    </div>
 </template>
 
 <script>
@@ -57,15 +59,6 @@ export default {
             },
             localColumnOrder: [],
             localColumns: []
-        }
-    },
-    computed: {
-        zIndex: function() {
-            var self = this;
-            if (self.overlay.active){
-                return 2;
-            }
-            return false;
         }
     },
     methods: {

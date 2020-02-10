@@ -1,8 +1,10 @@
 <template>
-  <button v-on:click.self="toggleOverlay" v-bind:class="classes" v-bind:style="{'z-index': zIndex}">
-    <slot>
-      Column Settings
-    </slot>
+  <div>
+    <button v-on:click.self="toggleOverlay" v-bind:class="classes">
+      <slot>
+        Column Settings
+      </slot>
+    </button>
     <vue-advanced-table-overlay v-if="overlay.active">
       <div class="vue-advanced-table-column-settings">
         <div class="vue-advanced-table-column-setting" v-for="(column, index) in columnOrder" v-bind:key="column">
@@ -10,15 +12,15 @@
             {{ getColumnByName(column).label }}
           </div>
           <div class="vue-advanced-table-column-setting-actions">
-             <button v-on:click="changeColumnPosition(index, 'up')" title="Move up" v-bind:class="classes">
+            <button v-on:click="changeColumnPosition(index, 'up')" title="Move up" v-bind:class="classes">
               &#8679;
-             </button>
-             <button v-on:click="changeColumnPosition(index, 'down')" title="Move down" v-bind:class="classes">
+            </button>
+            <button v-on:click="changeColumnPosition(index, 'down')" title="Move down" v-bind:class="classes">
               &#8681;
-             </button>
-             <button v-on:click="toggleColumnVisibility(column)" v-bind:class="['inactive' ? !isColumnVisible(column) : '', classes]">
+            </button>
+            <button v-on:click="toggleColumnVisibility(column)" v-bind:class="['inactive' ? !isColumnVisible(column) : '', classes]">
               Toggle
-             </button>
+            </button>
           </div>
         </div>
         <button class="vue-advanced-table-save-column-settings" v-bind:class="classes" v-if="canSave" v-on:click="toggleOverlay(); saveSetting.active = true">Save Column Settings</button>
@@ -27,13 +29,13 @@
     <vue-advanced-table-overlay v-if="saveSetting.active">
       <div class="vue-advanced-table-column-settings">
         <div class="vue-advanced-table-column-setting">
-          <span>Setting Name:</span>
-            <input v-model="saveSetting.name" v-on:keyup.space.prevent />
+          <span class="save-setting-text">Setting Name:</span>
+            <input v-model="saveSetting.name" />
             <button class="vue-advanced-table-save-column-settings" v-on:click="saveColumnOrder(); toggleOverlay()">Save</button>
         </div>
       </div>
     </vue-advanced-table-overlay>
-  </button>
+  </div>
 </template>
 
 <script>
@@ -85,15 +87,6 @@ export default {
       },
       localColumnOrder: [],
       savedColumnOrders: []
-    }
-  },
-  computed: {
-    zIndex: function() {
-        var self = this;
-        if (self.overlay.active){
-          return 2;
-        }
-        return false;
     }
   },
   methods: {
@@ -231,7 +224,11 @@ export default {
     border: 1px solid #ccc;
     display: flex;
     text-align: center;
-    margin: 4px !important;
+    margin: 4px;
     cursor: pointer;
+  }
+
+  .save-setting-text {
+    margin-right: 4px;
   }
 </style>

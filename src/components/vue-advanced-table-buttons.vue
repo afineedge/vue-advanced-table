@@ -1,5 +1,5 @@
 <template>
-  <div v-bind:class="classObject.buttonContainer">
+  <div class="button-display" v-bind:class="classObject.buttonContainer">
     <template v-for="(button, index) in buttons">
       <vue-advanced-table-button-column-settings v-if="isColumnSettingsButton(button)" v-bind:key="index" v-bind="$props" v-bind:classes="getButtonClass(button)" v-bind:button="button" v-bind:canSave="hasSaveFeature" v-on:update:columnOrder="$emit('update:columnOrder', $event)" v-on:update:savedColumns="$emit('update:savedColumns', $event)">
         <template v-if="button.label">{{ button.label }}</template>
@@ -132,4 +132,7 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+  .button-display {
+    display: inline-flex;
+  }
 </style>

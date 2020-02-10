@@ -231,7 +231,12 @@ export default {
     white-space: nowrap;
   }
 
-  .vue-advanced-table-save-column-settings {
-    margin: 5px;
+  .vue-advanced-table-save-column-settings button {
+    padding: 4px;
+    border: 1px solid #ccc;
+    display: flex;
+    text-align: center;
+    margin: 4px !important;
+    cursor: pointer;
   }
 </style>

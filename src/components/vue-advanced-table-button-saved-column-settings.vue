@@ -41,6 +41,10 @@ export default {
         savedColumns: {
             type: Array,
             required: true
+        },
+        classes: {
+        type: String,
+        required: true
         }
     },
     components: {

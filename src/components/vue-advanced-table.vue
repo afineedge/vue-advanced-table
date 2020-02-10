@@ -307,7 +307,6 @@ export default {
     },
     savedColumns: function() {
       const self = this;
-      console.log(self.savedColumns);
       if (self.storage.length > 0){
         self.storeTableInfo('savedColumns');
       }

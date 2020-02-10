@@ -64,9 +64,6 @@ export default {
             return false;
         }
     },
-    mounted: function() {
-        const self = this;
-    },
     methods: {
         toggleOverlay: function() {
         const self = this;

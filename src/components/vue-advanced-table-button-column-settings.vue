@@ -128,14 +128,18 @@ export default {
     saveColumnOrder: function() {
       const self = this;
 
+      if (self.saveSetting.name === '') {
+        // eslint-disable-next-line
+        console.error('[Vue warn]: No name was entered. The current column settings order will not be saved.');
+      } else {
+        self.savedColumnOrders.push({
+          name: self.saveSetting.name,
+          columnOrder: self.columnOrder
+        });
 
-      self.savedColumnOrders.push({
-        name: self.saveSetting.name,
-        columnOrder: self.columnOrder
-      });
-
-      self.saveSetting.name = '';
-      self.saveSetting.active = false;
+        self.saveSetting.name = '';
+        self.saveSetting.active = false;
+      }
     }
   },
   mounted: function() {

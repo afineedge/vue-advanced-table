@@ -14,16 +14,16 @@
     <div class="vue-advanced-table-wrapper" ref="wrapper">
       <table cellpadding="0" cellspacing="0" border="0" v-bind:class="classObject.table" ref="table" class="vue-advanced-table" v-bind:style="tableWidth">
         <tbody v-bind:class="classObject.body" ref="tbody">
-          <vue-advanced-table-row v-for="row in filteredRows" v-bind:row="row" v-bind:key="row[primaryKey]" v-bind:class="{ active: selectedRows.indexOf(row[primaryKey]) > -1 }" v-bind:process-row="processRow">
+          <vue-advanced-table-row v-for="(row, index) in filteredRows" v-bind:row="row" v-bind:key="index" v-bind:class="{ active: selectedRows.indexOf(index) > -1 }" v-bind:process-row="processRow">
             <vue-advanced-table-cell v-for="column in filteredColumnOrder" v-bind:key="column" v-bind:column="getColumnByName(column)" v-bind:row="row" v-bind:class="classObject.cell" v-bind:style="getFixedStyle(column, 'cell')">
-              <slot v-bind:name="'column-' + column" v-bind:row="row" v-bind:primary-key="primaryKey"></slot>
+              <slot v-bind:name="'column-' + column" v-bind:row="row" v-bind:primary-key="column"></slot>
             </vue-advanced-table-cell>
           </vue-advanced-table-row>
         </tbody>
         <tfoot class="vue-advanced-table-footer" v-bind:class="classObject.footer" v-if="footerVisible" ref="tfoot">
           <tr>
             <vue-advanced-table-column-footer v-for="column in filteredColumnOrder" v-bind:classObject="classObject" v-bind:key="column" v-bind:column="column" v-bind:columns="columns" v-bind:rows="filteredRows" v-bind:style="getFixedStyle(column, 'footer')">
-              <slot v-bind:name="'footer-' + column" v-bind:table="filteredRows" v-bind:primary-key="primaryKey"></slot>
+              <slot v-bind:name="'footer-' + column" v-bind:table="filteredRows"></slot>
             </vue-advanced-table-column-footer>
           </tr>
         </tfoot>
@@ -51,10 +51,6 @@ import vueAdvancedTableColumnFooter from './vue-advanced-table-column-footer.vue
 export default {
   name: 'vue-advanced-table',
   props: {
-    primaryKey: {
-      type: String,
-      required: true
-    },
     rows: {
       type: Array,
       required: true
@@ -353,12 +349,6 @@ export default {
       let keyExists = true;
 
       for (let i = 0; i < rows.length; i++){
-        if (keyExists && typeof rows[i][self.primaryKey] === 'undefined') {
-          // eslint-disable-next-line
-          console.error(`[Vue warn]: Column associated with designated primary key ${self.primaryKey} does not exist.`, self);
-          keyExists = false;
-        }
-        
         let displayRow = {};
         let columns = Object.keys(rows[i]);
         for (let r = 0; r < columns.length; r++){
@@ -366,7 +356,7 @@ export default {
           let displayCell = rows[i][column.name];
           displayRow[column.name] = self.getDisplayValue(displayCell, column, rows[i]);
         }
-        render[rows[i][self.primaryKey]] = displayRow;
+        render[i] = displayRow;
       };
       return render;
     },
@@ -405,7 +395,7 @@ export default {
           let data = rows[i][column.name];
           rowObject[column.name] = data;
         }
-        rowsAsObjects[rows[i][self.primaryKey]] = rowObject;
+        rowsAsObjects[i] = rowObject;
       };
       return rowsAsObjects;
     },
@@ -514,7 +504,7 @@ export default {
       if (self.search.toString().length > 0) {
         const rowDisplayValues = self.rowDisplayValues;
         const response = rows.filter(function(row){
-          const rowForDisplay = rowDisplayValues[row[self.primaryKey]];
+          const rowForDisplay = rowDisplayValues[index];
           const found = Object.values(rowForDisplay).some(function(data){
 
             return data.toString().toLowerCase().includes(self.search.toString().toLowerCase());

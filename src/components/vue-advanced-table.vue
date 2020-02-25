@@ -503,7 +503,7 @@ export default {
       const rows = self.reorderedRows;
       if (self.search.toString().length > 0) {
         const rowDisplayValues = self.rowDisplayValues;
-        const response = rows.filter(function(row){
+        const response = rows.filter(function(row, index){
           const rowForDisplay = rowDisplayValues[index];
           const found = Object.values(rowForDisplay).some(function(data){
 

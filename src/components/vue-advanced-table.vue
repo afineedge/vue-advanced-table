@@ -14,7 +14,7 @@
     <div class="vue-advanced-table-wrapper" ref="wrapper">
       <table cellpadding="0" cellspacing="0" border="0" v-bind:class="classObject.table" ref="table" class="vue-advanced-table" v-bind:style="tableWidth">
         <tbody v-bind:class="classObject.body" ref="tbody">
-          <vue-advanced-table-row v-for="(row, index) in filteredRows" v-bind:row="row" v-bind:key="index" v-bind:class="{ active: selectedRows.indexOf(index) > -1 }" v-bind:process-row="processRow">
+          <vue-advanced-table-row v-for="(row, index) in currentPageRows" v-bind:row="row" v-bind:key="index" v-bind:class="{ active: selectedRows.indexOf(index) > -1 }" v-bind:process-row="processRow">
             <vue-advanced-table-cell v-for="column in filteredColumnOrder" v-bind:key="column" v-bind:column="getColumnByName(column)" v-bind:row="row" v-bind:class="classObject.cell" v-bind:style="getFixedStyle(column, 'cell')">
               <slot v-bind:name="'column-' + column" v-bind:row="row" v-bind:primary-key="column"></slot>
             </vue-advanced-table-cell>
@@ -34,6 +34,7 @@
         </thead>
       </table>
     </div>
+    <vue-advanced-table-pagination v-if="perPage" v-model="currentPage" v-bind:total="filteredRows.length" v-bind:perPage="perPage" v-bind:classes="classObject"></vue-advanced-table-pagination>
    </div>
 </template>
 
@@ -47,12 +48,17 @@ import vueAdvancedTableRow from './vue-advanced-table-row.vue'
 import vueAdvancedTableCell from './vue-advanced-table-cell.vue'
 import vueAdvancedTableButtons from './vue-advanced-table-buttons.vue'
 import vueAdvancedTableColumnFooter from './vue-advanced-table-column-footer.vue'
+import vueAdvancedTablePagination from './vue-advanced-table-pagination.vue'
 
 export default {
   name: 'vue-advanced-table',
   props: {
     rows: {
       type: Array,
+      required: true
+    },
+    primaryKey: {
+      type: String,
       required: true
     },
     selectedRows: {
@@ -89,6 +95,12 @@ export default {
       type: Boolean,
       default: true
     },
+    perPage: {
+      type: Number
+    },
+    page: {
+      type: Number
+    },
     storage: {
       type: String,
       default: ''
@@ -109,7 +121,8 @@ export default {
       columnOrder: [],
       hiddenColumns: [],
       savedColumns: [],
-      search: ''
+      search: '',
+      currentPage: 1
     }
   },
   components: {
@@ -117,11 +130,16 @@ export default {
     vueAdvancedTableRow,
     vueAdvancedTableCell,
     vueAdvancedTableButtons,
+    vueAdvancedTablePagination,
     vueAdvancedTableColumnFooter
   },
   mounted: function() {
     const self = this;
     var storedData;
+
+    if (typeof self.page !== 'undefined'){
+      self.currentPage = self.page;
+    }
 
     if (self.storage.length > 0){
       storedData = self.getStoredTableInfo();
@@ -301,6 +319,11 @@ export default {
         self.storeTableInfo('hiddenColumns');
       }
     },
+    page: function() {
+      const self = this;
+      var wrapper = self.$refs.wrapper;
+      wrapper.scrollTop = 0;
+    },
     savedColumns: function() {
       const self = this;
       if (self.storage.length > 0){
@@ -344,7 +367,7 @@ export default {
     },
     rowDisplayValues: function() {
       const self = this;
-      const render = {};
+      const render = [];
       const rows = self.rows;
       let keyExists = true;
 
@@ -504,7 +527,7 @@ export default {
       if (self.search.toString().length > 0) {
         const rowDisplayValues = self.rowDisplayValues;
         const response = rows.filter(function(row, index){
-          const rowForDisplay = rowDisplayValues[index];
+          const rowForDisplay = rowDisplayValues.find(element => element[self.primaryKey] === row[self.primaryKey]);
           const found = Object.values(rowForDisplay).some(function(data){
 
             return data.toString().toLowerCase().includes(self.search.toString().toLowerCase());
@@ -515,6 +538,15 @@ export default {
       }
 
       return rows;
+    },
+    currentPageRows: function() {
+      var self = this;
+      if (typeof self.perPage !== 'undefined'){
+        var page = self.currentPage - 1;
+        var startIndex = page * self.perPage;
+        return self.filteredRows.slice(startIndex, startIndex + self.perPage);
+      }
+      return self.filteredRows;
     },
     reorderedRows: function(){
       const self = this;
@@ -539,7 +571,12 @@ export default {
         body: '',
         cell: '',
         footer: '',
-        footerCell: ''
+        footerCell: '',
+        paginationContainer: '',
+        paginationButtons: {
+          inactive: '',
+          active: ''
+        }
       }
 
       if (typeof self.classes === 'string'){

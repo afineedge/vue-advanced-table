@@ -57,10 +57,6 @@ export default {
       type: Array,
       required: true
     },
-    primaryKey: {
-      type: String,
-      required: true
-    },
     selectedRows: {
       type: Array,
       required: false,
@@ -367,7 +363,7 @@ export default {
     },
     rowDisplayValues: function() {
       const self = this;
-      const render = [];
+      const render = {};
       const rows = self.rows;
       let keyExists = true;
 
@@ -523,11 +519,11 @@ export default {
     },
     filteredRows: function() {
       const self = this;
-      const rows = self.reorderedRows;
+      const rows = self.rows;
       if (self.search.toString().length > 0) {
         const rowDisplayValues = self.rowDisplayValues;
         const response = rows.filter(function(row, index){
-          const rowForDisplay = rowDisplayValues.find(element => element[self.primaryKey] === row[self.primaryKey]);
+          const rowForDisplay = rowDisplayValues[index];
           const found = Object.values(rowForDisplay).some(function(data){
 
             return data.toString().toLowerCase().includes(self.search.toString().toLowerCase());

@@ -533,7 +533,7 @@ export default {
         return response;
       }
 
-      return self.reorderedRows;
+      return rows;
     },
     currentPageRows: function() {
       var self = this;

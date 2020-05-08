@@ -519,9 +519,9 @@ export default {
     },
     filteredRows: function() {
       const self = this;
-      const rows = self.rows;
+      const rows = self.reorderedRows;
       if (self.search.toString().length > 0) {
-        const rowDisplayValues = self.rowDisplayValues;
+        const rowDisplayValues = self.reorderedDisplayRows;
         const response = rows.filter(function(row, index){
           const rowForDisplay = rowDisplayValues[index];
           const found = Object.values(rowForDisplay).some(function(data){
@@ -546,14 +546,23 @@ export default {
     },
     reorderedRows: function(){
       const self = this;
-      const rows = self.rowsAsObjects;
-      const rowDisplayValues = self.rowDisplayValues;
+      const rows = self.rows;
       const order = self.rowOrderWithDirection;
       const reorderedRows = [];
       for (let i = 0; i < order.length; i++){
         reorderedRows.push(rows[order[i]]);
       }
       return reorderedRows;
+    },
+    reorderedDisplayRows: function(){
+      const self = this;
+      const rows = self.rowDisplayValues;
+      const order = self.rowOrderWithDirection;
+      const reorderedDisplayRows = [];
+      for (let i = 0; i < order.length; i++){
+        reorderedDisplayRows.push(rows[order[i]]);
+      }
+      return reorderedDisplayRows;
     },
     classObject: function() {
       const self = this;

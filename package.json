@@ -19,7 +19,7 @@
     "vue-json-csv": "^1.2.4",
     "vue-json-excel": "^0.2.98",
     "vue-pdf": "^4.0.6",
-    "xlsx": "^0.14.1"
+    "xlsx": "^0.17.0"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.3.0",

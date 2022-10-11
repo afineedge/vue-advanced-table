@@ -12,7 +12,7 @@
     "file-saver": "^2.0.1",
     "fs": "0.0.1-security",
     "html2canvas": "^1.0.0-alpha.12",
-    "jspdf": "^1.5.3",
+    "jspdf": "^2.5.1",
     "jspdf-autotable": "^3.0.10",
     "pdfmake": "^0.1.53",
     "vue": "^2.5.21",
